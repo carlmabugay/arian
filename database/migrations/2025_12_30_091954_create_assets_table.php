@@ -19,10 +19,10 @@ return new class extends Migration
             $table->foreignId('company_id')->constrained();
             $table->foreignId('asset_category_id')->constrained();
 
-            $table->enum('status', AssetStatus::values())->value(AssetStatus::Available->value);
-            $table->enum('condition', AssetCondition::values())->value(AssetCondition::New->value);
+            $table->enum('status', AssetStatus::values())->default(AssetStatus::Available->value);
+            $table->enum('condition', AssetCondition::values())->default(AssetCondition::New->value);
 
-            $table->string('asset_tag')->unique();
+            $table->string('asset_tag');
             $table->string('serial_number')->nullable();
             $table->string('name');
             $table->text('description')->nullable();

@@ -28,7 +28,7 @@ class AssetFactory extends Factory
             'asset_category_id' => AssetCategory::inRandomOrder()->first()->id,
             'status' => $this->faker->randomElement(AssetStatus::values()),
             'condition' => $this->faker->randomElement(AssetCondition::values()),
-            'asset_tag' => $this->faker->unique()->word,
+            'asset_tag' => $this->faker->word,
             'serial_number' => $this->faker->randomAscii,
             'name' => $this->faker->word,
             'description' => $this->faker->text,
