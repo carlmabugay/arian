@@ -1,10 +1,7 @@
 <?php
 
-namespace App\Filament\Resources\Companies\Tables;
+namespace App\Filament\Resources\Locations\Tables;
 
-use App\Filament\Resources\Companies\Schemas\CompanyForm;
-use App\Models\Company;
-use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -12,36 +9,36 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
-use Filament\Forms\Components\TextInput;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
-class CompaniesTable
+class LocationsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
-            ->heading('Companies')
-            ->description('Manage your companies here.')
+            ->heading('Locations')
+            ->description('Manage your company locations here.')
             ->headerActions([
                 CreateAction::make()
                     ->icon('heroicon-o-plus')
                     ->label('Add New')
                     ->slideOver()
-                    ->modalHeading('Add New Company')
+                    ->modalHeading('Add New Location')
                     ->modalWidth('md')
             ])
             ->columns([
+                TextColumn::make('company.name')
+                    ->searchable(),
                 TextColumn::make('name')
                     ->searchable(),
-                TextColumn::make('code')
-                    ->searchable(),
+                TextColumn::make('type')
+                    ->badge(),
                 TextColumn::make('created_at')
                     ->label('Creation Date')
                     ->date()
-                    ->sortable(),
+                    ->sortable()
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
@@ -50,6 +47,9 @@ class CompaniesTable
             ->recordActions(
                 ActionGroup::make([
                     EditAction::make()
+                        ->slideOver()
+                        ->modalHeading('Edit location')
+                        ->modalWidth('md')
                 ])
             )
             ->toolbarActions([

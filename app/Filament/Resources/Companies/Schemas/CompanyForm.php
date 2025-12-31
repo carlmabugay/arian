@@ -12,9 +12,13 @@ class CompanyForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->required(),
+                    ->label('Name: ')
+                    ->required()
+                    ->columnSpanFull(),
                 TextInput::make('code')
-                    ->required(),
+                    ->label('Code: ')
+                    ->required()
+                    ->columnSpanFull(),
             ]);
     }
 }
