@@ -14,18 +14,28 @@ class UserForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->required(),
+                    ->label('Name: ')
+                    ->required()
+                    ->columnSpanFull(),
+
                 TextInput::make('email')
-                    ->label('Email address')
+                    ->label('Email address: ')
                     ->email()
-                    ->required(),
-                DateTimePicker::make('email_verified_at')->native(false),
+                    ->required()
+                    ->columnSpanFull(),
+
+                DateTimePicker::make('email_verified_at')
+                    ->label('Email verified at: ')
+                    ->native(false)
+                    ->columnSpanFull(),
+
                 TextInput::make('password')
                     ->password()
                     ->required(fn (string $context): bool => $context === 'create')
                     ->dehydrateStateUsing(fn ($state) => filled($state) ? bcrypt($state) : null)
                     ->dehydrated(fn ($state) => filled($state))
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->columnSpanFull(),
 
                 Toggle::make('is_active')
                     ->required(),

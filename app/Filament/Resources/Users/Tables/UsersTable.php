@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Users\Tables;
 
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
@@ -18,6 +19,16 @@ class UsersTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->heading('Users')
+            ->description('Manage users here.')
+            ->headerActions([
+                CreateAction::make()
+                    ->icon('heroicon-o-plus')
+                    ->label('Add New')
+                    ->slideOver()
+                    ->modalHeading('Add New User')
+                    ->modalWidth('md')
+            ])
             ->columns([
                 TextColumn::make('name')
                     ->searchable(),
@@ -25,30 +36,26 @@ class UsersTable
                     ->label('Email address')
                     ->searchable(),
                 TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable()
+                    ->label('Email Verification Date')
+                    ->date()
                     ->toggleable(isToggledHiddenByDefault: true),
                 IconColumn::make('is_active')
                     ->boolean(),
-                TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Creation Date')
+                    ->date()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 TrashedFilter::make(),
             ])
             ->recordActions(
                 ActionGroup::make([
-                    EditAction::make(),
+                    EditAction::make()
+                        ->slideOver()
+                        ->modalHeading('Edit User')
+                        ->modalWidth('md')
                 ])
             )
             ->toolbarActions([

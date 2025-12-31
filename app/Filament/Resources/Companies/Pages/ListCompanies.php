@@ -11,4 +11,6 @@ use Filament\Support\Icons\Heroicon;
 class ListCompanies extends ListRecords
 {
     protected static string $resource = CompanyResource::class;
+
+    protected ?string $heading = '';
 }
