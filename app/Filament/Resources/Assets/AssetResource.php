@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Filament\Resources\AssetCategories;
+namespace App\Filament\Resources\Assets;
 
-use App\Filament\Resources\AssetCategories\Pages\CreateAssetCategory;
-use App\Filament\Resources\AssetCategories\Pages\EditAssetCategory;
-use App\Filament\Resources\AssetCategories\Pages\ListAssetCategories;
-use App\Filament\Resources\AssetCategories\Schemas\AssetCategoryForm;
-use App\Filament\Resources\AssetCategories\Tables\AssetCategoriesTable;
-use App\Models\AssetCategory;
+use App\Filament\Resources\Assets\Pages\CreateAsset;
+use App\Filament\Resources\Assets\Pages\EditAsset;
+use App\Filament\Resources\Assets\Pages\ListAssets;
+use App\Filament\Resources\Assets\Schemas\AssetForm;
+use App\Filament\Resources\Assets\Tables\AssetsTable;
+use App\Models\Asset;
 use BackedEnum;
+use Filament\Pages\Enums\SubNavigationPosition;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -17,15 +18,15 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use UnitEnum;
 
-class AssetCategoryResource extends Resource
+class AssetResource extends Resource
 {
-    protected static ?string $model = AssetCategory::class;
+    protected static ?string $model = Asset::class;
 
     protected static string | UnitEnum | null $navigationGroup = 'Asset Management';
 
-    protected static ?string $navigationLabel = 'Categories';
+    protected static ?string $navigationLabel = 'Assets';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
@@ -33,12 +34,12 @@ class AssetCategoryResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return AssetCategoryForm::configure($schema);
+        return AssetForm::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return AssetCategoriesTable::configure($table);
+        return AssetsTable::configure($table);
     }
 
     public static function getRelations(): array
@@ -51,8 +52,9 @@ class AssetCategoryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListAssetCategories::route('/'),
-            'edit' => EditAssetCategory::route('/{record}/edit'),
+            'index' => ListAssets::route('/'),
+            'create' => CreateAsset::route('/create'),
+            'edit' => EditAsset::route('/{record}/edit'),
         ];
     }
 

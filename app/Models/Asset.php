@@ -53,12 +53,12 @@ class Asset extends Model
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(AssetCategory::class);
+        return $this->belongsTo(AssetCategory::class, 'asset_category_id');
     }
 
     public function assignedUser(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function assignments(): HasMany
