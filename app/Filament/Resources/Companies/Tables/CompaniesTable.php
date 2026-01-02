@@ -13,8 +13,10 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Forms\Components\TextInput;
+use Filament\Support\Enums\Size;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
@@ -28,7 +30,8 @@ class CompaniesTable
             ->headerActions([
                 CreateAction::make()
                     ->icon('heroicon-o-plus')
-                    ->label('Add New')
+                    ->label('Add new')
+                    ->size(Size::Small)
                     ->slideOver()
                     ->modalHeading('Add New Company')
                     ->modalWidth('md')
@@ -44,6 +47,7 @@ class CompaniesTable
                     ->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
+            ->searchPlaceholder('Search...')
             ->filters([
                 TrashedFilter::make(),
             ])
@@ -58,6 +62,7 @@ class CompaniesTable
                     ForceDeleteBulkAction::make(),
                     RestoreBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->striped();
     }
 }
