@@ -10,4 +10,9 @@ class ListCompanies extends ListRecords
     protected static string $resource = CompanyResource::class;
 
     protected ?string $heading = '';
+
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
 }

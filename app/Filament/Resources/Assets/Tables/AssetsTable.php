@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Assets\Tables;
 
+use App\Filament\Resources\Assets\RelationManagers\AssignmentsRelationManager;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;

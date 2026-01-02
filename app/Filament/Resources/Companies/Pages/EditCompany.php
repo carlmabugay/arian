@@ -5,9 +5,7 @@ namespace App\Filament\Resources\Companies\Pages;
 use App\Filament\Resources\Companies\CompanyResource;
 use App\Models\Company;
 use Filament\Actions\Action;
-use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
-use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
 use Filament\Forms\Components\TextInput;
@@ -16,22 +14,34 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\Size;
+use Filament\Support\Icons\Heroicon;
+use Illuminate\Database\Eloquent\Model;
 
 class EditCompany extends EditRecord
 {
     protected static string $resource = CompanyResource::class;
 
+    public Model | int | string | null $record = Company::class;
+
     protected ?string $heading = '';
+
+    public function getBreadcrumbs(): array
+    {
+        return [
+            self::$resource::getUrl() => 'Companies',
+            self::$resource::getUrl('edit', ['record' => $this->record->id]) => $this->record->name,
+        ];
+    }
 
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components(
-                Section::make(fn (?Company $record) => "Edit {$record->name}")
+                Section::make(sprintf("Edit %s", $this->record->name))
                     ->headerActions([
                         DeleteAction::make()
                             ->label('')
-                            ->icon('heroicon-o-trash')
+                            ->icon(Heroicon::OutlinedTrash)
                             ->size(Size::ExtraSmall),
                         ForceDeleteAction::make(),
                         RestoreAction::make(),
@@ -40,13 +50,11 @@ class EditCompany extends EditRecord
 
                         TextInput::make('name')
                             ->label('Name: ')
-                            ->required()
-                            ->columnSpanFull(),
+                            ->required(),
 
                         TextInput::make('code')
                             ->label('Code: ')
                             ->required()
-                            ->columnSpanFull(),
                     ])
                     ->footerActions([
                         Action::make('save')
@@ -61,6 +69,8 @@ class EditCompany extends EditRecord
                             ->size(Size::Small),
                     ])
                     ->footerActionsAlignment(Alignment::End)
+                    ->columns()
+                    ->columnSpanFull()
 
             );
     }

@@ -35,7 +35,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->brandName('Arian')
             ->topbar(false)
-            ->breadcrumbs(false)
             ->sidebarCollapsibleOnDesktop()
             ->maxContentWidth(Width::Full)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')

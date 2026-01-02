@@ -2,9 +2,6 @@
 
 namespace App\Filament\Resources\Companies\Tables;
 
-use App\Filament\Resources\Companies\Schemas\CompanyForm;
-use App\Models\Company;
-use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -12,11 +9,9 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
-use Filament\Forms\Components\TextInput;
 use Filament\Support\Enums\Size;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
@@ -29,7 +24,7 @@ class CompaniesTable
             ->description('Manage your companies here.')
             ->headerActions([
                 CreateAction::make()
-                    ->icon('heroicon-o-plus')
+                    ->icon(Heroicon::OutlinedPlus)
                     ->label('Add new')
                     ->size(Size::Small)
                     ->slideOver()
