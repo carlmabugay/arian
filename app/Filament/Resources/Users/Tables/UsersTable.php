@@ -30,6 +30,8 @@ class UsersTable
                     ->modalWidth('md')
             ])
             ->columns([
+                TextColumn::make('company.name')
+                    ->label('Company'),
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('email')

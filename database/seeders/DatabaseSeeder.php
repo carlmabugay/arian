@@ -23,9 +23,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Company
+        $this->command->warn(PHP_EOL. 'Creating company...');
+        $company = $this->withProgressBar(1, fn() => Company::factory()->create());
+        $this->command->info('Company created.');
+
         // Admin
         $this->command->warn(PHP_EOL. 'Creating admin user...');
         $admin = $this->withProgressBar(1, fn () => User::factory()->create([
+            'company_id' => $company->get('id'),
             'name' => 'Admin User',
             'email' => 'admin@carlmabugay.com',
             'password' => Hash::make('password'),
@@ -40,11 +46,6 @@ class DatabaseSeeder extends Seeder
             $users->push(User::factory()->create());
         });
         $this->command->info('Users created.');
-
-        // Company
-        $this->command->warn(PHP_EOL. 'Creating company...');
-        $company = $this->withProgressBar(1, fn() => Company::factory()->create());
-        $this->command->info('Company created.');
 
         // Location
         $this->command->warn(PHP_EOL. 'Creating location...');
