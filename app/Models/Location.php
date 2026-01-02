@@ -31,4 +31,9 @@ class Location extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function assets(): HasMany
+    {
+        return $this->hasMany(Asset::class);
+    }
 }

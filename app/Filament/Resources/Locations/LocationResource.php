@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Locations;
 use App\Filament\Resources\Locations\Pages\CreateLocation;
 use App\Filament\Resources\Locations\Pages\EditLocation;
 use App\Filament\Resources\Locations\Pages\ListLocations;
+use App\Filament\Resources\Locations\RelationManagers\AssetsRelationManager;
 use App\Filament\Resources\Locations\Schemas\LocationForm;
 use App\Filament\Resources\Locations\Tables\LocationsTable;
 use App\Models\Location;
@@ -40,7 +41,7 @@ class LocationResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            AssetsRelationManager::class,
         ];
     }
 
@@ -48,6 +49,7 @@ class LocationResource extends Resource
     {
         return [
             'index' => ListLocations::route('/'),
+            'edit' => EditLocation::route('/{record}/edit'),
         ];
     }
 

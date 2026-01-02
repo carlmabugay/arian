@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Locations\Schemas;
 
 use App\Enums\LocationType;
+use App\Models\Company;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
@@ -16,6 +17,8 @@ class LocationForm
                 Select::make('company_id')
                     ->label('Company: ')
                     ->relationship('company', 'name')
+                    ->searchable()
+                    ->options(Company::query()->pluck('name', 'id'))
                     ->required()
                     ->columnSpanFull(),
                 TextInput::make('name')

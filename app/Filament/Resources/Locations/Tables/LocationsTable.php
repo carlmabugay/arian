@@ -47,9 +47,6 @@ class LocationsTable
             ->recordActions(
                 ActionGroup::make([
                     EditAction::make()
-                        ->slideOver()
-                        ->modalHeading('Edit location')
-                        ->modalWidth('md')
                 ])
             )
             ->toolbarActions([
