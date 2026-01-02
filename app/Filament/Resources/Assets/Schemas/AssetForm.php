@@ -36,12 +36,14 @@ class AssetForm
 
                 Select::make('status')
                     ->label('Status: ')
+                    ->native(false)
                     ->options(AssetStatus::class)
                     ->default(AssetStatus::Available)
                     ->required(),
 
                 Select::make('condition')
                     ->label('Condition: ')
+                    ->native(false)
                     ->options(AssetCondition::class)
                     ->default(AssetCondition::New)
                     ->required(),
