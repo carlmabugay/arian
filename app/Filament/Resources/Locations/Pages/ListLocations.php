@@ -10,4 +10,9 @@ class ListLocations extends ListRecords
     protected static string $resource = LocationResource::class;
 
     protected ?string $heading = '';
+
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
 }

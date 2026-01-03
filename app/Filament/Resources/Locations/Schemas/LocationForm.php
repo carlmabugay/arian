@@ -14,6 +14,7 @@ class LocationForm
     {
         return $schema
             ->components([
+
                 Select::make('company_id')
                     ->label('Company: ')
                     ->relationship('company', 'name')
@@ -21,16 +22,20 @@ class LocationForm
                     ->options(Company::query()->pluck('name', 'id'))
                     ->required()
                     ->columnSpanFull(),
+
                 TextInput::make('name')
                     ->label('Name: ')
                     ->required()
                     ->columnSpanFull(),
+
                 Select::make('type')
                     ->label('Type: ')
                     ->options(LocationType::class)
                     ->default(LocationType::Office)
+                    ->native(false)
                     ->required()
                     ->columnSpanFull(),
+
             ]);
     }
 }
