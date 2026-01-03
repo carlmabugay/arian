@@ -24,9 +24,9 @@ class UsersTable
             ->headerActions([
                 CreateAction::make()
                     ->icon('heroicon-o-plus')
-                    ->label('Add New')
+                    ->label('Add new')
                     ->slideOver()
-                    ->modalHeading('Add New User')
+                    ->modalHeading('Add new user')
                     ->modalWidth('md'),
             ])
             ->columns([

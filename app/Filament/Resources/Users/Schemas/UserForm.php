@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Users\Schemas;
 
+use App\Models\Company;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
@@ -13,6 +15,15 @@ class UserForm
     {
         return $schema
             ->components([
+
+                Select::make('company_id')
+                    ->label('Company: ')
+                    ->relationship('company', 'name')
+                    ->searchable()
+                    ->options(Company::query()->pluck('name', 'id'))
+                    ->required()
+                    ->columnSpanFull(),
+
                 TextInput::make('name')
                     ->label('Name: ')
                     ->required()
@@ -22,6 +33,7 @@ class UserForm
                     ->label('Email address: ')
                     ->email()
                     ->required()
+                    ->unique('users', 'email')
                     ->columnSpanFull(),
 
                 DateTimePicker::make('email_verified_at')
@@ -30,6 +42,7 @@ class UserForm
                     ->columnSpanFull(),
 
                 TextInput::make('password')
+                    ->label('Password: ')
                     ->password()
                     ->required(fn (string $context): bool => $context === 'create')
                     ->dehydrateStateUsing(fn ($state) => filled($state) ? bcrypt($state) : null)
@@ -38,6 +51,7 @@ class UserForm
                     ->columnSpanFull(),
 
                 Toggle::make('is_active')
+                    ->label('Is active: ')
                     ->required(),
             ]);
     }
