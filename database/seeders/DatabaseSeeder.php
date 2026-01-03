@@ -24,12 +24,12 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Company
-        $this->command->warn(PHP_EOL. 'Creating company...');
-        $company = $this->withProgressBar(1, fn() => Company::factory()->create());
+        $this->command->warn(PHP_EOL.'Creating company...');
+        $company = $this->withProgressBar(1, fn () => Company::factory()->create());
         $this->command->info('Company created.');
 
         // Admin
-        $this->command->warn(PHP_EOL. 'Creating admin user...');
+        $this->command->warn(PHP_EOL.'Creating admin user...');
         $admin = $this->withProgressBar(1, fn () => User::factory()->create([
             'company_id' => $company->get('id'),
             'name' => 'Admin User',
@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Admin user created.');
 
         // Users
-        $this->command->warn(PHP_EOL. 'Creating users...');
+        $this->command->warn(PHP_EOL.'Creating users...');
         $users = collect();
         $this->withProgressBar(10, function () use ($users) {
             $users->push(User::factory()->create());
@@ -48,12 +48,12 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Users created.');
 
         // Location
-        $this->command->warn(PHP_EOL. 'Creating location...');
-        $location = $this->withProgressBar(1, fn() => Location::factory()->create());
+        $this->command->warn(PHP_EOL.'Creating location...');
+        $location = $this->withProgressBar(1, fn () => Location::factory()->create());
         $this->command->info('Location created.');
 
         // Asset Categories
-        $this->command->warn(PHP_EOL. 'Creating asset categories...');
+        $this->command->warn(PHP_EOL.'Creating asset categories...');
         $categories = collect();
         $this->withProgressBar(10, function () use ($categories) {
             $categories->push(AssetCategory::factory()->create());
@@ -61,7 +61,7 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Asset categories created.');
 
         // Assets
-        $this->command->warn(PHP_EOL. 'Creating assets...');
+        $this->command->warn(PHP_EOL.'Creating assets...');
         $assets = collect();
         $this->withProgressBar(30, function () use ($assets, $company) {
 
@@ -72,7 +72,7 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Assets created.');
 
         // Asset Assignments
-        $this->command->warn(PHP_EOL. 'Creating asset assignments...');
+        $this->command->warn(PHP_EOL.'Creating asset assignments...');
         $assetsToAssign = $assets->random(15);
 
         $this->withProgressBar($assetsToAssign->count(), function () use ($assetsToAssign, $admin, $users) {

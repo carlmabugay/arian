@@ -10,7 +10,6 @@ use App\Filament\Resources\Assets\Schemas\AssetForm;
 use App\Filament\Resources\Assets\Tables\AssetsTable;
 use App\Models\Asset;
 use BackedEnum;
-use Filament\Pages\Enums\SubNavigationPosition;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -23,7 +22,7 @@ class AssetResource extends Resource
 {
     protected static ?string $model = Asset::class;
 
-    protected static string | UnitEnum | null $navigationGroup = 'Asset Management';
+    protected static string|UnitEnum|null $navigationGroup = 'Asset Management';
 
     protected static ?string $navigationLabel = 'Assets';
 
@@ -46,7 +45,7 @@ class AssetResource extends Resource
     public static function getRelations(): array
     {
         return [
-            AssignmentsRelationManager::class
+            AssignmentsRelationManager::class,
         ];
     }
 

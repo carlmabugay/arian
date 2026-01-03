@@ -27,7 +27,7 @@ class UsersTable
                     ->label('Add New')
                     ->slideOver()
                     ->modalHeading('Add New User')
-                    ->modalWidth('md')
+                    ->modalWidth('md'),
             ])
             ->columns([
                 TextColumn::make('company.name')
@@ -46,7 +46,7 @@ class UsersTable
                 TextColumn::make('created_at')
                     ->label('Creation Date')
                     ->date()
-                    ->sortable()
+                    ->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
@@ -57,7 +57,7 @@ class UsersTable
                     EditAction::make()
                         ->slideOver()
                         ->modalHeading('Edit User')
-                        ->modalWidth('md')
+                        ->modalWidth('md'),
                 ])
             )
             ->toolbarActions([

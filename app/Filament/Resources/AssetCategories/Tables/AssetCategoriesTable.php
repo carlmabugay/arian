@@ -26,7 +26,7 @@ class AssetCategoriesTable
                     ->label('Add New')
                     ->slideOver()
                     ->modalHeading('Add New Category')
-                    ->modalWidth('md')
+                    ->modalWidth('md'),
             ])
             ->columns([
                 TextColumn::make('name')
@@ -38,7 +38,7 @@ class AssetCategoriesTable
                 TextColumn::make('created_at')
                     ->label('Creation Date')
                     ->date()
-                    ->sortable()
+                    ->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
@@ -49,7 +49,7 @@ class AssetCategoriesTable
                     EditAction::make()
                         ->slideOver()
                         ->modalHeading('Edit location')
-                        ->modalWidth('md')
+                        ->modalWidth('md'),
                 ])
             )
             ->toolbarActions([

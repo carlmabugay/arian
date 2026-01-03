@@ -18,12 +18,11 @@ class UsersRelationManager extends RelationManager
 
     protected static ?string $relatedResource = UserResource::class;
 
-
     public function table(Table $table): Table
     {
         return $table
             ->heading('Company Users')
-            ->description(sprintf("Manage %s users here.", $this->ownerRecord->name))
+            ->description(sprintf('Manage %s users here.', $this->ownerRecord->name))
             ->headerActions([
                 CreateAction::make()
                     ->icon(Heroicon::OutlinedPlus)
@@ -31,7 +30,7 @@ class UsersRelationManager extends RelationManager
                     ->size(Size::Small)
                     ->slideOver()
                     ->modalHeading('Add New User')
-                    ->modalWidth('md')
+                    ->modalWidth('md'),
             ])
             ->columns([
                 Stack::make([
@@ -41,7 +40,7 @@ class UsersRelationManager extends RelationManager
                     TextColumn::make('email')
                         ->label('Email address')
                         ->searchable(),
-                ])
+                ]),
             ])
             ->filtersLayout(FiltersLayout::AfterContentCollapsible);
     }

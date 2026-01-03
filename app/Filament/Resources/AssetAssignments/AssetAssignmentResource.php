@@ -21,7 +21,7 @@ class AssetAssignmentResource extends Resource
 {
     protected static ?string $model = AssetAssignment::class;
 
-    protected static string | UnitEnum | null $navigationGroup = 'Asset Management';
+    protected static string|UnitEnum|null $navigationGroup = 'Asset Management';
 
     protected static ?string $navigationLabel = 'Assignments';
 

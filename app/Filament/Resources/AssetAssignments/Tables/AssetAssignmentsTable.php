@@ -23,7 +23,7 @@ class AssetAssignmentsTable
             ->headerActions([
                 CreateAction::make()
                     ->icon('heroicon-o-plus')
-                    ->label('Add New')
+                    ->label('Add New'),
             ])
             ->columns([
                 TextColumn::make('asset.name')
@@ -47,7 +47,7 @@ class AssetAssignmentsTable
             ])
             ->recordActions(
                 ActionGroup::make([
-                    EditAction::make()
+                    EditAction::make(),
                 ])
             )
             ->toolbarActions([

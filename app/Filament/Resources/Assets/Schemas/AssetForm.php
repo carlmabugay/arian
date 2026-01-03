@@ -10,8 +10,8 @@ use App\Models\Location;
 use App\Models\User;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class AssetForm
@@ -83,7 +83,7 @@ class AssetForm
                     ->label('Assigned To: ')
                     ->relationship('assignedUser', 'name')
                     ->searchable()
-                    ->options(User::query()->pluck('name', 'id'))
+                    ->options(User::query()->pluck('name', 'id')),
             ]);
     }
 }

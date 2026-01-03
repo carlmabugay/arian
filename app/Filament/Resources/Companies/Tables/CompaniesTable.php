@@ -29,7 +29,7 @@ class CompaniesTable
                     ->size(Size::Small)
                     ->slideOver()
                     ->modalHeading('Add New Company')
-                    ->modalWidth('md')
+                    ->modalWidth('md'),
             ])
             ->columns([
                 TextColumn::make('name')
@@ -48,7 +48,7 @@ class CompaniesTable
             ])
             ->recordActions(
                 ActionGroup::make([
-                    EditAction::make()
+                    EditAction::make(),
                 ])
             )
             ->toolbarActions([

@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Assets\Tables;
 
-use App\Filament\Resources\Assets\RelationManagers\AssignmentsRelationManager;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -24,7 +23,7 @@ class AssetsTable
             ->headerActions([
                 CreateAction::make()
                     ->icon('heroicon-o-plus')
-                    ->label('Add New')
+                    ->label('Add New'),
             ])
             ->columns([
                 TextColumn::make('company.name')
@@ -50,14 +49,14 @@ class AssetsTable
                 TextColumn::make('location.name')
                     ->searchable(),
                 TextColumn::make('assignedUser.name')
-                    ->label('Assigned To')
+                    ->label('Assigned To'),
             ])
             ->filters([
                 TrashedFilter::make(),
             ])
             ->recordActions(
                 ActionGroup::make([
-                    EditAction::make()
+                    EditAction::make(),
                 ])
             )
             ->toolbarActions([

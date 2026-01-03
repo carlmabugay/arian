@@ -26,7 +26,7 @@ class LocationsTable
                     ->label('Add New')
                     ->slideOver()
                     ->modalHeading('Add New Location')
-                    ->modalWidth('md')
+                    ->modalWidth('md'),
             ])
             ->columns([
                 TextColumn::make('company.name')
@@ -38,7 +38,7 @@ class LocationsTable
                 TextColumn::make('created_at')
                     ->label('Creation Date')
                     ->date()
-                    ->sortable()
+                    ->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
@@ -46,7 +46,7 @@ class LocationsTable
             ])
             ->recordActions(
                 ActionGroup::make([
-                    EditAction::make()
+                    EditAction::make(),
                 ])
             )
             ->toolbarActions([

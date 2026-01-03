@@ -3,9 +3,7 @@
 namespace App\Filament\Resources\Users\Pages;
 
 use App\Filament\Resources\Users\UserResource;
-use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
-use Illuminate\Contracts\View\View;
 
 class ListUsers extends ListRecords
 {
@@ -13,8 +11,8 @@ class ListUsers extends ListRecords
 
     protected ?string $heading = '';
 
-   public function getBreadcrumbs(): array
-   {
-       return [];
-   }
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
 }

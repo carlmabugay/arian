@@ -20,7 +20,7 @@ class AssetsRelationManager extends RelationManager
     {
         return $table
             ->heading('Company Assets')
-            ->description(sprintf("Manage %s assets here.", $this->ownerRecord->name))
+            ->description(sprintf('Manage %s assets here.', $this->ownerRecord->name))
             ->headerActions([
                 CreateAction::make()
                     ->icon(Heroicon::OutlinedPlus)
@@ -28,7 +28,7 @@ class AssetsRelationManager extends RelationManager
                     ->size(Size::Small)
                     ->slideOver()
                     ->modalHeading('Add New Asset')
-                    ->modalWidth('md')
+                    ->modalWidth('md'),
             ])
             ->columns([
                 TextColumn::make('name')

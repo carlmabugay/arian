@@ -20,7 +20,7 @@ class AssetAssignment extends Model
         'notes',
     ];
 
-    protected $casts =  [
+    protected $casts = [
         'assigned_at' => 'datetime',
         'returned_at' => 'datetime',
     ];
@@ -29,15 +29,18 @@ class AssetAssignment extends Model
         'returned_at' => null,
     ];
 
-    public function asset(): belongsTo {
+    public function asset(): belongsTo
+    {
         return $this->belongsTo(Asset::class);
     }
 
-    public function user(): belongsTo {
+    public function user(): belongsTo
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function assignedBy(): belongsTo {
+    public function assignedBy(): belongsTo
+    {
         return $this->belongsTo(User::class, 'assigned_by');
     }
 }

@@ -21,7 +21,7 @@ class EditCompany extends EditRecord
 {
     protected static string $resource = CompanyResource::class;
 
-    public Model | int | string | null $record = Company::class;
+    public Model|int|string|null $record = Company::class;
 
     protected ?string $heading = '';
 
@@ -37,7 +37,7 @@ class EditCompany extends EditRecord
     {
         return $schema
             ->components(
-                Section::make(sprintf("Edit %s", $this->record->name))
+                Section::make(sprintf('Edit %s', $this->record->name))
                     ->headerActions([
                         DeleteAction::make()
                             ->label('')
@@ -54,7 +54,7 @@ class EditCompany extends EditRecord
 
                         TextInput::make('code')
                             ->label('Code: ')
-                            ->required()
+                            ->required(),
                     ])
                     ->footerActions([
                         Action::make('save')

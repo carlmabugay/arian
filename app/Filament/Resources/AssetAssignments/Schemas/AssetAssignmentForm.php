@@ -3,11 +3,9 @@
 namespace App\Filament\Resources\AssetAssignments\Schemas;
 
 use App\Models\Asset;
-use App\Models\Company;
 use App\Models\User;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Schema;
 
@@ -49,6 +47,6 @@ class AssetAssignmentForm
 
                 Textarea::make('notes')
                     ->columnSpanFull(),
-                ]);
+            ]);
     }
 }
