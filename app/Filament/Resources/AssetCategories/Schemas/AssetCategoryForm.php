@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\AssetCategories\Schemas;
 
+use App\Models\AssetCategory;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
@@ -17,6 +18,7 @@ class AssetCategoryForm
                     ->label('Parent Category: ')
                     ->searchable()
                     ->relationship('parent', 'name')
+                    ->options(AssetCategory::query()->pluck('name', 'id'))
                     ->columnSpanFull(),
 
                 TextInput::make('name')

@@ -10,6 +10,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Support\Enums\Size;
+use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
@@ -28,8 +29,8 @@ class CompaniesTable
                     ->label('Add new')
                     ->size(Size::Small)
                     ->slideOver()
-                    ->modalHeading('Add New Company')
-                    ->modalWidth('md'),
+                    ->modalHeading('Add new company')
+                    ->modalWidth(Width::Medium),
             ])
             ->columns([
                 TextColumn::make('name')

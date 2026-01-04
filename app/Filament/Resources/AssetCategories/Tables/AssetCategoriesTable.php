@@ -9,6 +9,9 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Support\Enums\Size;
+use Filament\Support\Enums\Width;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
@@ -22,11 +25,12 @@ class AssetCategoriesTable
             ->description('Manage your asset categories here.')
             ->headerActions([
                 CreateAction::make()
-                    ->icon('heroicon-o-plus')
+                    ->icon(Heroicon::OutlinedPlus)
                     ->label('Add New')
+                    ->size(Size::Small)
                     ->slideOver()
-                    ->modalHeading('Add New Category')
-                    ->modalWidth('md'),
+                    ->modalHeading('Add new category')
+                    ->modalWidth(Width::Medium),
             ])
             ->columns([
                 TextColumn::make('name')
@@ -58,6 +62,7 @@ class AssetCategoriesTable
                     ForceDeleteBulkAction::make(),
                     RestoreBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->striped();
     }
 }
