@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Companies\RelationManagers;
 use App\Enums\AssetCondition;
 use App\Enums\AssetStatus;
 use App\Filament\Resources\Assets\AssetResource;
+use App\Filament\Resources\Companies\CompanyResource;
 use App\Models\AssetCategory;
 use App\Models\Location;
 use App\Models\User;
@@ -15,6 +16,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Enums\Size;
+use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -96,7 +98,15 @@ class AssetsRelationManager extends RelationManager
                             ->options(User::query()->pluck('name', 'id')),
                     ])
                     ->modalHeading(sprintf('Add new %s asset.', $this->ownerRecord->name))
-                    ->modalWidth('md')
+                    ->modalWidth(Width::Medium)
+                    ->modalFooterActions([
+                        Action::make('create')->submit('create'),
+                        Action::make('cancel')
+                            ->color('gray')
+                            ->url(fn () => CompanyResource::getUrl('edit', [
+                                'record' => $this->getOwnerRecord(),
+                            ])),
+                    ])
                     ->action(fn (array $data) => $this->ownerRecord->assets()->create($data))
                     ->successNotificationTitle('Created'),
             ])
