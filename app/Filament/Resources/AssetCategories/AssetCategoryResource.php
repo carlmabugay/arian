@@ -4,6 +4,7 @@ namespace App\Filament\Resources\AssetCategories;
 
 use App\Filament\Resources\AssetCategories\Pages\EditAssetCategory;
 use App\Filament\Resources\AssetCategories\Pages\ListAssetCategories;
+use App\Filament\Resources\AssetCategories\RelationManagers\AssetsRelationManager;
 use App\Filament\Resources\AssetCategories\Schemas\AssetCategoryForm;
 use App\Filament\Resources\AssetCategories\Tables\AssetCategoriesTable;
 use App\Models\AssetCategory;
@@ -43,7 +44,7 @@ class AssetCategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            AssetsRelationManager::class,
         ];
     }
 
