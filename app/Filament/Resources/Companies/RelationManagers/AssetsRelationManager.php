@@ -2,8 +2,17 @@
 
 namespace App\Filament\Resources\Companies\RelationManagers;
 
+use App\Enums\AssetCondition;
+use App\Enums\AssetStatus;
 use App\Filament\Resources\Assets\AssetResource;
-use Filament\Actions\CreateAction;
+use App\Models\AssetCategory;
+use App\Models\Location;
+use App\Models\User;
+use Filament\Actions\Action;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Enums\Size;
 use Filament\Support\Icons\Heroicon;
@@ -22,13 +31,74 @@ class AssetsRelationManager extends RelationManager
             ->heading('Company Assets')
             ->description(sprintf('Manage %s assets here.', $this->ownerRecord->name))
             ->headerActions([
-                CreateAction::make()
+                Action::make('create')
                     ->icon(Heroicon::OutlinedPlus)
                     ->label('Add new')
                     ->size(Size::Small)
                     ->slideOver()
-                    ->modalHeading('Add New Asset')
-                    ->modalWidth('md'),
+                    ->schema([
+                        Select::make('asset_category_id')
+                            ->relationship('category', 'name')
+                            ->label('Category: ')
+                            ->searchable()
+                            ->options(AssetCategory::query()->pluck('name', 'id'))
+                            ->required(),
+
+                        Select::make('status')
+                            ->label('Status: ')
+                            ->native(false)
+                            ->options(AssetStatus::class)
+                            ->default(AssetStatus::Available)
+                            ->required(),
+
+                        Select::make('condition')
+                            ->label('Condition: ')
+                            ->native(false)
+                            ->options(AssetCondition::class)
+                            ->default(AssetCondition::New)
+                            ->required(),
+
+                        TextInput::make('asset_tag')
+                            ->label('Asset Tag: ')
+                            ->required(),
+
+                        TextInput::make('serial_number')
+                            ->label('Serial Number: '),
+
+                        TextInput::make('name')
+                            ->label('Name: ')
+                            ->required(),
+
+                        Textarea::make('description')
+                            ->label('Description: ')
+                            ->columnSpanFull(),
+
+                        DatePicker::make('purchased_at')
+                            ->label('Purchased Date: ')
+                            ->native(false),
+
+                        TextInput::make('purchase_price')
+                            ->label('Purchase Price: ')
+                            ->numeric()
+                            ->prefix('$'),
+
+                        Select::make('location_id')
+                            ->label('Location: ')
+                            ->relationship('location', 'name')
+                            ->searchable()
+                            ->options(Location::query()->pluck('name', 'id'))
+                            ->required(),
+
+                        Select::make('user_id')
+                            ->label('Assigned To: ')
+                            ->relationship('assignedUser', 'name')
+                            ->searchable()
+                            ->options(User::query()->pluck('name', 'id')),
+                    ])
+                    ->modalHeading(sprintf('Add new %s asset.', $this->ownerRecord->name))
+                    ->modalWidth('md')
+                    ->action(fn (array $data) => $this->ownerRecord->assets()->create($data))
+                    ->successNotificationTitle('Created'),
             ])
             ->columns([
                 TextColumn::make('name')
@@ -40,6 +110,7 @@ class AssetsRelationManager extends RelationManager
                 TextColumn::make('condition')
                     ->badge(),
 
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc');
     }
 }
