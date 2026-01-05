@@ -24,7 +24,7 @@ class UsersRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->heading('Company Users')
+            ->heading(sprintf('%s Users', $this->ownerRecord->name))
             ->description(sprintf('Manage %s users here.', $this->ownerRecord->name))
             ->headerActions([
                 CreateAction::make()

@@ -30,7 +30,7 @@ class AssetsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->heading('Company Assets')
+            ->heading(sprintf('%s Assets', $this->ownerRecord->name))
             ->description(sprintf('Manage %s assets here.', $this->ownerRecord->name))
             ->headerActions([
                 Action::make('create')

@@ -4,8 +4,8 @@ namespace App\Filament\Resources\AssetCategories\RelationManagers;
 
 use App\Enums\AssetCondition;
 use App\Enums\AssetStatus;
+use App\Filament\Resources\AssetCategories\AssetCategoryResource;
 use App\Filament\Resources\Assets\AssetResource;
-use App\Filament\Resources\Companies\CompanyResource;
 use App\Models\Company;
 use App\Models\Location;
 use App\Models\User;
@@ -105,7 +105,7 @@ class AssetsRelationManager extends RelationManager
                         Action::make('create')->submit('create'),
                         Action::make('cancel')
                             ->color('gray')
-                            ->url(fn () => CompanyResource::getUrl('edit', [
+                            ->url(fn () => AssetCategoryResource::getUrl('edit', [
                                 'record' => $this->getOwnerRecord(),
                             ])),
                     ])
