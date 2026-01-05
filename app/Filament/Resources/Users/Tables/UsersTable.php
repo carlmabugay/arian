@@ -9,6 +9,9 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Support\Enums\Size;
+use Filament\Support\Enums\Width;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
@@ -23,11 +26,12 @@ class UsersTable
             ->description('Manage users here.')
             ->headerActions([
                 CreateAction::make()
-                    ->icon('heroicon-o-plus')
+                    ->icon(Heroicon::OutlinedPlus)
                     ->label('Add new')
+                    ->size(Size::Small)
                     ->slideOver()
                     ->modalHeading('Add new user')
-                    ->modalWidth('md'),
+                    ->modalWidth(Width::Medium),
             ])
             ->columns([
                 TextColumn::make('company.name')

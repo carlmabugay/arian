@@ -9,6 +9,8 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Support\Enums\Size;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
@@ -22,8 +24,9 @@ class AssetsTable
             ->description('Manage your assets here.')
             ->headerActions([
                 CreateAction::make()
-                    ->icon('heroicon-o-plus')
-                    ->label('Add New'),
+                    ->icon(Heroicon::OutlinedPlus)
+                    ->label('Add new')
+                    ->size(Size::Small),
             ])
             ->columns([
                 TextColumn::make('company.name')
@@ -51,6 +54,7 @@ class AssetsTable
                 TextColumn::make('assignedUser.name')
                     ->label('Assigned To'),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 TrashedFilter::make(),
             ])

@@ -10,4 +10,9 @@ class ListAssets extends ListRecords
     protected static string $resource = AssetResource::class;
 
     protected ?string $heading = '';
+
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
 }
