@@ -20,30 +20,35 @@ class AssetAssignmentForm
                     ->label('Asset: ')
                     ->searchable()
                     ->options(Asset::query()->pluck('name', 'id'))
-                    ->required(),
+                    ->required()
+                    ->columnSpanFull(),
 
                 Select::make('user_id')
                     ->relationship('user', 'name')
                     ->label('Assigned To: ')
                     ->searchable()
                     ->options(User::query()->pluck('name', 'id'))
-                    ->required(),
+                    ->required()
+                    ->columnSpanFull(),
 
                 Select::make('assigned_by')
                     ->relationship('assignedBy', 'name')
                     ->label('Assigned By: ')
                     ->searchable()
                     ->options(User::query()->pluck('name', 'id'))
-                    ->required(),
+                    ->required()
+                    ->columnSpanFull(),
 
                 DateTimePicker::make('assigned_at')
                     ->label('Assigned On: ')
                     ->native(false)
-                    ->required(),
+                    ->required()
+                    ->columnSpanFull(),
 
                 DateTimePicker::make('returned_at')
                     ->label('Return On: ')
-                    ->native(false),
+                    ->native(false)
+                    ->columnSpanFull(),
 
                 Textarea::make('notes')
                     ->columnSpanFull(),

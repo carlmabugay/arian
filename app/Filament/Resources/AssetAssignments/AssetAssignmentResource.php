@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources\AssetAssignments;
 
-use App\Filament\Resources\AssetAssignments\Pages\CreateAssetAssignment;
-use App\Filament\Resources\AssetAssignments\Pages\EditAssetAssignment;
 use App\Filament\Resources\AssetAssignments\Pages\ListAssetAssignments;
 use App\Filament\Resources\AssetAssignments\Schemas\AssetAssignmentForm;
 use App\Filament\Resources\AssetAssignments\Tables\AssetAssignmentsTable;
@@ -27,7 +25,7 @@ class AssetAssignmentResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;
 
     public static function form(Schema $schema): Schema
     {
@@ -50,8 +48,6 @@ class AssetAssignmentResource extends Resource
     {
         return [
             'index' => ListAssetAssignments::route('/'),
-            'create' => CreateAssetAssignment::route('/create'),
-            'edit' => EditAssetAssignment::route('/{record}/edit'),
         ];
     }
 

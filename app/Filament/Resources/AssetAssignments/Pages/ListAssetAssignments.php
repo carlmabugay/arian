@@ -10,4 +10,9 @@ class ListAssetAssignments extends ListRecords
     protected static string $resource = AssetAssignmentResource::class;
 
     protected ?string $heading = '';
+
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
 }

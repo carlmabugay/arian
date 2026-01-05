@@ -9,6 +9,9 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Support\Enums\Size;
+use Filament\Support\Enums\Width;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
@@ -18,16 +21,20 @@ class AssetAssignmentsTable
     public static function configure(Table $table): Table
     {
         return $table
-            ->heading('Asset Assigments')
+            ->heading('Asset Assignments')
             ->description('Manage asset assignments here.')
             ->headerActions([
                 CreateAction::make()
-                    ->icon('heroicon-o-plus')
-                    ->label('Add New'),
+                    ->icon(Heroicon::OutlinedPlus)
+                    ->label('Add new')
+                    ->size(Size::Small)
+                    ->slideOver()
+                    ->modalHeading('Add new user')
+                    ->modalWidth(Width::Medium),
             ])
             ->columns([
                 TextColumn::make('asset.name')
-                    ->label('Name')
+                    ->label('Asset')
                     ->searchable(),
                 TextColumn::make('user.name')
                     ->label('Assigned To')
@@ -47,7 +54,9 @@ class AssetAssignmentsTable
             ])
             ->recordActions(
                 ActionGroup::make([
-                    EditAction::make(),
+                    EditAction::make()
+                        ->slideOver()
+                        ->modalWidth(Width::Medium),
                 ])
             )
             ->toolbarActions([
