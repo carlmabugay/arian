@@ -41,6 +41,8 @@ class UsersTable
                 TextColumn::make('email')
                     ->label('Email address')
                     ->searchable(),
+                TextColumn::make('role')
+                    ->badge(),
                 TextColumn::make('email_verified_at')
                     ->label('Email Verification Date')
                     ->date()

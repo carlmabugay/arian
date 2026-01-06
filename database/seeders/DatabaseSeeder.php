@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\AssetStatus;
+use App\Enums\UserRole;
 use App\Models\Asset;
 use App\Models\AssetAssignment;
 use App\Models\AssetCategory;
@@ -28,10 +29,11 @@ class DatabaseSeeder extends Seeder
         $company = $this->withProgressBar(1, fn () => Company::factory()->create());
         $this->command->info('Company created.');
 
-        // Admin
+        // Super Admin
         $this->command->warn(PHP_EOL.'Creating admin user...');
         $admin = $this->withProgressBar(1, fn () => User::factory()->create([
             'company_id' => $company->get('id'),
+            'role' => UserRole::SuperAdmin->value,
             'name' => 'Admin User',
             'email' => 'admin@carlmabugay.com',
             'password' => Hash::make('password'),

@@ -69,6 +69,9 @@ class UsersRelationManager extends RelationManager
                     ->label('Email address')
                     ->searchable(),
 
+                TextColumn::make('role')
+                    ->badge(),
+
                 IconColumn::make('is_active')
                     ->label('Active')
                     ->boolean(),
