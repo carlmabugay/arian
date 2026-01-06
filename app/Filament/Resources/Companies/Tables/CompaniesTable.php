@@ -33,7 +33,8 @@ class CompaniesTable
                     ->size(Size::Small)
                     ->slideOver()
                     ->modalHeading('Add new company')
-                    ->modalWidth(Width::Medium),
+                    ->modalWidth(Width::Medium)
+                    ->authorize('create'),
             ])
             ->columns([
                 TextColumn::make('name')

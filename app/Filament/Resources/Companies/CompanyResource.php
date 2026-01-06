@@ -30,7 +30,12 @@ class CompanyResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return auth()->user()->can('viewAny', Company::class);
+        return auth()->user()->can('viewAny', self::$model);
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create', self::$model);
     }
 
     public static function form(Schema $schema): Schema

@@ -25,6 +25,11 @@ class EditCompany extends EditRecord
 
     protected ?string $heading = '';
 
+    public static function canAccess(array $parameters = []): bool
+    {
+        return auth()->user()->can('update', Company::class);
+    }
+
     public function getBreadcrumbs(): array
     {
         return [

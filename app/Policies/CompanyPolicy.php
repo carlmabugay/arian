@@ -7,11 +7,18 @@ use App\Models\User;
 
 class CompanyPolicy
 {
-    /**
-     * Create a new policy instance.
-     */
     public function viewAny(User $user): bool
     {
-        return $user->role == UserRole::SuperAdmin;
+        return $user->role === UserRole::SuperAdmin;
+    }
+
+    public function create(User $user): bool
+    {
+        return $user->role === UserRole::SuperAdmin;
+    }
+
+    public function update(User $user): bool
+    {
+        return $user->role === UserRole::SuperAdmin;
     }
 }
