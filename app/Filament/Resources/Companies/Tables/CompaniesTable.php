@@ -13,8 +13,11 @@ use Filament\Support\Enums\Size;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class CompaniesTable
 {
@@ -34,19 +37,34 @@ class CompaniesTable
             ])
             ->columns([
                 TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('code')
                     ->searchable(),
+                TextColumn::make('users_count')
+                    ->label('Total users')
+                    ->counts('users'),
+                TextColumn::make('assets_count')
+                    ->label('Total assets')
+                    ->counts('assets'),
                 TextColumn::make('created_at')
-                    ->label('Creation Date')
+                    ->label('Created at')
                     ->date()
                     ->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
             ->searchPlaceholder('Search...')
             ->filters([
+                Filter::make('with_users')
+                    ->query(fn (Builder $query): Builder => $query->whereHas('users'))
+                    ->toggle(),
+                Filter::make('with_assets')
+                    ->query(fn (Builder $query): Builder => $query->whereHas('assets'))
+                    ->toggle(),
                 TrashedFilter::make(),
             ])
+            ->deferFilters(false)
+            ->filtersLayout(FiltersLayout::AboveContent)
             ->recordActions(
                 ActionGroup::make([
                     EditAction::make(),

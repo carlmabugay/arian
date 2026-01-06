@@ -15,11 +15,13 @@ class CompanyForm
                 TextInput::make('name')
                     ->label('Name: ')
                     ->required()
+                    ->maxLength(255)
                     ->columnSpanFull(),
 
                 TextInput::make('code')
                     ->label('Code: ')
                     ->required()
+                    ->unique('companies', 'code')
                     ->columnSpanFull(),
 
             ]);

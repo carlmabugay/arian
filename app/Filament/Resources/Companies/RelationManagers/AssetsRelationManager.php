@@ -19,6 +19,9 @@ use Filament\Support\Enums\Size;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
 class AssetsRelationManager extends RelationManager
@@ -39,6 +42,16 @@ class AssetsRelationManager extends RelationManager
                     ->size(Size::Small)
                     ->slideOver()
                     ->schema([
+
+                        TextInput::make('name')
+                            ->label('Name: ')
+                            ->required(),
+
+                        TextInput::make('asset_tag')
+                            ->label('Asset Tag: ')
+                            ->unique('assets', 'asset_tag')
+                            ->required(),
+
                         Select::make('asset_category_id')
                             ->relationship('category', 'name')
                             ->label('Category: ')
@@ -46,30 +59,20 @@ class AssetsRelationManager extends RelationManager
                             ->options(AssetCategory::query()->pluck('name', 'id'))
                             ->required(),
 
+                        TextInput::make('serial_number')
+                            ->label('Serial Number: '),
+
                         Select::make('status')
                             ->label('Status: ')
                             ->native(false)
                             ->options(AssetStatus::class)
-                            ->default(AssetStatus::Available)
-                            ->required(),
+                            ->default(AssetStatus::Available),
 
                         Select::make('condition')
                             ->label('Condition: ')
                             ->native(false)
                             ->options(AssetCondition::class)
-                            ->default(AssetCondition::New)
-                            ->required(),
-
-                        TextInput::make('asset_tag')
-                            ->label('Asset Tag: ')
-                            ->required(),
-
-                        TextInput::make('serial_number')
-                            ->label('Serial Number: '),
-
-                        TextInput::make('name')
-                            ->label('Name: ')
-                            ->required(),
+                            ->default(AssetCondition::Good),
 
                         Textarea::make('description')
                             ->label('Description: ')
@@ -113,14 +116,31 @@ class AssetsRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('name')
                     ->searchable(),
+                TextColumn::make('asset_tag')
+                    ->searchable(),
                 TextColumn::make('location.name')
                     ->searchable(),
                 TextColumn::make('assignedUser.name')
                     ->label('Assigned to'),
                 TextColumn::make('condition')
                     ->badge(),
-
+                TextColumn::make('status')
+                    ->badge(),
             ])
+            ->filtersLayout(FiltersLayout::AboveContent)
+            ->filters([
+                SelectFilter::make('location')
+                    ->multiple()
+                    ->relationship('location', 'name'),
+                SelectFilter::make('condition')
+                    ->multiple()
+                    ->options(AssetCondition::class),
+                SelectFilter::make('status')
+                    ->multiple()
+                    ->options(AssetStatus::class),
+                TrashedFilter::make(),
+            ])
+            ->deferFilters(false)
             ->defaultSort('created_at', 'desc');
     }
 }

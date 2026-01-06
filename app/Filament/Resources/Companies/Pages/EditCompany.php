@@ -50,11 +50,12 @@ class EditCompany extends EditRecord
 
                         TextInput::make('name')
                             ->label('Name: ')
-                            ->required(),
+                            ->required()
+                            ->maxLength(255),
 
                         TextInput::make('code')
                             ->label('Code: ')
-                            ->required(),
+                            ->readonly(),
                     ])
                     ->footerActions([
                         Action::make('save')

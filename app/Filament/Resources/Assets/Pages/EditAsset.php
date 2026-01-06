@@ -60,7 +60,7 @@ class EditAsset extends EditRecord
                         ->label('Company: ')
                         ->searchable()
                         ->options(Company::query()->pluck('name', 'id'))
-                        ->required(),
+                        ->disabled(),
 
                     Select::make('asset_category_id')
                         ->relationship('category', 'name')
@@ -85,7 +85,7 @@ class EditAsset extends EditRecord
 
                     TextInput::make('asset_tag')
                         ->label('Asset Tag: ')
-                        ->required(),
+                        ->disabled(),
 
                     TextInput::make('serial_number')
                         ->label('Serial Number: '),

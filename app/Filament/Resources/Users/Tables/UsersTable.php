@@ -46,6 +46,7 @@ class UsersTable
                     ->date()
                     ->toggleable(isToggledHiddenByDefault: true),
                 IconColumn::make('is_active')
+                    ->label('Active')
                     ->boolean(),
                 TextColumn::make('created_at')
                     ->label('Creation Date')

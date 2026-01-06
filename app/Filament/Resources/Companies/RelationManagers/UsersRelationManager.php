@@ -10,7 +10,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Enums\Size;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
@@ -62,14 +62,21 @@ class UsersRelationManager extends RelationManager
                     ->modalWidth(Width::Medium),
             ])
             ->columns([
-                Stack::make([
-                    TextColumn::make('name')
-                        ->searchable(),
+                TextColumn::make('name')
+                    ->searchable(),
 
-                    TextColumn::make('email')
-                        ->label('Email address')
-                        ->searchable(),
-                ]),
+                TextColumn::make('email')
+                    ->label('Email address')
+                    ->searchable(),
+
+                IconColumn::make('is_active')
+                    ->label('Active')
+                    ->boolean(),
+                TextColumn::make('created_at')
+                    ->label('Created at')
+                    ->date()
+                    ->sortable(),
+
             ])
             ->filtersLayout(FiltersLayout::AfterContentCollapsible);
     }
