@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Locations;
 
+use App\Enums\UserRole;
 use App\Filament\Resources\Locations\Pages\EditLocation;
 use App\Filament\Resources\Locations\Pages\ListLocations;
 use App\Filament\Resources\Locations\RelationManagers\AssetsRelationManager;
@@ -26,6 +27,11 @@ class LocationResource extends Resource
     protected static string|UnitEnum|null $navigationGroup = 'Organization';
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('viewAny', self::$model);
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -58,5 +64,18 @@ class LocationResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        $user = auth()->user();
+
+        if ($user->role === UserRole::CompanyAdmin) {
+            $query->where('company_id', $user->company_id);
+        }
+
+        return $query;
     }
 }

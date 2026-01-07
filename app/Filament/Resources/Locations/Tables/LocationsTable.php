@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Locations\Tables;
 
+use App\Enums\LocationType;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -10,7 +11,10 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Support\Enums\Size;
+use Filament\Support\Enums\Width;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
@@ -27,16 +31,20 @@ class LocationsTable
                     ->label('Add new')
                     ->size(Size::Small)
                     ->slideOver()
-                    ->modalHeading('Add new location')
-                    ->modalWidth('md'),
+                    ->modalHeading('Location Details')
+                    ->modalWidth(Width::Medium)
+                    ->authorize('create'),
             ])
             ->columns([
-                TextColumn::make('company.name')
-                    ->searchable(),
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('type')
                     ->badge(),
+                TextColumn::make('company.name')
+                    ->searchable(),
+                TextColumn::make('assets_count')
+                    ->label('Total assets')
+                    ->counts('assets'),
                 TextColumn::make('created_at')
                     ->label('Creation Date')
                     ->date()
@@ -44,8 +52,13 @@ class LocationsTable
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
+                SelectFilter::make('type')
+                    ->multiple()
+                    ->options(LocationType::class),
                 TrashedFilter::make(),
             ])
+            ->deferFilters(false)
+            ->filtersLayout(FiltersLayout::AfterContent)
             ->recordActions(
                 ActionGroup::make([
                     EditAction::make(),

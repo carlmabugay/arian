@@ -66,7 +66,7 @@ class CompaniesTable
                 TrashedFilter::make(),
             ])
             ->deferFilters(false)
-            ->filtersLayout(FiltersLayout::AboveContent)
+            ->filtersLayout(FiltersLayout::AfterContent)
             ->recordActions(
                 ActionGroup::make([
                     EditAction::make()

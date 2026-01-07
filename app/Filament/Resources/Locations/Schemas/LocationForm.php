@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Locations\Schemas;
 
 use App\Enums\LocationType;
+use App\Enums\UserRole;
 use App\Models\Company;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -20,6 +21,8 @@ class LocationForm
                     ->relationship('company', 'name')
                     ->searchable()
                     ->options(Company::query()->pluck('name', 'id'))
+                    ->default(fn () => auth()->user()->company_id)
+                    ->visible(fn () => auth()->user()->role !== UserRole::SuperAdmin)
                     ->required()
                     ->columnSpanFull(),
 
