@@ -34,4 +34,11 @@ class Company extends Model
     {
         return $this->hasMany(Asset::class);
     }
+
+    public function hasAnyChildren(): bool
+    {
+        return
+            $this->users()->withTrashed()->exists() ||
+            $this->assets()->withTrashed()->exists();
+    }
 }

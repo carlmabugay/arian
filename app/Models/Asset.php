@@ -65,4 +65,13 @@ class Asset extends Model
     {
         return $this->hasMany(AssetAssignment::class);
     }
+
+    public function scopeActive($query)
+    {
+        return $query
+            ->whereNull('deleted_at')
+            ->whereNotIn('status', [
+                AssetStatus::Retired,
+            ]);
+    }
 }

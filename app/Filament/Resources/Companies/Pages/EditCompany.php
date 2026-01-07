@@ -47,9 +47,16 @@ class EditCompany extends EditRecord
                         DeleteAction::make()
                             ->label('')
                             ->icon(Heroicon::OutlinedTrash)
-                            ->size(Size::ExtraSmall),
-                        ForceDeleteAction::make(),
-                        RestoreAction::make(),
+                            ->size(Size::ExtraSmall)
+                            ->authorize('delete', $this->record),
+                        ForceDeleteAction::make()
+                            ->size(Size::ExtraSmall)
+                            ->authorize('forceDelete', $this->record)
+                            ->successNotificationTitle($this->record->name.' is now permanently deleted'),
+                        RestoreAction::make()
+                            ->size(Size::ExtraSmall)
+                            ->authorize('restore', $this->record)
+                            ->successNotificationTitle($this->record->name.' is now restored'),
                     ])
                     ->schema([
 

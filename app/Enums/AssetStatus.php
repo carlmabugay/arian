@@ -13,6 +13,7 @@ enum AssetStatus: string implements HasColor, HasLabel
     case Maintenance = 'maintenance';
     case Lost = 'lost';
     case Disposed = 'disposed';
+    case Retired = 'retired';
 
     public static function values(): array
     {
@@ -25,7 +26,7 @@ enum AssetStatus: string implements HasColor, HasLabel
             self::Available => 'success',
             self::Assigned => 'info',
             self::Maintenance => 'warning',
-            self::Lost => 'danger',
+            self::Lost, self::Retired => 'danger',
             self::Disposed => 'gray',
         };
     }
