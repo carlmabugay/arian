@@ -39,6 +39,6 @@ class Company extends Model
     {
         return
             $this->users()->withTrashed()->exists() ||
-            $this->assets()->withTrashed()->exists();
+            $this->assets()->active()->exists();
     }
 }

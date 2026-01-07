@@ -10,7 +10,10 @@ class CompanyPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->role === UserRole::SuperAdmin;
+        return in_array($user->role, [
+            UserRole::SuperAdmin,
+            UserRole::CompanyAdmin,
+        ]);
     }
 
     public function create(User $user): bool
@@ -18,9 +21,13 @@ class CompanyPolicy
         return $user->role === UserRole::SuperAdmin;
     }
 
-    public function update(User $user): bool
+    public function update(User $user, Company $company): bool
     {
-        return $user->role === UserRole::SuperAdmin;
+        if ($user->role === UserRole::SuperAdmin) {
+            return true;
+        }
+
+        return $user->role === UserRole::CompanyAdmin && $user->company_id === $company->id;
     }
 
     public function delete(User $user, Company $company): bool
@@ -39,7 +46,7 @@ class CompanyPolicy
             return false;
         }
 
-        return ! $company->assets()->active()->exists();
+        return ! $company->hasAnyChildren();
     }
 
     public function restoreAny(User $user): bool

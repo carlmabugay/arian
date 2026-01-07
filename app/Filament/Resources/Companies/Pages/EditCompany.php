@@ -27,7 +27,9 @@ class EditCompany extends EditRecord
 
     public static function canAccess(array $parameters = []): bool
     {
-        return auth()->user()->can('update', Company::class);
+        $record = $parameters['record'] ?? null;
+
+        return auth()->user()->can('update', $record);
     }
 
     public function getBreadcrumbs(): array

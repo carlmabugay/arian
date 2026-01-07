@@ -69,7 +69,8 @@ class CompaniesTable
             ->filtersLayout(FiltersLayout::AboveContent)
             ->recordActions(
                 ActionGroup::make([
-                    EditAction::make(),
+                    EditAction::make()
+                        ->authorize('update', Company::class),
                 ])
             )
             ->toolbarActions([
@@ -89,7 +90,7 @@ class CompaniesTable
                             if ($blocked->isNotEmpty()) {
                                 Notification::make()
                                     ->title('Bulk delete blocked')
-                                    ->body('One or more selected companies have active assets.')
+                                    ->body('One or more selected companies have active users and assets.')
                                     ->danger()
                                     ->send();
 
