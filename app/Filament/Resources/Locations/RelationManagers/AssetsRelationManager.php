@@ -19,6 +19,9 @@ use Filament\Support\Enums\Size;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
 class AssetsRelationManager extends RelationManager
@@ -114,12 +117,29 @@ class AssetsRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('name')
                     ->searchable(),
+                TextColumn::make('asset_tag')
+                    ->searchable(),
                 TextColumn::make('assignedUser.name')
                     ->label('Assigned to'),
                 TextColumn::make('condition')
                     ->badge(),
-
+                TextColumn::make('status')
+                    ->badge(),
             ])
+            ->filtersLayout(FiltersLayout::AboveContent)
+            ->filters([
+                SelectFilter::make('location')
+                    ->multiple()
+                    ->relationship('location', 'name'),
+                SelectFilter::make('condition')
+                    ->multiple()
+                    ->options(AssetCondition::class),
+                SelectFilter::make('status')
+                    ->multiple()
+                    ->options(AssetStatus::class),
+                TrashedFilter::make(),
+            ])
+            ->deferFilters(false)
             ->defaultSort('created_at', 'desc');
     }
 }
