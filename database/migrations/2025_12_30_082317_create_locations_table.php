@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('company_id')->constrained();
+            $table->foreignId('company_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->enum('type', LocationType::values())->default(LocationType::Office->value);
             $table->softDeletes();

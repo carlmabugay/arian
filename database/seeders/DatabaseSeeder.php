@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
         // Super Admin
         $this->command->warn(PHP_EOL.'Creating admin user...');
         $admin = $this->withProgressBar(1, fn () => User::factory()->create([
-            'company_id' => $company->get('id'),
+            'company_id' => null,
             'role' => UserRole::SuperAdmin->value,
             'name' => 'Admin User',
             'email' => 'admin@carlmabugay.com',

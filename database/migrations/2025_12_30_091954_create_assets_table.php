@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('company_id')->constrained();
-            $table->foreignId('asset_category_id')->constrained();
+            $table->foreignId('company_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('asset_category_id')->nullable()->constrained()->nullOnDelete();
 
             $table->enum('status', AssetStatus::values())->default(AssetStatus::Available->value);
             $table->enum('condition', AssetCondition::values())->default(AssetCondition::New->value);
