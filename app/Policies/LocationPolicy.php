@@ -26,26 +26,12 @@ class LocationPolicy
 
     public function update(User $user, Location $location): bool
     {
-        if ($user->role === UserRole::SuperAdmin) {
-            return true;
-        }
-
-        return $user->role === UserRole::CompanyAdmin && $user->company_id === $location->company_id;
+        return $this->canManageLocation($user, $location);
     }
 
     public function delete(User $user, Location $location): bool
     {
-        if (! in_array($user->role, [
-            UserRole::SuperAdmin,
-            UserRole::CompanyAdmin,
-        ])) {
-            return false;
-        }
-
-        if (
-            $user->role === UserRole::CompanyAdmin &&
-            $user->company_id !== $location->company_id
-        ) {
+        if (! $this->canManageLocation($user, $location)) {
             return false;
         }
 
@@ -59,25 +45,33 @@ class LocationPolicy
 
     public function restore(User $user, Location $location): bool
     {
-        if ($user->role !== UserRole::SuperAdmin) {
-            return false;
-        }
-
-        return $location->trashed();
+        return
+            $user->role === UserRole::SuperAdmin &&
+            $location->trashed();
     }
 
     public function forceDeleteAny(User $user): bool
     {
         return $user->role === UserRole::SuperAdmin;
-
     }
 
     public function forceDelete(User $user, Location $location): bool
     {
-        if ($user->role != UserRole::SuperAdmin) {
+        if ($user->role !== UserRole::SuperAdmin) {
             return false;
         }
 
-        return ! $location->assets()->active()->exists();
+        return ! $location->assets()->withTrashed()->exists();
+    }
+
+    protected function canManageLocation(User $user, Location $location): bool
+    {
+        if ($user->role === UserRole::SuperAdmin) {
+            return true;
+        }
+
+        return
+            $user->role === UserRole::CompanyAdmin &&
+            $user->company_id === $location->company_id;
     }
 }

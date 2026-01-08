@@ -16,6 +16,11 @@ class CompanyPolicy
         ]);
     }
 
+    public function view(User $user, Company $company): bool
+    {
+        return $this->canManageCompany($user, $company);
+    }
+
     public function create(User $user): bool
     {
         return $user->role === UserRole::SuperAdmin;
@@ -23,26 +28,12 @@ class CompanyPolicy
 
     public function update(User $user, Company $company): bool
     {
-        if ($user->role === UserRole::SuperAdmin) {
-            return true;
-        }
-
-        return $user->role === UserRole::CompanyAdmin && $user->company_id === $company->id;
+        return $this->canManageCompany($user, $company);
     }
 
     public function delete(User $user, Company $company): bool
     {
-        if (! in_array($user->role, [
-            UserRole::SuperAdmin,
-            UserRole::CompanyAdmin,
-        ])) {
-            return false;
-        }
-
-        if (
-            $user->role === UserRole::CompanyAdmin &&
-            $user->company_id !== $company->id
-        ) {
+        if (! $this->canManageCompany($user, $company)) {
             return false;
         }
 
@@ -56,11 +47,7 @@ class CompanyPolicy
 
     public function restore(User $user, Company $company): bool
     {
-        if ($user->role !== UserRole::SuperAdmin) {
-            return false;
-        }
-
-        return $company->trashed();
+        return $user->role === UserRole::SuperAdmin && $company->trashed();
     }
 
     public function forceDeleteAny(User $user): bool
@@ -71,12 +58,21 @@ class CompanyPolicy
 
     public function forceDelete(User $user, Company $company): bool
     {
-        if (! in_array($user->role, [
-            UserRole::SuperAdmin,
-        ])) {
+        if ($user->role !== UserRole::SuperAdmin) {
             return false;
         }
 
         return ! $company->hasAnyChildren();
+    }
+
+    protected function canManageCompany(User $user, Company $company): bool
+    {
+        if ($user->role === UserRole::SuperAdmin) {
+            return true;
+        }
+
+        return
+            $user->role === UserRole::CompanyAdmin &&
+            $user->company_id === $company->id;
     }
 }
