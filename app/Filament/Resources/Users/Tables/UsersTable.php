@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Users\Tables;
 
+use App\Filament\Resources\Users\Schemas\UserForm;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -30,8 +31,10 @@ class UsersTable
                     ->label('Add new')
                     ->size(Size::Small)
                     ->slideOver()
-                    ->modalHeading('Add new user')
-                    ->modalWidth(Width::Medium),
+                    ->modalHeading('User Details')
+                    ->modalWidth(Width::Medium)
+                    ->schema(UserForm::form())
+                    ->authorize('create'),
             ])
             ->columns([
                 TextColumn::make('company.name')

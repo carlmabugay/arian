@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Users;
 
+use App\Enums\UserRole;
 use App\Filament\Resources\Users\Pages\EditUser;
 use App\Filament\Resources\Users\Pages\ListUsers;
 use App\Filament\Resources\Users\RelationManagers\AssignmentsRelationManager;
@@ -15,6 +16,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class UserResource extends Resource
 {
@@ -22,7 +24,19 @@ class UserResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
 
+    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('viewAny', self::getModel());
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()->can('viewAny', self::getModel());
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -55,5 +69,18 @@ class UserResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        $user = auth()->user();
+
+        if ($user->role === UserRole::CompanyAdmin) {
+            $query->where('company_id', $user->company_id);
+        }
+
+        return $query;
     }
 }

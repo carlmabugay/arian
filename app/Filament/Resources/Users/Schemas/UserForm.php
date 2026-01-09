@@ -13,46 +13,50 @@ class UserForm
 {
     public static function configure(Schema $schema): Schema
     {
-        return $schema
-            ->components([
+        return $schema->components(self::form());
+    }
 
-                Select::make('company_id')
-                    ->label('Company: ')
-                    ->relationship('company', 'name')
-                    ->searchable()
-                    ->options(Company::query()->pluck('name', 'id'))
-                    ->required()
-                    ->columnSpanFull(),
+    public static function form(): array
+    {
+        return [
 
-                TextInput::make('name')
-                    ->label('Name: ')
-                    ->required()
-                    ->columnSpanFull(),
+            Select::make('company_id')
+                ->label('Company: ')
+                ->relationship('company', 'name')
+                ->searchable()
+                ->options(Company::query()->pluck('name', 'id'))
+                ->required()
+                ->columnSpanFull(),
 
-                TextInput::make('email')
-                    ->label('Email address: ')
-                    ->email()
-                    ->required()
-                    ->unique('users', 'email')
-                    ->columnSpanFull(),
+            TextInput::make('name')
+                ->label('Name: ')
+                ->required()
+                ->columnSpanFull(),
 
-                DateTimePicker::make('email_verified_at')
-                    ->label('Email verified at: ')
-                    ->native(false)
-                    ->columnSpanFull(),
+            TextInput::make('email')
+                ->label('Email address: ')
+                ->email()
+                ->required()
+                ->unique('users', 'email')
+                ->columnSpanFull(),
 
-                TextInput::make('password')
-                    ->label('Password: ')
-                    ->password()
-                    ->required(fn (string $context): bool => $context === 'create')
-                    ->dehydrateStateUsing(fn ($state) => filled($state) ? bcrypt($state) : null)
-                    ->dehydrated(fn ($state) => filled($state))
-                    ->maxLength(255)
-                    ->columnSpanFull(),
+            DateTimePicker::make('email_verified_at')
+                ->label('Email verified at: ')
+                ->native(false)
+                ->columnSpanFull(),
 
-                Toggle::make('is_active')
-                    ->label('Is active: ')
-                    ->required(),
-            ]);
+            TextInput::make('password')
+                ->label('Password: ')
+                ->password()
+                ->required(fn (string $context): bool => $context === 'create')
+                ->dehydrateStateUsing(fn ($state) => filled($state) ? bcrypt($state) : null)
+                ->dehydrated(fn ($state) => filled($state))
+                ->maxLength(255)
+                ->columnSpanFull(),
+
+            Toggle::make('is_active')
+                ->label('Is active: ')
+                ->required(),
+        ];
     }
 }
