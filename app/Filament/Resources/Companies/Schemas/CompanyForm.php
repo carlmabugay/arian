@@ -10,20 +10,22 @@ class CompanyForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
-            ->components([
+            ->components(self::form());
+    }
 
-                TextInput::make('name')
-                    ->label('Name: ')
-                    ->required()
-                    ->maxLength(255)
-                    ->columnSpanFull(),
+    public static function form(): array
+    {
+        return [
+            TextInput::make('name')
+                ->label('Names: ')
+                ->required()
+                ->maxLength(255),
 
-                TextInput::make('code')
-                    ->label('Code: ')
-                    ->required()
-                    ->unique('companies', 'code')
-                    ->columnSpanFull(),
-
-            ]);
+            TextInput::make('code')
+                ->label('Code: ')
+                ->required('create')
+                ->unique('companies', 'code')
+                ->readonly('edit'),
+        ];
     }
 }

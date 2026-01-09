@@ -16,11 +16,6 @@ class CompanyPolicy
         ]);
     }
 
-    public function view(User $user, Company $company): bool
-    {
-        return $this->canManageCompany($user, $company);
-    }
-
     public function create(User $user): bool
     {
         return $user->role === UserRole::SuperAdmin;

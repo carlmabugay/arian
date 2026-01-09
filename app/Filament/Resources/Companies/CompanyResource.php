@@ -31,12 +31,12 @@ class CompanyResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return auth()->user()->can('viewAny', self::$model);
+        return auth()->user()->can('viewAny', self::getModel());
     }
 
-    public static function canCreate(): bool
+    public static function shouldRegisterNavigation(): bool
     {
-        return auth()->user()->can('create', self::$model);
+        return auth()->user()->can('viewAny', self::getModel());
     }
 
     public static function form(Schema $schema): Schema
