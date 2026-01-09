@@ -15,34 +15,34 @@ class LocationForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
-            ->components([
+            ->components(self::form());
+    }
 
-                Hidden::make('company_id')
-                    ->default(fn () => auth()->user()->company_id)
-                    ->visible(fn () => auth()->user()->role !== UserRole::SuperAdmin),
+    public static function form(): array
+    {
+        return [
+            Hidden::make('company_id')
+                ->default(fn () => auth()->user()->company_id)
+                ->visible(fn () => auth()->user()->role !== UserRole::SuperAdmin),
 
-                Select::make('company_id')
-                    ->label('Company: ')
-                    ->relationship('company', 'name')
-                    ->searchable()
-                    ->options(Company::query()->pluck('name', 'id'))
-                    ->visible(fn () => auth()->user()->role === UserRole::SuperAdmin)
-                    ->required()
-                    ->columnSpanFull(),
+            Select::make('company_id')
+                ->label('Company: ')
+                ->relationship('company', 'name')
+                ->searchable()
+                ->options(Company::query()->pluck('name', 'id'))
+                ->visible(fn () => auth()->user()->role === UserRole::SuperAdmin)
+                ->required(),
 
-                TextInput::make('name')
-                    ->label('Name: ')
-                    ->required()
-                    ->columnSpanFull(),
+            TextInput::make('name')
+                ->label('Name: ')
+                ->required(),
 
-                Select::make('type')
-                    ->label('Type: ')
-                    ->options(LocationType::class)
-                    ->default(LocationType::Office)
-                    ->native(false)
-                    ->required()
-                    ->columnSpanFull(),
-
-            ]);
+            Select::make('type')
+                ->label('Type: ')
+                ->options(LocationType::class)
+                ->default(LocationType::Office)
+                ->native(false)
+                ->required(),
+        ];
     }
 }

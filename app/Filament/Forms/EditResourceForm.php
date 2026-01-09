@@ -20,7 +20,7 @@ class EditResourceForm
 
         return $schema
             ->components(
-                Section::make(sprintf('Edit %s details', $record->{$titleAttribute}))
+                Section::make(sprintf('Edit %s', $record->{$titleAttribute}))
                     ->headerActions([
                         DeleteAction::make()
                             ->label('')

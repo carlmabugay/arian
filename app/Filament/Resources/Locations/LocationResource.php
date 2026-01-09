@@ -33,6 +33,11 @@ class LocationResource extends Resource
         return auth()->user()->can('viewAny', self::$model);
     }
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()->can('viewAny', self::getModel());
+    }
+
     public static function form(Schema $schema): Schema
     {
         return LocationForm::configure($schema);
