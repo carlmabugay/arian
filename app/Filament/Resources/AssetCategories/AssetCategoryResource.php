@@ -31,6 +31,16 @@ class AssetCategoryResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('viewAny', self::getModel());
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()->can('viewAny', self::getModel());
+    }
+
     public static function form(Schema $schema): Schema
     {
         return AssetCategoryForm::configure($schema);

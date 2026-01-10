@@ -11,26 +11,27 @@ class AssetCategoryForm
 {
     public static function configure(Schema $schema): Schema
     {
-        return $schema
-            ->components([
+        return $schema->components(self::form());
+    }
 
-                Select::make('parent_id')
-                    ->label('Parent Category: ')
-                    ->searchable()
-                    ->relationship('parent', 'name')
-                    ->options(AssetCategory::query()->pluck('name', 'id'))
-                    ->columnSpanFull(),
+    public static function form(): array
+    {
+        return [
 
-                TextInput::make('name')
-                    ->label('Name: ')
-                    ->required()
-                    ->columnSpanFull(),
+            Select::make('parent_id')
+                ->label('Parent Category: ')
+                ->searchable()
+                ->relationship('parent', 'name')
+                ->options(AssetCategory::query()->pluck('name', 'id')),
 
-                TextInput::make('code')
-                    ->label('Code: ')
-                    ->required()
-                    ->columnSpanFull(),
+            TextInput::make('name')
+                ->label('Name: ')
+                ->required(),
 
-            ]);
+            TextInput::make('code')
+                ->label('Code: ')
+                ->required(),
+
+        ];
     }
 }

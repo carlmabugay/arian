@@ -36,4 +36,9 @@ class AssetCategory extends Model
     {
         return $this->hasMany(Asset::class);
     }
+
+    public function hasAssets(): bool
+    {
+        return $this->assets()->withTrashed()->exists();
+    }
 }
