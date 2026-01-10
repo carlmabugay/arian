@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Users\Tables;
 
 use App\Enums\UserRole;
+use App\Filament\Resources\Companies\RelationManagers\UsersRelationManager;
 use App\Filament\Resources\Users\Schemas\UserForm;
 use App\Filament\Traits\HasBulkActions;
 use App\Filament\Traits\HasNotificationMessage;
@@ -74,7 +75,9 @@ class UsersTable
                 ->searchable(),
 
             TextColumn::make('company.name')
-                ->label('Company'),
+                ->label('Company')
+                ->visible(auth()->user()->role === UserRole::SuperAdmin)
+                ->hiddenOn(UsersRelationManager::class),
 
             TextColumn::make('role')
                 ->badge(),

@@ -3,17 +3,9 @@
 namespace App\Filament\Resources\Companies\RelationManagers;
 
 use App\Filament\Resources\Users\UserResource;
-use Filament\Actions\CreateAction;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Support\Enums\Size;
-use Filament\Support\Enums\Width;
-use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Enums\FiltersLayout;
-use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Database\Eloquent\Builder;
 
 class UsersRelationManager extends RelationManager
 {
@@ -21,66 +13,20 @@ class UsersRelationManager extends RelationManager
 
     protected static ?string $relatedResource = UserResource::class;
 
-    public function table(Table $table): Table
+    protected function modifyQueryWithActiveTab(Builder $query): Builder
     {
-        return $table
-            ->heading(sprintf('%s Users', $this->ownerRecord->name))
-            ->description(sprintf('Manage %s users here.', $this->ownerRecord->name))
-            ->headerActions([
-                CreateAction::make()
-                    ->icon(Heroicon::OutlinedPlus)
-                    ->label('Add new')
-                    ->size(Size::Small)
-                    ->slideOver()
-                    ->schema([
-                        TextInput::make('name')
-                            ->label('Name: ')
-                            ->required()
-                            ->columnSpanFull(),
+        $user = auth()->user();
 
-                        TextInput::make('email')
-                            ->label('Email address: ')
-                            ->email()
-                            ->required()
-                            ->unique('users', 'email')
-                            ->columnSpanFull(),
+        return $query->whereNot('id', $user->id);
+    }
 
-                        TextInput::make('password')
-                            ->label('Password: ')
-                            ->password()
-                            ->required(fn (string $context): bool => $context === 'create')
-                            ->dehydrateStateUsing(fn ($state) => filled($state) ? bcrypt($state) : null)
-                            ->dehydrated(fn ($state) => filled($state))
-                            ->maxLength(255)
-                            ->columnSpanFull(),
+    protected function getTableHeading(): string|Htmlable|null
+    {
+        return sprintf('%s Users', $this->ownerRecord->name);
+    }
 
-                        Toggle::make('is_active')
-                            ->label('Is active: ')
-                            ->required(),
-                    ])
-                    ->modalHeading(sprintf('Add new %s user.', $this->ownerRecord->name))
-                    ->modalWidth(Width::Medium),
-            ])
-            ->columns([
-                TextColumn::make('name')
-                    ->searchable(),
-
-                TextColumn::make('email')
-                    ->label('Email address')
-                    ->searchable(),
-
-                TextColumn::make('role')
-                    ->badge(),
-
-                IconColumn::make('is_active')
-                    ->label('Active')
-                    ->boolean(),
-                TextColumn::make('created_at')
-                    ->label('Created at')
-                    ->date()
-                    ->sortable(),
-
-            ])
-            ->filtersLayout(FiltersLayout::AfterContentCollapsible);
+    protected function getTableDescription(): string|Htmlable|null
+    {
+        return sprintf('Manage %s users here.', $this->ownerRecord->name);
     }
 }

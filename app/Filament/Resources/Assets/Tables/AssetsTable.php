@@ -29,30 +29,59 @@ class AssetsTable
                     ->size(Size::Small),
             ])
             ->columns([
-                TextColumn::make('company.name')
-                    ->searchable(),
-                TextColumn::make('category.name'),
-                TextColumn::make('status')
-                    ->badge(),
-                TextColumn::make('condition')
-                    ->badge(),
-                TextColumn::make('asset_tag')
-                    ->searchable(),
-                TextColumn::make('serial_number')
-                    ->searchable(),
                 TextColumn::make('name')
-                    ->searchable(),
-                TextColumn::make('purchased_at')
-                    ->label('Purchased Date')
-                    ->date()
+                    ->label('Asset')
+                    ->searchable()
                     ->sortable(),
-                TextColumn::make('purchase_price')
-                    ->money()
+
+                TextColumn::make('asset_tag')
+                    ->label('Asset Tag')
+                    ->searchable()
+                    ->copyable()
+                    ->toggleable(),
+
+                TextColumn::make('category.name')
+                    ->label('Category')
                     ->sortable(),
+
                 TextColumn::make('location.name')
-                    ->searchable(),
+                    ->label('Location')
+                    ->sortable(),
+
                 TextColumn::make('assignedUser.name')
-                    ->label('Assigned To'),
+                    ->label('Assigned To')
+                    ->placeholder('—')
+                    ->toggleable(),
+
+                TextColumn::make('status')
+                    ->label('Status')
+                    ->badge(),
+
+                TextColumn::make('condition')
+                    ->label('Condition')
+                    ->badge(),
+
+                TextColumn::make('purchase_price')
+                    ->label('Price')
+                    ->money('USD')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('purchased_at')
+                    ->label('Purchased')
+                    ->date()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('company.name')
+                    ->label('Company')
+                    ->hiddenOn('relation') // 👈 IMPORTANT
+                    ->sortable(),
+
+                TextColumn::make('created_at')
+                    ->label('Created')
+                    ->date()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
