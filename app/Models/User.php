@@ -55,4 +55,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(AssetAssignment::class);
     }
+
+    public function hasActiveAssignments(): bool
+    {
+        return $this->assetAssignments()->whereNull('returned_at')->exists();
+    }
 }

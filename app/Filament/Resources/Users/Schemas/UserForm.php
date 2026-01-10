@@ -2,12 +2,13 @@
 
 namespace App\Filament\Resources\Users\Schemas;
 
+use App\Enums\UserRole;
 use App\Models\Company;
-use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 
 class UserForm
 {
@@ -20,43 +21,54 @@ class UserForm
     {
         return [
 
-            Select::make('company_id')
-                ->label('Company: ')
-                ->relationship('company', 'name')
-                ->searchable()
-                ->options(Company::query()->pluck('name', 'id'))
-                ->required()
-                ->columnSpanFull(),
-
             TextInput::make('name')
                 ->label('Name: ')
                 ->required()
-                ->columnSpanFull(),
+                ->maxLength(255),
 
             TextInput::make('email')
                 ->label('Email address: ')
                 ->email()
                 ->required()
-                ->unique('users', 'email')
-                ->columnSpanFull(),
+                ->unique('users', 'email'),
 
-            DateTimePicker::make('email_verified_at')
-                ->label('Email verified at: ')
+            Select::make('role')
+                ->label('Role: ')
                 ->native(false)
-                ->columnSpanFull(),
+                ->options(self::roleOptions())
+                ->default(UserRole::Staff)
+                ->required(),
+
+            Select::make('company_id')
+                ->label('Company: ')
+                ->relationship('company', 'name')
+                ->searchable()
+                ->options(Company::query()->pluck('name', 'id'))
+                ->required(),
 
             TextInput::make('password')
                 ->label('Password: ')
-                ->password()
+                ->password('create')
                 ->required(fn (string $context): bool => $context === 'create')
                 ->dehydrateStateUsing(fn ($state) => filled($state) ? bcrypt($state) : null)
-                ->dehydrated(fn ($state) => filled($state))
-                ->maxLength(255)
-                ->columnSpanFull(),
+                ->dehydrated(fn ($state) => filled($state)),
 
             Toggle::make('is_active')
                 ->label('Is active: ')
-                ->required(),
+                ->default(true),
         ];
+    }
+
+    protected static function roleOptions(): array|string
+    {
+
+        return auth()->user()->role->value !== UserRole::SuperAdmin->value
+            ? UserRole::class
+            : collect(UserRole::values())
+                ->reject(fn (string $role) => $role === UserRole::SuperAdmin->value)
+                ->mapWithKeys(fn (string $role) => [
+                    $role => Str::of($role)->replace('_', ' ')->title(),
+                ])
+                ->toArray();
     }
 }

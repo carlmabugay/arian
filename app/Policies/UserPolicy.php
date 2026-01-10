@@ -17,6 +17,11 @@ class UserPolicy
         return $this->canManageUser($user, $model);
     }
 
+    public function update(User $user, User $model): bool
+    {
+        return $this->canManageUser($user, $model);
+    }
+
     public function create(User $user): bool
     {
         return in_array($user->role, [UserRole::SuperAdmin, UserRole::CompanyAdmin]);
@@ -24,7 +29,11 @@ class UserPolicy
 
     public function delete(User $user, User $model): bool
     {
-        return $this->canManageUser($user, $model);
+        if ($user->role !== UserRole::SuperAdmin) {
+            return false;
+        }
+
+        return ! $model->hasActiveAssignments();
     }
 
     public function restoreAny(User $user): bool
@@ -53,10 +62,6 @@ class UserPolicy
             return true;
         }
 
-        if ($user->role === UserRole::CompanyAdmin) {
-            return $user->company_id === $model->company_id;
-        }
-
-        return false;
+        return $user->role === UserRole::CompanyAdmin && $user->company_id === $model->company_id;
     }
 }

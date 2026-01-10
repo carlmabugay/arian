@@ -77,6 +77,8 @@ class UserResource extends Resource
 
         $user = auth()->user();
 
+        $query->whereNot('id', $user->id);
+
         if ($user->role === UserRole::CompanyAdmin) {
             $query->where('company_id', $user->company_id);
         }
