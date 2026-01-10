@@ -4,6 +4,9 @@ namespace App\Filament\Resources\Users\Tables;
 
 use App\Enums\UserRole;
 use App\Filament\Resources\Users\Schemas\UserForm;
+use App\Filament\Traits\HasBulkActions;
+use App\Filament\Traits\HasNotificationMessage;
+use App\Helpers\RoleHelper;
 use App\Models\User;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkAction;
@@ -21,10 +24,11 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Str;
 
 class UsersTable
 {
+    use HasBulkActions, HasNotificationMessage;
+
     public static function configure(Table $table): Table
     {
         return $table
@@ -90,7 +94,11 @@ class UsersTable
     {
         return [
             SelectFilter::make('role')
-                ->options(UserRole::class),
+                ->options(
+                    auth()->user()->role === UserRole::SuperAdmin
+                        ? RoleHelper::all()
+                        : RoleHelper::forCompanyAdmin()
+                ),
 
             SelectFilter::make('company_id')
                 ->label('Company')
@@ -128,7 +136,7 @@ class UsersTable
             ->requiresConfirmation()
             ->action(function (Collection $records) {
 
-                $success = self::guardBulkAction(
+                $success = static::guardBulkAction(
                     $records,
                     'delete',
                     'Trash blocked',
@@ -144,9 +152,10 @@ class UsersTable
 
                 Notification::make()
                     ->title('Users trashed')
-                    ->body(self::notificationMessage(
+                    ->body(static::notificationMessage(
                         count: $count,
                         action: 'trashed successfully',
+                        noun: 'user',
                     ))
                     ->success()
                     ->send();
@@ -166,7 +175,7 @@ class UsersTable
             ->visible(fn () => auth()->user()->can('forceDeleteAny', User::class))
             ->action(function (Collection $records) {
 
-                $success = self::guardBulkAction(
+                $success = static::guardBulkAction(
                     $records,
                     'forceDelete',
                     'Permanent delete blocked',
@@ -182,9 +191,10 @@ class UsersTable
 
                 Notification::make()
                     ->title('Users permanently deleted')
-                    ->body(self::notificationMessage(
+                    ->body(static::notificationMessage(
                         count: $count,
                         action: 'permanently deleted',
+                        noun: 'user',
                     ))
                     ->success()
                     ->send();
@@ -204,7 +214,7 @@ class UsersTable
             ->visible(fn () => auth()->user()->can('restoreAny', User::class))
             ->action(function (Collection $records) {
 
-                $success = self::guardBulkAction(
+                $success = static::guardBulkAction(
                     $records,
                     'restore',
                     'Restore blocked',
@@ -219,45 +229,14 @@ class UsersTable
                 $records->each->restore();
 
                 Notification::make()
-                    ->title('Companies restored')
-                    ->body(self::notificationMessage(
+                    ->title('Users restored')
+                    ->body(static::notificationMessage(
                         count: $count,
                         action: 'restored successfully',
+                        noun: 'user',
                     ))
                     ->success()
                     ->send();
             });
-    }
-
-    protected static function guardBulkAction(Collection $records, string $ability, string $title, string $message): bool
-    {
-        $user = auth()->user();
-
-        $blocked = $records->filter(
-            fn ($record) => $user->cannot($ability, $record)
-        );
-
-        if ($blocked->isNotEmpty()) {
-            Notification::make()
-                ->title($title)
-                ->body($message)
-                ->danger()
-                ->send();
-        }
-
-        return $blocked->isEmpty();
-    }
-
-    protected static function notificationMessage(int $count, string $action, string $noun = 'user'): string
-    {
-        $verb = $count === 1 ? 'was' : 'were';
-
-        return sprintf(
-            '%d %s %s %s.',
-            $count,
-            Str::plural($noun, $count),
-            $verb,
-            $action,
-        );
     }
 }

@@ -4,6 +4,8 @@ namespace App\Filament\Resources\Locations\Tables;
 
 use App\Enums\LocationType;
 use App\Filament\Resources\Locations\Schemas\LocationForm;
+use App\Filament\Traits\HasBulkActions;
+use App\Filament\Traits\HasNotificationMessage;
 use App\Models\Location;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkAction;
@@ -20,10 +22,11 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Str;
 
 class LocationsTable
 {
+    use HasBulkActions, HasNotificationMessage;
+
     public static function configure(Table $table): Table
     {
         return $table
@@ -118,7 +121,7 @@ class LocationsTable
             ->requiresConfirmation()
             ->action(function (Collection $records) {
 
-                $success = self::guardBulkAction(
+                $success = static::guardBulkAction(
                     $records,
                     'delete',
                     'Bulk trash blocked',
@@ -134,9 +137,10 @@ class LocationsTable
 
                 Notification::make()
                     ->title('Locations trashed')
-                    ->body(self::notificationMessage(
+                    ->body(static::notificationMessage(
                         count: $count,
                         action: 'trashed successfully',
+                        noun: 'location',
                     ))
                     ->success()
                     ->send();
@@ -155,7 +159,7 @@ class LocationsTable
             ->visible(fn () => auth()->user()->can('forceDeleteAny', Location::class))
             ->action(function (Collection $records) {
 
-                $success = self::guardBulkAction(
+                $success = static::guardBulkAction(
                     $records,
                     'forceDelete',
                     'Permanent delete blocked',
@@ -171,9 +175,10 @@ class LocationsTable
 
                 Notification::make()
                     ->title('Location permanently deleted')
-                    ->body(self::notificationMessage(
+                    ->body(static::notificationMessage(
                         count: $count,
                         action: 'permanently deleted',
+                        noun: 'location',
                     ))
                     ->success()
                     ->send();
@@ -192,7 +197,7 @@ class LocationsTable
             ->modalDescription('The selected location will be restored.')
             ->visible(fn () => auth()->user()->can('restoreAny', Location::class))
             ->action(function (Collection $records) {
-                $success = self::guardBulkAction(
+                $success = static::guardBulkAction(
                     $records,
                     'restore',
                     'Restore blocked',
@@ -208,44 +213,13 @@ class LocationsTable
 
                 Notification::make()
                     ->title('Locations restored')
-                    ->body(self::notificationMessage(
+                    ->body(static::notificationMessage(
                         count: $count,
                         action: 'restored successfully',
+                        noun: 'location',
                     ))
                     ->success()
                     ->send();
             });
-    }
-
-    protected static function guardBulkAction(Collection $records, string $ability, string $title, string $message): bool
-    {
-        $user = auth()->user();
-
-        $blocked = $records->filter(
-            fn ($record) => $user->cannot($ability, $record)
-        );
-
-        if ($blocked->isNotEmpty()) {
-            Notification::make()
-                ->title($title)
-                ->body($message)
-                ->danger()
-                ->send();
-        }
-
-        return $blocked->isEmpty();
-    }
-
-    protected static function notificationMessage(int $count, string $action, string $noun = 'location'): string
-    {
-        $verb = $count === 1 ? 'was' : 'were';
-
-        return sprintf(
-            '%d %s %s %s.',
-            $count,
-            Str::plural($noun, $count),
-            $verb,
-            $action,
-        );
     }
 }

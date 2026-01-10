@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\Companies\Tables;
 
 use App\Filament\Resources\Companies\Schemas\CompanyForm;
+use App\Filament\Traits\HasBulkActions;
+use App\Filament\Traits\HasNotificationMessage;
 use App\Models\Company;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkAction;
@@ -20,10 +22,11 @@ use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Str;
 
 class CompaniesTable
 {
+    use HasBulkActions, HasNotificationMessage;
+
     public static function configure(Table $table): Table
     {
         return $table
@@ -124,7 +127,7 @@ class CompaniesTable
             ->requiresConfirmation()
             ->action(function (Collection $records) {
 
-                $success = self::guardBulkAction(
+                $success = static::guardBulkAction(
                     $records,
                     'delete',
                     'Trash blocked',
@@ -140,9 +143,10 @@ class CompaniesTable
 
                 Notification::make()
                     ->title('Companies trashed')
-                    ->body(self::notificationMessage(
+                    ->body(static::notificationMessage(
                         count: $count,
                         action: 'trashed successfully',
+                        noun: 'company',
                     ))
                     ->success()
                     ->send();
@@ -162,7 +166,7 @@ class CompaniesTable
             ->visible(fn () => auth()->user()->can('forceDeleteAny', Company::class))
             ->action(function (Collection $records) {
 
-                $success = self::guardBulkAction(
+                $success = static::guardBulkAction(
                     $records,
                     'forceDelete',
                     'Permanent delete blocked',
@@ -178,9 +182,10 @@ class CompaniesTable
 
                 Notification::make()
                     ->title('Companies permanently deleted')
-                    ->body(self::notificationMessage(
+                    ->body(static::notificationMessage(
                         count: $count,
                         action: 'permanently deleted',
+                        noun: 'company',
                     ))
                     ->success()
                     ->send();
@@ -200,7 +205,7 @@ class CompaniesTable
             ->visible(fn () => auth()->user()->can('restoreAny', Company::class))
             ->action(function (Collection $records) {
 
-                $success = self::guardBulkAction(
+                $success = static::guardBulkAction(
                     $records,
                     'restore',
                     'Restore blocked',
@@ -216,44 +221,13 @@ class CompaniesTable
 
                 Notification::make()
                     ->title('Companies restored')
-                    ->body(self::notificationMessage(
+                    ->body(static::notificationMessage(
                         count: $count,
                         action: 'restored successfully',
+                        noun: 'company',
                     ))
                     ->success()
                     ->send();
             });
-    }
-
-    protected static function guardBulkAction(Collection $records, string $ability, string $title, string $message): bool
-    {
-        $user = auth()->user();
-
-        $blocked = $records->filter(
-            fn ($record) => $user->cannot($ability, $record)
-        );
-
-        if ($blocked->isNotEmpty()) {
-            Notification::make()
-                ->title($title)
-                ->body($message)
-                ->danger()
-                ->send();
-        }
-
-        return $blocked->isEmpty();
-    }
-
-    protected static function notificationMessage(int $count, string $action, string $noun = 'company'): string
-    {
-        $verb = $count === 1 ? 'was' : 'were';
-
-        return sprintf(
-            '%d %s %s %s.',
-            $count,
-            Str::plural($noun, $count),
-            $verb,
-            $action,
-        );
     }
 }

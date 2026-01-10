@@ -3,12 +3,13 @@
 namespace App\Filament\Resources\Users\Schemas;
 
 use App\Enums\UserRole;
+use App\Helpers\RoleHelper;
 use App\Models\Company;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
-use Illuminate\Support\Str;
 
 class UserForm
 {
@@ -35,15 +36,24 @@ class UserForm
             Select::make('role')
                 ->label('Role: ')
                 ->native(false)
-                ->options(self::roleOptions())
+                ->options(
+                    auth()->user()->role === UserRole::SuperAdmin
+                        ? RoleHelper::all()
+                        : RoleHelper::forCompanyAdmin()
+                )
                 ->default(UserRole::Staff)
                 ->required(),
+
+            Hidden::make('company_id')
+                ->default(fn () => auth()->user()->company_id)
+                ->visible(fn () => auth()->user()->role !== UserRole::SuperAdmin),
 
             Select::make('company_id')
                 ->label('Company: ')
                 ->relationship('company', 'name')
                 ->searchable()
                 ->options(Company::query()->pluck('name', 'id'))
+                ->visible(fn () => auth()->user()->role === UserRole::SuperAdmin)
                 ->required(),
 
             TextInput::make('password')
@@ -57,18 +67,5 @@ class UserForm
                 ->label('Is active: ')
                 ->default(true),
         ];
-    }
-
-    protected static function roleOptions(): array|string
-    {
-
-        return auth()->user()->role->value !== UserRole::SuperAdmin->value
-            ? UserRole::class
-            : collect(UserRole::values())
-                ->reject(fn (string $role) => $role === UserRole::SuperAdmin->value)
-                ->mapWithKeys(fn (string $role) => [
-                    $role => Str::of($role)->replace('_', ' ')->title(),
-                ])
-                ->toArray();
     }
 }
