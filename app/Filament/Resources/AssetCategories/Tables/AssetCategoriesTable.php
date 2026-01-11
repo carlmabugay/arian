@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\AssetCategories\Tables;
 
+use App\Enums\SystemAction;
 use App\Filament\Resources\AssetCategories\Schemas\AssetCategoryForm;
+use App\Filament\Traits\ConfigureSystemAction;
 use App\Filament\Traits\HasBulkActions;
-use App\Filament\Traits\HasNotificationMessage;
+use App\Helpers\SystemMessageHelper;
 use App\Models\AssetCategory;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkAction;
@@ -25,7 +27,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class AssetCategoriesTable
 {
-    use HasBulkActions, HasNotificationMessage;
+    use ConfigureSystemAction, HasBulkActions;
 
     public static function configure(Table $table): Table
     {
@@ -52,9 +54,10 @@ class AssetCategoriesTable
                 ->label('Add New')
                 ->size(Size::Small)
                 ->slideOver()
-                ->modalHeading('Category Details')
+                ->modalHeading('Asset Category Details')
                 ->modalWidth(Width::Medium)
                 ->schema(AssetCategoryForm::form())
+                ->tap(fn (CreateAction $action) => static::configureAction($action, SystemAction::Create, 'Asset category'))
                 ->authorize('create'),
         ];
     }
@@ -116,16 +119,26 @@ class AssetCategoriesTable
             ->color('warning')
             ->icon(Heroicon::OutlinedTrash)
             ->requiresConfirmation()
+            ->modalHeading(
+                SystemMessageHelper::confirmHeading(
+                    SystemAction::Delete,
+                    'asset categories',
+                )
+            )
+            ->modalDescription(
+                SystemMessageHelper::confirmBody(
+                    SystemAction::Delete,
+                    'asset categories'
+                )
+            )
             ->action(function (Collection $records) {
 
-                $success = static::guardBulkAction(
+                if (! static::guardBulkAction(
                     $records,
                     'delete',
                     'Bulk trash blocked',
                     'One or more selected category cannot be trashed.'
-                );
-
-                if (! $success) {
+                )) {
                     return;
                 }
 
@@ -133,12 +146,19 @@ class AssetCategoriesTable
                 $records->each->delete();
 
                 Notification::make()
-                    ->title('Asset categories trashed')
-                    ->body(static::notificationMessage(
-                        count: $count,
-                        action: 'trashed successfully',
-                        noun: 'category',
-                    ))
+                    ->title(
+                        SystemMessageHelper::successTitle(
+                            SystemAction::Delete,
+                            'Asset categories',
+                        )
+                    )
+                    ->body(
+                        SystemMessageHelper::successBody(
+                            SystemAction::Delete,
+                            $count,
+                            'asset category'
+                        )
+                    )
                     ->success()
                     ->send();
             });
@@ -151,19 +171,27 @@ class AssetCategoriesTable
             ->color('danger')
             ->icon(Heroicon::OutlinedXMark)
             ->requiresConfirmation()
-            ->modalHeading('Permanent delete categories')
-            ->modalDescription('This action is irreversible.')
+            ->modalHeading(
+                SystemMessageHelper::confirmHeading(
+                    SystemAction::ForceDelete,
+                    'asset categories',
+                )
+            )
+            ->modalDescription(
+                SystemMessageHelper::confirmBody(
+                    SystemAction::ForceDelete,
+                    'asset categories'
+                )
+            )
             ->visible(fn () => auth()->user()->can('forceDeleteAny', AssetCategory::class))
             ->action(function (Collection $records) {
 
-                $success = static::guardBulkAction(
+                if (! static::guardBulkAction(
                     $records,
                     'forceDelete',
                     'Permanent delete blocked',
                     'One or more selected categories cannot be permanently deleted.'
-                );
-
-                if (! $success) {
+                )) {
                     return;
                 }
 
@@ -171,12 +199,19 @@ class AssetCategoriesTable
                 $records->each->forceDelete();
 
                 Notification::make()
-                    ->title('Category permanently deleted')
-                    ->body(static::notificationMessage(
-                        count: $count,
-                        action: 'permanently deleted',
-                        noun: 'category',
-                    ))
+                    ->title(
+                        SystemMessageHelper::successTitle(
+                            SystemAction::ForceDelete,
+                            'Asset categories',
+                        )
+                    )
+                    ->body(
+                        SystemMessageHelper::successBody(
+                            SystemAction::ForceDelete,
+                            $count,
+                            'asset category'
+                        )
+                    )
                     ->success()
                     ->send();
 
@@ -190,18 +225,27 @@ class AssetCategoriesTable
             ->icon(Heroicon::OutlinedArrowPath)
             ->color('success')
             ->requiresConfirmation()
-            ->modalHeading('Restore categories')
-            ->modalDescription('The selected category will be restored.')
+            ->modalHeading(
+                SystemMessageHelper::confirmHeading(
+                    SystemAction::Restore,
+                    'asset categories',
+                )
+            )
+            ->modalDescription(
+                SystemMessageHelper::confirmBody(
+                    SystemAction::Restore,
+                    'asset categories'
+                )
+            )
             ->visible(fn () => auth()->user()->can('restoreAny', AssetCategory::class))
             ->action(function (Collection $records) {
-                $success = static::guardBulkAction(
+
+                if (! static::guardBulkAction(
                     $records,
                     'restore',
                     'Restore blocked',
                     'One or more selected categories cannot be restored.'
-                );
-
-                if (! $success) {
+                )) {
                     return;
                 }
 
@@ -209,12 +253,19 @@ class AssetCategoriesTable
                 $records->each->restore();
 
                 Notification::make()
-                    ->title('Categories restored')
-                    ->body(static::notificationMessage(
-                        count: $count,
-                        action: 'restored successfully',
-                        noun: 'category',
-                    ))
+                    ->title(
+                        SystemMessageHelper::successTitle(
+                            SystemAction::Restore,
+                            'Asset categories',
+                        )
+                    )
+                    ->body(
+                        SystemMessageHelper::successBody(
+                            SystemAction::Restore,
+                            $count,
+                            'asset category'
+                        )
+                    )
                     ->success()
                     ->send();
             });

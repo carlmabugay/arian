@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\AssetCategories\Pages;
 
+use App\Enums\SystemAction;
 use App\Filament\Forms\EditResourceForm;
 use App\Filament\Resources\AssetCategories\AssetCategoryResource;
 use App\Filament\Resources\AssetCategories\Schemas\AssetCategoryForm;
+use App\Helpers\SystemMessageHelper;
 use App\Models\AssetCategory;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Schemas\Schema;
@@ -33,6 +35,14 @@ class EditAssetCategory extends EditRecord
             record: self::getRecord(),
             formSchema: AssetCategoryForm::form(),
             resourceIndexUrl: self::getResource()::getUrl('index'),
+        );
+    }
+
+    protected function getSavedNotificationTitle(): ?string
+    {
+        return SystemMessageHelper::successTitle(
+            SystemAction::Update,
+            $this->record->name,
         );
     }
 
