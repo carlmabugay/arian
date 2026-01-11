@@ -193,7 +193,6 @@ class CompaniesTable
                     'companies'
                 )
             )
-
             ->visible(fn () => auth()->user()->can('forceDeleteAny', Company::class))
             ->action(function (Collection $records) {
 

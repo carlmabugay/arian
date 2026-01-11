@@ -21,6 +21,11 @@ class LocationForm
     public static function form(): array
     {
         return [
+
+            TextInput::make('name')
+                ->label('Name: ')
+                ->required(),
+
             Hidden::make('company_id')
                 ->default(fn () => auth()->user()->company_id)
                 ->visible(fn () => auth()->user()->role !== UserRole::SuperAdmin),
@@ -31,10 +36,6 @@ class LocationForm
                 ->searchable()
                 ->options(Company::query()->pluck('name', 'id'))
                 ->visible(fn () => auth()->user()->role === UserRole::SuperAdmin)
-                ->required(),
-
-            TextInput::make('name')
-                ->label('Name: ')
                 ->required(),
 
             Select::make('type')

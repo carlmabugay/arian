@@ -3,9 +3,12 @@
 namespace App\Filament\Resources\Locations\Tables;
 
 use App\Enums\LocationType;
+use App\Enums\SystemAction;
 use App\Filament\Resources\Locations\Schemas\LocationForm;
+use App\Filament\Traits\ConfigureSystemAction;
 use App\Filament\Traits\HasBulkActions;
 use App\Filament\Traits\HasNotificationMessage;
+use App\Helpers\SystemMessageHelper;
 use App\Models\Location;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkAction;
@@ -25,7 +28,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class LocationsTable
 {
-    use HasBulkActions, HasNotificationMessage;
+    use ConfigureSystemAction, HasBulkActions, HasNotificationMessage;
 
     public static function configure(Table $table): Table
     {
@@ -55,6 +58,7 @@ class LocationsTable
                 ->modalHeading('Location Details')
                 ->modalWidth(Width::Medium)
                 ->schema(LocationForm::form())
+                ->tap(fn (CreateAction $action) => static::configureAction($action, SystemAction::Create, 'Location'))
                 ->authorize('create'),
         ];
     }
@@ -119,16 +123,26 @@ class LocationsTable
             ->color('warning')
             ->icon(Heroicon::OutlinedTrash)
             ->requiresConfirmation()
+            ->modalHeading(
+                SystemMessageHelper::confirmHeading(
+                    SystemAction::Delete,
+                    'locations'
+                )
+            )
+            ->modalDescription(
+                SystemMessageHelper::confirmBody(
+                    SystemAction::Delete,
+                    'locations'
+                )
+            )
             ->action(function (Collection $records) {
 
-                $success = static::guardBulkAction(
+                if (! static::guardBulkAction(
                     $records,
                     'delete',
                     'Bulk trash blocked',
                     'One or more selected location cannot be trashed.'
-                );
-
-                if (! $success) {
+                )) {
                     return;
                 }
 
@@ -136,12 +150,19 @@ class LocationsTable
                 $records->each->delete();
 
                 Notification::make()
-                    ->title('Locations trashed')
-                    ->body(static::notificationMessage(
-                        count: $count,
-                        action: 'trashed successfully',
-                        noun: 'location',
-                    ))
+                    ->title(
+                        SystemMessageHelper::successTitle(
+                            SystemAction::Delete,
+                            'Location'
+                        )
+                    )
+                    ->body(
+                        SystemMessageHelper::successBody(
+                            SystemAction::Delete,
+                            $count,
+                            'location'
+                        )
+                    )
                     ->success()
                     ->send();
             });
@@ -154,19 +175,27 @@ class LocationsTable
             ->color('danger')
             ->icon(Heroicon::OutlinedXMark)
             ->requiresConfirmation()
-            ->modalHeading('Permanent delete locations')
-            ->modalDescription('This action is irreversible.')
+            ->modalHeading(
+                SystemMessageHelper::confirmHeading(
+                    SystemAction::ForceDelete,
+                    'locations'
+                )
+            )
+            ->modalDescription(
+                SystemMessageHelper::confirmBody(
+                    SystemAction::ForceDelete,
+                    'locations'
+                )
+            )
             ->visible(fn () => auth()->user()->can('forceDeleteAny', Location::class))
             ->action(function (Collection $records) {
 
-                $success = static::guardBulkAction(
+                if (! static::guardBulkAction(
                     $records,
                     'forceDelete',
                     'Permanent delete blocked',
                     'One or more selected locations cannot be permanently deleted.'
-                );
-
-                if (! $success) {
+                )) {
                     return;
                 }
 
@@ -174,12 +203,19 @@ class LocationsTable
                 $records->each->forceDelete();
 
                 Notification::make()
-                    ->title('Location permanently deleted')
-                    ->body(static::notificationMessage(
-                        count: $count,
-                        action: 'permanently deleted',
-                        noun: 'location',
-                    ))
+                    ->title(
+                        SystemMessageHelper::successTitle(
+                            SystemAction::ForceDelete,
+                            'Location'
+                        )
+                    )
+                    ->body(
+                        SystemMessageHelper::successBody(
+                            SystemAction::ForceDelete,
+                            $count,
+                            'location'
+                        )
+                    )
                     ->success()
                     ->send();
 
@@ -193,18 +229,27 @@ class LocationsTable
             ->icon(Heroicon::OutlinedArrowPath)
             ->color('success')
             ->requiresConfirmation()
-            ->modalHeading('Restore locations')
-            ->modalDescription('The selected location will be restored.')
+            ->modalHeading(
+                SystemMessageHelper::confirmHeading(
+                    SystemAction::Restore,
+                    'locations'
+                )
+            )
+            ->modalDescription(
+                SystemMessageHelper::confirmBody(
+                    SystemAction::Restore,
+                    'locations'
+                )
+            )
             ->visible(fn () => auth()->user()->can('restoreAny', Location::class))
             ->action(function (Collection $records) {
-                $success = static::guardBulkAction(
+
+                if (! static::guardBulkAction(
                     $records,
                     'restore',
                     'Restore blocked',
                     'One or more selected locations cannot be restored.'
-                );
-
-                if (! $success) {
+                )) {
                     return;
                 }
 
@@ -212,12 +257,19 @@ class LocationsTable
                 $records->each->restore();
 
                 Notification::make()
-                    ->title('Locations restored')
-                    ->body(static::notificationMessage(
-                        count: $count,
-                        action: 'restored successfully',
-                        noun: 'location',
-                    ))
+                    ->title(
+                        SystemMessageHelper::successTitle(
+                            SystemAction::Restore,
+                            'Location'
+                        )
+                    )
+                    ->body(
+                        SystemMessageHelper::successBody(
+                            SystemAction::Restore,
+                            $count,
+                            'location'
+                        )
+                    )
                     ->success()
                     ->send();
             });

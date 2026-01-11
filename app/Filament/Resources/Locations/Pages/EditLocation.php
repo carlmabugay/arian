@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\Locations\Pages;
 
+use App\Enums\SystemAction;
 use App\Filament\Forms\EditResourceForm;
 use App\Filament\Resources\Locations\LocationResource;
 use App\Filament\Resources\Locations\Schemas\LocationForm;
+use App\Helpers\SystemMessageHelper;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Schemas\Schema;
 
@@ -29,6 +31,14 @@ class EditLocation extends EditRecord
             record: self::getRecord(),
             formSchema: LocationForm::form(),
             resourceIndexUrl: self::getResource()::getUrl('index'),
+        );
+    }
+
+    protected function getSavedNotificationTitle(): ?string
+    {
+        return SystemMessageHelper::successTitle(
+            SystemAction::Update,
+            $this->record->name,
         );
     }
 
