@@ -143,10 +143,10 @@ class CompaniesTable
             ->action(function (Collection $records) {
 
                 if (! static::guardBulkAction(
-                    $records,
-                    'delete',
-                    'Trash blocked',
-                    'One or more selected companies cannot be trashed.'
+                    records: $records,
+                    ability: 'delete',
+                    systemAction: SystemAction::Delete,
+                    noun: 'companies'
                 )) {
                     return;
                 }
@@ -197,10 +197,10 @@ class CompaniesTable
             ->action(function (Collection $records) {
 
                 if (! static::guardBulkAction(
-                    $records,
-                    'forceDelete',
-                    'Permanent delete blocked',
-                    'One or more selected companies cannot be permanently deleted.'
+                    records: $records,
+                    ability: 'forceDelete',
+                    systemAction: SystemAction::ForceDelete,
+                    noun: 'companies'
                 )) {
                     return;
                 }
@@ -251,10 +251,10 @@ class CompaniesTable
             ->action(function (Collection $records) {
 
                 if (! static::guardBulkAction(
-                    $records,
-                    'restore',
-                    'Restore blocked',
-                    'One or more selected companies cannot be restored.'
+                    records: $records,
+                    ability: 'restore',
+                    systemAction: SystemAction::Restore,
+                    noun: 'companies'
                 )) {
                     return;
                 }

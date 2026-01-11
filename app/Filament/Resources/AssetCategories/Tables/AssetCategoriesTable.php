@@ -134,10 +134,10 @@ class AssetCategoriesTable
             ->action(function (Collection $records) {
 
                 if (! static::guardBulkAction(
-                    $records,
-                    'delete',
-                    'Bulk trash blocked',
-                    'One or more selected category cannot be trashed.'
+                    records: $records,
+                    ability: 'delete',
+                    systemAction: SystemAction::Delete,
+                    noun: 'asset categories'
                 )) {
                     return;
                 }
@@ -187,10 +187,10 @@ class AssetCategoriesTable
             ->action(function (Collection $records) {
 
                 if (! static::guardBulkAction(
-                    $records,
-                    'forceDelete',
-                    'Permanent delete blocked',
-                    'One or more selected categories cannot be permanently deleted.'
+                    records: $records,
+                    ability: 'forceDelete',
+                    systemAction: SystemAction::ForceDelete,
+                    noun: 'asset categories'
                 )) {
                     return;
                 }
@@ -241,10 +241,10 @@ class AssetCategoriesTable
             ->action(function (Collection $records) {
 
                 if (! static::guardBulkAction(
-                    $records,
-                    'restore',
-                    'Restore blocked',
-                    'One or more selected categories cannot be restored.'
+                    records: $records,
+                    ability: 'restore',
+                    systemAction: SystemAction::Restore,
+                    noun: 'asset categories'
                 )) {
                     return;
                 }

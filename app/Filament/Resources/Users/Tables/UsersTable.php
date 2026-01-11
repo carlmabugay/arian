@@ -8,7 +8,6 @@ use App\Filament\Resources\Companies\RelationManagers\UsersRelationManager;
 use App\Filament\Resources\Users\Schemas\UserForm;
 use App\Filament\Traits\ConfigureSystemAction;
 use App\Filament\Traits\HasBulkActions;
-use App\Filament\Traits\HasNotificationMessage;
 use App\Helpers\RoleHelper;
 use App\Helpers\SystemMessageHelper;
 use App\Models\User;
@@ -31,7 +30,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class UsersTable
 {
-    use ConfigureSystemAction, HasBulkActions, HasNotificationMessage;
+    use ConfigureSystemAction, HasBulkActions;
 
     public static function configure(Table $table): Table
     {
@@ -156,10 +155,10 @@ class UsersTable
             ->action(function (Collection $records) {
 
                 if (! static::guardBulkAction(
-                    $records,
-                    'delete',
-                    'Trash blocked',
-                    'One or more selected users cannot be trashed.'
+                    records: $records,
+                    ability: 'delete',
+                    systemAction: SystemAction::Delete,
+                    noun: 'users'
                 )) {
                     return;
                 }
@@ -210,10 +209,10 @@ class UsersTable
             ->action(function (Collection $records) {
 
                 if (! static::guardBulkAction(
-                    $records,
-                    'forceDelete',
-                    'Permanent delete blocked',
-                    'One or more selected users cannot be permanently deleted.'
+                    records: $records,
+                    ability: 'forceDelete',
+                    systemAction: SystemAction::ForceDelete,
+                    noun: 'companies'
                 )) {
                     return;
                 }
@@ -264,10 +263,10 @@ class UsersTable
             ->action(function (Collection $records) {
 
                 if (! static::guardBulkAction(
-                    $records,
-                    'restore',
-                    'Restore blocked',
-                    'One or more selected users cannot be restored.'
+                    records: $records,
+                    ability: 'restore',
+                    systemAction: SystemAction::Restore,
+                    noun: 'users'
                 )) {
                     return;
                 }
