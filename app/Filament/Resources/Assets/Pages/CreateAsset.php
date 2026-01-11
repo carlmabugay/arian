@@ -11,7 +11,17 @@ class CreateAsset extends CreateRecord
 
     protected ?string $heading = '';
 
-    protected static ?string $breadcrumb = 'Add new';
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['company_id'] = auth()->user()->company_id;
+
+        return $data;
+    }
 
     protected function getRedirectUrl(): string
     {

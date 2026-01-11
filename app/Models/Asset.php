@@ -74,4 +74,9 @@ class Asset extends Model
                 AssetStatus::Retired,
             ]);
     }
+
+    public function isAssigned(): bool
+    {
+        return $this->status === AssetStatus::Assigned;
+    }
 }
