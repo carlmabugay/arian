@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\Users\Pages;
 
+use App\Enums\SystemAction;
 use App\Filament\Forms\EditResourceForm;
 use App\Filament\Resources\Users\Schemas\UserForm;
 use App\Filament\Resources\Users\UserResource;
+use App\Helpers\SystemMessageHelper;
 use App\Models\User;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Schemas\Schema;
@@ -33,6 +35,14 @@ class EditUser extends EditRecord
             record: self::getRecord(),
             formSchema: UserForm::form(),
             resourceIndexUrl: self::getResource()::getUrl('index'),
+        );
+    }
+
+    protected function getSavedNotificationTitle(): ?string
+    {
+        return SystemMessageHelper::successTitle(
+            SystemAction::Update,
+            $this->record->name,
         );
     }
 

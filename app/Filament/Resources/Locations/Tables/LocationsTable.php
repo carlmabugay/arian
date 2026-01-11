@@ -7,7 +7,6 @@ use App\Enums\SystemAction;
 use App\Filament\Resources\Locations\Schemas\LocationForm;
 use App\Filament\Traits\ConfigureSystemAction;
 use App\Filament\Traits\HasBulkActions;
-use App\Filament\Traits\HasNotificationMessage;
 use App\Helpers\SystemMessageHelper;
 use App\Models\Location;
 use Filament\Actions\ActionGroup;
@@ -28,7 +27,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class LocationsTable
 {
-    use ConfigureSystemAction, HasBulkActions, HasNotificationMessage;
+    use ConfigureSystemAction, HasBulkActions;
 
     public static function configure(Table $table): Table
     {

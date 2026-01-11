@@ -2,12 +2,15 @@
 
 namespace App\Filament\Resources\Users\Tables;
 
+use App\Enums\SystemAction;
 use App\Enums\UserRole;
 use App\Filament\Resources\Companies\RelationManagers\UsersRelationManager;
 use App\Filament\Resources\Users\Schemas\UserForm;
+use App\Filament\Traits\ConfigureSystemAction;
 use App\Filament\Traits\HasBulkActions;
 use App\Filament\Traits\HasNotificationMessage;
 use App\Helpers\RoleHelper;
+use App\Helpers\SystemMessageHelper;
 use App\Models\User;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkAction;
@@ -28,7 +31,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class UsersTable
 {
-    use HasBulkActions, HasNotificationMessage;
+    use ConfigureSystemAction, HasBulkActions, HasNotificationMessage;
 
     public static function configure(Table $table): Table
     {
@@ -58,6 +61,7 @@ class UsersTable
                 ->modalHeading('User Details')
                 ->modalWidth(Width::Medium)
                 ->schema(UserForm::form())
+                ->tap(fn (CreateAction $action) => static::configureAction($action, SystemAction::Create, 'User'))
                 ->authorize('create'),
         ];
     }
@@ -137,16 +141,26 @@ class UsersTable
             ->color('warning')
             ->icon(Heroicon::OutlinedTrash)
             ->requiresConfirmation()
+            ->modalHeading(
+                SystemMessageHelper::confirmHeading(
+                    SystemAction::Delete,
+                    'users'
+                )
+            )
+            ->modalDescription(
+                SystemMessageHelper::confirmBody(
+                    SystemAction::Delete,
+                    'users'
+                )
+            )
             ->action(function (Collection $records) {
 
-                $success = static::guardBulkAction(
+                if (! static::guardBulkAction(
                     $records,
                     'delete',
                     'Trash blocked',
                     'One or more selected users cannot be trashed.'
-                );
-
-                if (! $success) {
+                )) {
                     return;
                 }
 
@@ -154,12 +168,19 @@ class UsersTable
                 $records->each->delete();
 
                 Notification::make()
-                    ->title('Users trashed')
-                    ->body(static::notificationMessage(
-                        count: $count,
-                        action: 'trashed successfully',
-                        noun: 'user',
-                    ))
+                    ->title(
+                        SystemMessageHelper::successTitle(
+                            SystemAction::Delete,
+                            'User'
+                        )
+                    )
+                    ->body(
+                        SystemMessageHelper::successBody(
+                            SystemAction::Delete,
+                            $count,
+                            'user'
+                        )
+                    )
                     ->success()
                     ->send();
 
@@ -173,19 +194,27 @@ class UsersTable
             ->color('danger')
             ->icon(Heroicon::OutlinedXMark)
             ->requiresConfirmation()
-            ->modalHeading('Permanent delete users')
-            ->modalDescription('This action is irreversible.')
+            ->modalHeading(
+                SystemMessageHelper::confirmHeading(
+                    SystemAction::ForceDelete,
+                    'users'
+                )
+            )
+            ->modalDescription(
+                SystemMessageHelper::confirmBody(
+                    SystemAction::ForceDelete,
+                    'users'
+                )
+            )
             ->visible(fn () => auth()->user()->can('forceDeleteAny', User::class))
             ->action(function (Collection $records) {
 
-                $success = static::guardBulkAction(
+                if (! static::guardBulkAction(
                     $records,
                     'forceDelete',
                     'Permanent delete blocked',
                     'One or more selected users cannot be permanently deleted.'
-                );
-
-                if (! $success) {
+                )) {
                     return;
                 }
 
@@ -193,12 +222,19 @@ class UsersTable
                 $records->each->forceDelete();
 
                 Notification::make()
-                    ->title('Users permanently deleted')
-                    ->body(static::notificationMessage(
-                        count: $count,
-                        action: 'permanently deleted',
-                        noun: 'user',
-                    ))
+                    ->title(
+                        SystemMessageHelper::successTitle(
+                            SystemAction::ForceDelete,
+                            'User'
+                        )
+                    )
+                    ->body(
+                        SystemMessageHelper::successBody(
+                            SystemAction::ForceDelete,
+                            $count,
+                            'user'
+                        )
+                    )
                     ->success()
                     ->send();
 
@@ -212,19 +248,27 @@ class UsersTable
             ->icon(Heroicon::OutlinedArrowPath)
             ->color('success')
             ->requiresConfirmation()
-            ->modalHeading('Restore users')
-            ->modalDescription('The selected users will be restored.')
+            ->modalHeading(
+                SystemMessageHelper::confirmHeading(
+                    SystemAction::Restore,
+                    'users'
+                )
+            )
+            ->modalDescription(
+                SystemMessageHelper::confirmBody(
+                    SystemAction::Restore,
+                    'users'
+                )
+            )
             ->visible(fn () => auth()->user()->can('restoreAny', User::class))
             ->action(function (Collection $records) {
 
-                $success = static::guardBulkAction(
+                if (! static::guardBulkAction(
                     $records,
                     'restore',
                     'Restore blocked',
                     'One or more selected users cannot be restored.'
-                );
-
-                if (! $success) {
+                )) {
                     return;
                 }
 
@@ -232,12 +276,19 @@ class UsersTable
                 $records->each->restore();
 
                 Notification::make()
-                    ->title('Users restored')
-                    ->body(static::notificationMessage(
-                        count: $count,
-                        action: 'restored successfully',
-                        noun: 'user',
-                    ))
+                    ->title(
+                        SystemMessageHelper::successTitle(
+                            SystemAction::Restore,
+                            'User'
+                        )
+                    )
+                    ->body(
+                        SystemMessageHelper::successBody(
+                            SystemAction::Restore,
+                            $count,
+                            'user'
+                        )
+                    )
                     ->success()
                     ->send();
             });
