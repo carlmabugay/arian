@@ -2,6 +2,8 @@
 
 namespace App\Filament\Forms;
 
+use App\Enums\SystemAction;
+use App\Filament\Traits\ConfigureSystemAction;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
@@ -15,6 +17,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class EditResourceForm
 {
+    use ConfigureSystemAction;
+
     public static function make(Schema $schema, Model $record, array $formSchema, string $resourceIndexUrl, string $titleAttribute = 'name'): Schema
     {
 
@@ -28,6 +32,7 @@ class EditResourceForm
                             ->size(Size::ExtraSmall)
                             ->color('warning')
                             ->tooltip('Trash')
+                            ->tap(fn (Action $action) => static::configureAction($action, SystemAction::Delete, $record->name))
                             ->authorize('delete', $record),
 
                         RestoreAction::make()
@@ -35,17 +40,18 @@ class EditResourceForm
                             ->icon(Heroicon::OutlinedArrowPath)
                             ->size(Size::ExtraSmall)
                             ->color('success')
-                            ->authorize('restore', $record)
                             ->tooltip('Restore')
-                            ->successNotificationTitle($record->{$titleAttribute}.' is now restored'),
+                            ->tap(fn (Action $action) => static::configureAction($action, SystemAction::Restore, $record->name))
+                            ->authorize('restore', $record),
 
                         ForceDeleteAction::make()
                             ->label('')
                             ->icon(Heroicon::OutlinedXMark)
                             ->size(Size::ExtraSmall)
-                            ->authorize('forceDelete', $record)
-                            ->tooltip('Permanently delete')
-                            ->successNotificationTitle($record->{$titleAttribute}.' is now permanently deleted'),
+                            ->color('danger')
+                            ->tooltip('Delete Permanently')
+                            ->tap(fn (Action $action) => static::configureAction($action, SystemAction::ForceDelete, $record->name))
+                            ->authorize('forceDelete', $record),
 
                     ])
                     ->schema($formSchema)

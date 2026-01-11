@@ -24,8 +24,7 @@ class CompanyForm
             TextInput::make('code')
                 ->label('Code: ')
                 ->required('create')
-                ->unique('companies', 'code')
-                ->readonly('edit'),
+                ->unique('companies', 'code'),
         ];
     }
 }

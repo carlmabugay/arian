@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\Companies\Tables;
 
+use App\Enums\SystemAction;
 use App\Filament\Resources\Companies\Schemas\CompanyForm;
+use App\Filament\Traits\ConfigureSystemAction;
 use App\Filament\Traits\HasBulkActions;
-use App\Filament\Traits\HasNotificationMessage;
+use App\Helpers\SystemMessageHelper;
 use App\Models\Company;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkAction;
@@ -25,7 +27,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class CompaniesTable
 {
-    use HasBulkActions, HasNotificationMessage;
+    use ConfigureSystemAction, HasBulkActions;
 
     public static function configure(Table $table): Table
     {
@@ -55,6 +57,7 @@ class CompaniesTable
                 ->modalHeading('Company Details')
                 ->modalWidth(Width::Medium)
                 ->schema(CompanyForm::form())
+                ->tap(fn (CreateAction $action) => static::configureAction($action, SystemAction::Create, 'Company'))
                 ->authorize('create'),
         ];
     }
@@ -125,16 +128,26 @@ class CompaniesTable
             ->color('warning')
             ->icon(Heroicon::OutlinedTrash)
             ->requiresConfirmation()
+            ->modalHeading(
+                SystemMessageHelper::confirmHeading(
+                    SystemAction::Delete,
+                    'companies'
+                )
+            )
+            ->modalDescription(
+                SystemMessageHelper::confirmBody(
+                    SystemAction::Delete,
+                    'companies'
+                )
+            )
             ->action(function (Collection $records) {
 
-                $success = static::guardBulkAction(
+                if (! static::guardBulkAction(
                     $records,
                     'delete',
                     'Trash blocked',
                     'One or more selected companies cannot be trashed.'
-                );
-
-                if (! $success) {
+                )) {
                     return;
                 }
 
@@ -142,12 +155,19 @@ class CompaniesTable
                 $records->each->delete();
 
                 Notification::make()
-                    ->title('Companies trashed')
-                    ->body(static::notificationMessage(
-                        count: $count,
-                        action: 'trashed successfully',
-                        noun: 'company',
-                    ))
+                    ->title(
+                        SystemMessageHelper::successTitle(
+                            SystemAction::Delete,
+                            'Company'
+                        )
+                    )
+                    ->body(
+                        SystemMessageHelper::successBody(
+                            SystemAction::Delete,
+                            $count,
+                            'company'
+                        )
+                    )
                     ->success()
                     ->send();
 
@@ -161,19 +181,28 @@ class CompaniesTable
             ->color('danger')
             ->icon(Heroicon::OutlinedXMark)
             ->requiresConfirmation()
-            ->modalHeading('Permanent delete companies')
-            ->modalDescription('This action is irreversible.')
+            ->modalHeading(
+                SystemMessageHelper::confirmHeading(
+                    SystemAction::ForceDelete,
+                    'companies'
+                )
+            )
+            ->modalDescription(
+                SystemMessageHelper::confirmBody(
+                    SystemAction::ForceDelete,
+                    'companies'
+                )
+            )
+
             ->visible(fn () => auth()->user()->can('forceDeleteAny', Company::class))
             ->action(function (Collection $records) {
 
-                $success = static::guardBulkAction(
+                if (! static::guardBulkAction(
                     $records,
                     'forceDelete',
                     'Permanent delete blocked',
                     'One or more selected companies cannot be permanently deleted.'
-                );
-
-                if (! $success) {
+                )) {
                     return;
                 }
 
@@ -181,12 +210,19 @@ class CompaniesTable
                 $records->each->forceDelete();
 
                 Notification::make()
-                    ->title('Companies permanently deleted')
-                    ->body(static::notificationMessage(
-                        count: $count,
-                        action: 'permanently deleted',
-                        noun: 'company',
-                    ))
+                    ->title(
+                        SystemMessageHelper::successTitle(
+                            SystemAction::ForceDelete,
+                            'Company'
+                        )
+                    )
+                    ->body(
+                        SystemMessageHelper::successBody(
+                            SystemAction::ForceDelete,
+                            $count,
+                            'company'
+                        )
+                    )
                     ->success()
                     ->send();
 
@@ -200,19 +236,27 @@ class CompaniesTable
             ->icon(Heroicon::OutlinedArrowPath)
             ->color('success')
             ->requiresConfirmation()
-            ->modalHeading('Restore companies')
-            ->modalDescription('The selected companies will be restored.')
+            ->modalHeading(
+                SystemMessageHelper::confirmHeading(
+                    SystemAction::Restore,
+                    'companies'
+                )
+            )
+            ->modalDescription(
+                SystemMessageHelper::confirmBody(
+                    SystemAction::Restore,
+                    'companies'
+                )
+            )
             ->visible(fn () => auth()->user()->can('restoreAny', Company::class))
             ->action(function (Collection $records) {
 
-                $success = static::guardBulkAction(
+                if (! static::guardBulkAction(
                     $records,
                     'restore',
                     'Restore blocked',
                     'One or more selected companies cannot be restored.'
-                );
-
-                if (! $success) {
+                )) {
                     return;
                 }
 
@@ -220,12 +264,19 @@ class CompaniesTable
                 $records->each->restore();
 
                 Notification::make()
-                    ->title('Companies restored')
-                    ->body(static::notificationMessage(
-                        count: $count,
-                        action: 'restored successfully',
-                        noun: 'company',
-                    ))
+                    ->title(
+                        SystemMessageHelper::successTitle(
+                            SystemAction::Restore,
+                            'Company'
+                        )
+                    )
+                    ->body(
+                        SystemMessageHelper::successBody(
+                            SystemAction::Restore,
+                            $count,
+                            'company'
+                        )
+                    )
                     ->success()
                     ->send();
             });
