@@ -20,8 +20,8 @@ use Filament\Notifications\Notification;
 use Filament\Support\Enums\Size;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
@@ -85,9 +85,7 @@ class UsersTable
             TextColumn::make('role')
                 ->badge(),
 
-            IconColumn::make('is_active')
-                ->label('Active')
-                ->boolean(),
+            ToggleColumn::make('is_active'),
 
             TextColumn::make('created_at')
                 ->label('Created at')

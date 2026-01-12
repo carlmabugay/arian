@@ -18,7 +18,7 @@ class CreateAsset extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['company_id'] = auth()->user()->company_id;
+        $data['company_id'] = auth()->user()->company_id ?? $data['company_id'];
 
         return $data;
     }
