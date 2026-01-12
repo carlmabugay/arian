@@ -177,6 +177,7 @@ class AssetsTable
                     'assets'
                 )
             )
+            ->visible(fn () => auth()->user()->can('deleteAny', Asset::class))
             ->action(function (Collection $records) {
 
                 if (! static::guardBulkAction(

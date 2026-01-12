@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\AssetAssignments;
 
+use App\Enums\UserRole;
 use App\Filament\Resources\AssetAssignments\Pages\ListAssetAssignments;
 use App\Filament\Resources\AssetAssignments\Schemas\AssetAssignmentForm;
 use App\Filament\Resources\AssetAssignments\Tables\AssetAssignmentsTable;
@@ -57,5 +58,16 @@ class AssetAssignmentResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        if (auth()->user()->role === UserRole::CompanyAdmin) {
+            $query->whereHas('asset', fn ($q) => $q->where('company_id', auth()->user()->company_id));
+        }
+
+        return $query;
     }
 }

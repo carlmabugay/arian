@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('asset_id')->constrained();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('assigned_by')->constrained('users');
+            $table->foreignId('assigned_by')->constrained('users')->restrictOnDelete();
             $table->timestamp('assigned_at');
             $table->timestamp('returned_at')->nullable();
             $table->text('notes')->nullable();

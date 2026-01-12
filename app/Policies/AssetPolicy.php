@@ -77,6 +77,15 @@ class AssetPolicy
         return $this->update($user, $asset);
     }
 
+    public function deleteAny(User $user): bool
+    {
+
+        return in_array($user->role, [
+            UserRole::SuperAdmin,
+            UserRole::CompanyAdmin,
+        ]);
+    }
+
     public function forceDeleteAny(User $user): bool
     {
         return $user->role === UserRole::SuperAdmin;
