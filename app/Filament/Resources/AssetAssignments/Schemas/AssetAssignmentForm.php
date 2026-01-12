@@ -25,7 +25,14 @@ class AssetAssignmentForm
                     )
                     ->label('Asset: ')
                     ->searchable()
-                    ->options(Asset::query()->where('status', AssetStatus::Available)->pluck('name', 'id'))
+                    ->options(
+                        auth()->user()->role === UserRole::SuperAdmin ?
+                            Asset::query()->where('status', AssetStatus::Available)->pluck('name', 'id') :
+                        Asset::query()
+                            ->where('company_id', auth()->user()->company_id)
+                            ->where('status', AssetStatus::Available)
+                            ->pluck('name', 'id')
+                    )
                     ->required()
                     ->columnSpanFull(),
 

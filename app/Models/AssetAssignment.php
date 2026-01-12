@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\AssetStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -42,5 +43,25 @@ class AssetAssignment extends Model
     public function assignedBy(): belongsTo
     {
         return $this->belongsTo(User::class, 'assigned_by');
+    }
+
+    protected static function booted(): void
+    {
+        static::created(function (AssetAssignment $assignment) {
+            $assignment->asset->update([
+                'status' => AssetStatus::Assigned,
+                'user_id' => $assignment->user_id,
+            ]);
+        });
+
+        static::updated(function (AssetAssignment $assignment) {
+
+            if ($assignment->returned_at) {
+                $assignment->asset->update([
+                    'status' => AssetStatus::Available,
+                    'user_id' => null,
+                ]);
+            }
+        });
     }
 }

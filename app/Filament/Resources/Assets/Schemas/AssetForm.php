@@ -9,7 +9,6 @@ use App\Filament\Resources\Assets\AssetResource;
 use App\Models\AssetCategory;
 use App\Models\Company;
 use App\Models\Location;
-use App\Models\User;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -96,12 +95,6 @@ class AssetForm
                 ->searchable()
                 ->options(Location::query()->pluck('name', 'id'))
                 ->required(),
-
-            Select::make('user_id')
-                ->label('Assigned To: ')
-                ->relationship('assignedUser', 'name')
-                ->searchable()
-                ->options(User::query()->pluck('name', 'id')),
 
             Textarea::make('description')
                 ->label('Description: ')
