@@ -6,13 +6,16 @@ use App\Enums\SystemAction;
 use App\Filament\Traits\ConfigureSystemAction;
 use App\Filament\Traits\HasBulkActions;
 use App\Helpers\SystemMessageHelper;
+use App\Livewire\AssetAssignmentHistory;
 use App\Models\AssetAssignment;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Livewire;
 use Filament\Support\Enums\Size;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
@@ -118,6 +121,18 @@ class AssetAssignmentsTable
     public static function recordActions(): ActionGroup
     {
         return ActionGroup::make([
+
+            ViewAction::make()
+                ->label('View Assignment History')
+                ->modal()
+                ->modalHeading(fn (AssetAssignment $record) => "Assignment History — {$record->asset->name}")
+                ->modalWidth(Width::FourExtraLarge)
+                ->schema(fn (AssetAssignment $record) => [
+                    Livewire::make(AssetAssignmentHistory::class, [
+                        'asset' => $record->asset,
+                    ]),
+                ]),
+
             EditAction::make()
                 ->slideOver()
                 ->modalWidth(Width::Medium)

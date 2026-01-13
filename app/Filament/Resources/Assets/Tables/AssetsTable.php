@@ -9,6 +9,7 @@ use App\Enums\UserRole;
 use App\Filament\Traits\ConfigureSystemAction;
 use App\Filament\Traits\HasBulkActions;
 use App\Helpers\SystemMessageHelper;
+use App\Livewire\AssetAssignmentHistory;
 use App\Models\Asset;
 use App\Models\Location;
 use Filament\Actions\ActionGroup;
@@ -16,8 +17,11 @@ use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Livewire;
 use Filament\Support\Enums\Size;
+use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
@@ -145,6 +149,17 @@ class AssetsTable
     public static function recordActions(): ActionGroup
     {
         return ActionGroup::make([
+
+            ViewAction::make()
+                ->label('View Assignment History')
+                ->modal()
+                ->modalHeading(fn (Asset $record) => "Assignment History — {$record->name}")
+                ->modalWidth(Width::FourExtraLarge)
+                ->schema(fn (Asset $record) => [
+                    Livewire::make(AssetAssignmentHistory::class, [
+                        'asset' => $record,
+                    ]),
+                ]),
             EditAction::make()->authorize('update', Asset::class),
         ]);
     }

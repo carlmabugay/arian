@@ -61,6 +61,11 @@ class AssetAssignment extends Model
                     'status' => AssetStatus::Available,
                     'user_id' => null,
                 ]);
+            } else {
+                $assignment->asset->update([
+                    'status' => AssetStatus::Assigned,
+                    'user_id' => $assignment->user_id,
+                ]);
             }
         });
     }
