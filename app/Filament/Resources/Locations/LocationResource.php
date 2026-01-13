@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Locations;
 
-use App\Enums\UserRole;
 use App\Filament\Resources\Locations\Pages\EditLocation;
 use App\Filament\Resources\Locations\Pages\ListLocations;
 use App\Filament\Resources\Locations\RelationManagers\AssetsRelationManager;
@@ -79,7 +78,7 @@ class LocationResource extends Resource
 
         $user = auth()->user();
 
-        if ($user->role === UserRole::CompanyAdmin) {
+        if ($user->isCompanyAdmin()) {
             $query->where('company_id', $user->company_id);
         }
 

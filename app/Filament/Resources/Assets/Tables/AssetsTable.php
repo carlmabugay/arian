@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Assets\Tables;
 use App\Enums\AssetCondition;
 use App\Enums\AssetStatus;
 use App\Enums\SystemAction;
-use App\Enums\UserRole;
 use App\Filament\Traits\ConfigureSystemAction;
 use App\Filament\Traits\HasBulkActions;
 use App\Helpers\SystemMessageHelper;
@@ -109,7 +108,7 @@ class AssetsTable
 
             TextColumn::make('company.name')
                 ->label('Company')
-                ->visible(auth()->user()->role === UserRole::SuperAdmin)
+                ->visible(auth()->user()->isSuperAdmin())
                 ->hiddenOn('relation')
                 ->sortable(),
 

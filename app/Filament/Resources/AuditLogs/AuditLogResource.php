@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\AuditLogs;
 
-use App\Enums\UserRole;
 use App\Filament\Resources\AuditLogs\Pages\ListAuditLogs;
 use App\Filament\Resources\AuditLogs\Schemas\AuditLogForm;
 use App\Filament\Resources\AuditLogs\Schemas\AuditLogInfolist;
@@ -86,7 +85,7 @@ class AuditLogResource extends Resource
 
         $user = auth()->user();
 
-        if ($user->role === UserRole::CompanyAdmin) {
+        if ($user->isCompanyAdmin()) {
             $query->where('company_id', $user->company_id);
         }
 

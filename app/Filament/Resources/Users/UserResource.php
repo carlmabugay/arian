@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Users;
 
-use App\Enums\UserRole;
 use App\Filament\Resources\Users\Pages\EditUser;
 use App\Filament\Resources\Users\Pages\ListUsers;
 use App\Filament\Resources\Users\RelationManagers\AssignmentsRelationManager;
@@ -81,7 +80,7 @@ class UserResource extends Resource
 
         $query->whereNot('id', $user->id);
 
-        if ($user->role === UserRole::CompanyAdmin) {
+        if ($user->isCompanyAdmin()) {
             $query->where('company_id', $user->company_id);
         }
 

@@ -40,24 +40,22 @@ class LocationPolicy
 
     public function restoreAny(User $user): bool
     {
-        return $user->role === UserRole::SuperAdmin;
+        return $user->isSuperAdmin();
     }
 
     public function restore(User $user, Location $location): bool
     {
-        return
-            $user->role === UserRole::SuperAdmin &&
-            $location->trashed();
+        return $user->isSuperAdmin() && $location->trashed();
     }
 
     public function forceDeleteAny(User $user): bool
     {
-        return $user->role === UserRole::SuperAdmin;
+        return $user->isSuperAdmin();
     }
 
     public function forceDelete(User $user, Location $location): bool
     {
-        if ($user->role !== UserRole::SuperAdmin) {
+        if (! $user->isSuperAdmin()) {
             return false;
         }
 
@@ -66,12 +64,10 @@ class LocationPolicy
 
     protected function canManageLocation(User $user, Location $location): bool
     {
-        if ($user->role === UserRole::SuperAdmin) {
+        if ($user->isSuperAdmin()) {
             return true;
         }
 
-        return
-            $user->role === UserRole::CompanyAdmin &&
-            $user->company_id === $location->company_id;
+        return $user->isCompanyAdmin() && $user->company_id === $location->company_id;
     }
 }

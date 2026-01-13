@@ -10,20 +10,16 @@ class AssetPolicy
 {
     public function viewAny(User $user): bool
     {
-        return in_array($user->role, [
-            UserRole::SuperAdmin,
-            UserRole::CompanyAdmin,
-            UserRole::Staff,
-        ]);
+        return in_array($user->role, UserRole::values());
     }
 
     public function view(User $user, Asset $asset): bool
     {
-        if ($user->role === UserRole::SuperAdmin) {
+        if ($user->isSuperAdmin()) {
             return true;
         }
 
-        if ($user->role === UserRole::CompanyAdmin) {
+        if ($user->isCompanyAdmin()) {
             return $user->company_id === $asset->company_id;
         }
 
@@ -40,11 +36,11 @@ class AssetPolicy
 
     public function update(User $user, Asset $asset): bool
     {
-        if ($user->role === UserRole::SuperAdmin) {
+        if ($user->isSuperAdmin()) {
             return true;
         }
 
-        return $user->role === UserRole::CompanyAdmin && $user->company_id === $asset->company_id;
+        return $user->isCompanyAdmin() && $user->company_id === $asset->company_id;
     }
 
     public function delete(User $user, Asset $asset): bool
@@ -60,7 +56,7 @@ class AssetPolicy
             return false;
         }
 
-        if ($user->role === UserRole::CompanyAdmin) {
+        if ($user->isCompanyAdmin()) {
             return $user->company_id === $asset->company_id;
         }
 
@@ -69,7 +65,7 @@ class AssetPolicy
 
     public function forceDelete(User $user, Asset $asset): bool
     {
-        return $user->role === UserRole::SuperAdmin && ! $asset->assignments()->withTrashed()->exists();
+        return $user->isSuperAdmin() && ! $asset->assignments()->withTrashed()->exists();
     }
 
     public function restore(User $user, Asset $asset): bool
@@ -88,11 +84,11 @@ class AssetPolicy
 
     public function forceDeleteAny(User $user): bool
     {
-        return $user->role === UserRole::SuperAdmin;
+        return $user->isSuperAdmin();
     }
 
     public function restoreAny(User $user): bool
     {
-        return $user->role === UserRole::SuperAdmin;
+        return $user->isSuperAdmin();
     }
 }

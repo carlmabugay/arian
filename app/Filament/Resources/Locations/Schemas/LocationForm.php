@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Locations\Schemas;
 
 use App\Enums\LocationType;
-use App\Enums\UserRole;
 use App\Models\Company;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -28,14 +27,14 @@ class LocationForm
 
             Hidden::make('company_id')
                 ->default(fn () => auth()->user()->company_id)
-                ->visible(fn () => auth()->user()->role !== UserRole::SuperAdmin),
+                ->visible(fn () => ! auth()->user()->isSuperAdmin()),
 
             Select::make('company_id')
                 ->label('Company: ')
                 ->relationship('company', 'name')
                 ->searchable()
                 ->options(Company::query()->pluck('name', 'id'))
-                ->visible(fn () => auth()->user()->role === UserRole::SuperAdmin)
+                ->visible(fn () => auth()->user()->isSuperAdmin())
                 ->required(),
 
             Select::make('type')

@@ -82,7 +82,7 @@ class AssetResource extends Resource
         $query = parent::getEloquentQuery();
         $user = auth()->user();
 
-        if ($user->role === UserRole::CompanyAdmin) {
+        if ($user->isCompanyAdmin()) {
             $query->where('company_id', $user->company_id);
         }
 

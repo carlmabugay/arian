@@ -18,7 +18,7 @@ class CompanyPolicy
 
     public function create(User $user): bool
     {
-        return $user->role === UserRole::SuperAdmin;
+        return $user->isSuperAdmin();
     }
 
     public function update(User $user, Company $company): bool
@@ -37,23 +37,23 @@ class CompanyPolicy
 
     public function restoreAny(User $user): bool
     {
-        return $user->role === UserRole::SuperAdmin;
+        return $user->isSuperAdmin();
     }
 
     public function restore(User $user, Company $company): bool
     {
-        return $user->role === UserRole::SuperAdmin && $company->trashed();
+        return $user->isSuperAdmin() && $company->trashed();
     }
 
     public function forceDeleteAny(User $user): bool
     {
-        return $user->role === UserRole::SuperAdmin;
+        return $user->isSuperAdmin();
 
     }
 
     public function forceDelete(User $user, Company $company): bool
     {
-        if ($user->role !== UserRole::SuperAdmin) {
+        if (! $user->isSuperAdmin()) {
             return false;
         }
 
@@ -62,12 +62,10 @@ class CompanyPolicy
 
     protected function canManageCompany(User $user, Company $company): bool
     {
-        if ($user->role === UserRole::SuperAdmin) {
+        if ($user->isSuperAdmin()) {
             return true;
         }
 
-        return
-            $user->role === UserRole::CompanyAdmin &&
-            $user->company_id === $company->id;
+        return $user->isCompanyAdmin() && $user->company_id === $company->id;
     }
 }

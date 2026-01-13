@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\AssetAssignments\Schemas;
 
 use App\Enums\AssetStatus;
-use App\Enums\UserRole;
 use App\Models\Asset;
 use App\Models\User;
 use Filament\Forms\Components\DateTimePicker;
@@ -26,7 +25,7 @@ class AssetAssignmentForm
                     ->label('Asset: ')
                     ->searchable()
                     ->options(
-                        auth()->user()->role === UserRole::SuperAdmin ?
+                        auth()->user()->isSuperAdmin() ?
                             Asset::query()->where('status', AssetStatus::Available)->pluck('name', 'id') :
                         Asset::query()
                             ->where('company_id', auth()->user()->company_id)
@@ -40,14 +39,14 @@ class AssetAssignmentForm
                     ->relationship(
                         'user',
                         'name',
-                        fn (Builder $query) => auth()->user()->role === UserRole::SuperAdmin
+                        fn (Builder $query) => auth()->user()->isSuperAdmin()
                             ? $query
                             : $query->where('company_id', auth()->user()->company_id)
                     )
                     ->label('Assigned To: ')
                     ->searchable()
                     ->options(
-                        auth()->user()->role === UserRole::SuperAdmin ?
+                        auth()->user()->isSuperAdmin() ?
                             User::query()->pluck('name', 'id') :
                             User::query()->where('company_id', auth()->user()->company_id)->pluck('name', 'id')
                     )

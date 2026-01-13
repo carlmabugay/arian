@@ -61,4 +61,14 @@ class User extends Authenticatable
     {
         return $this->assetAssignments()->whereNull('returned_at')->exists();
     }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === UserRole::SuperAdmin;
+    }
+
+    public function isCompanyAdmin(): bool
+    {
+        return $this->role === UserRole::CompanyAdmin;
+    }
 }

@@ -29,7 +29,7 @@ class UserPolicy
 
     public function delete(User $user, User $model): bool
     {
-        if ($user->role !== UserRole::SuperAdmin) {
+        if (! $user->isSuperAdmin()) {
             return false;
         }
 
@@ -38,30 +38,30 @@ class UserPolicy
 
     public function restoreAny(User $user): bool
     {
-        return $user->role === UserRole::SuperAdmin;
+        return $user->isSuperAdmin();
     }
 
     public function restore(User $user): bool
     {
-        return $user->role === UserRole::SuperAdmin;
+        return $user->isSuperAdmin();
     }
 
     public function forceDeleteAny(User $user): bool
     {
-        return $user->role === UserRole::SuperAdmin;
+        return $user->isSuperAdmin();
     }
 
     public function forceDelete(User $user, User $model): bool
     {
-        return $user->role === UserRole::SuperAdmin;
+        return $user->isSuperAdmin();
     }
 
     protected function canManageUser(User $user, User $model): bool
     {
-        if ($user->role === UserRole::SuperAdmin) {
+        if ($user->isSuperAdmin()) {
             return true;
         }
 
-        return $user->role === UserRole::CompanyAdmin && $user->company_id === $model->company_id;
+        return $user->isCompanyAdmin() && $user->company_id === $model->company_id;
     }
 }

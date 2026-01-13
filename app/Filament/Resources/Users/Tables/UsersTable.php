@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Users\Tables;
 
 use App\Enums\SystemAction;
-use App\Enums\UserRole;
 use App\Filament\Resources\Companies\RelationManagers\UsersRelationManager;
 use App\Filament\Resources\Users\Schemas\UserForm;
 use App\Filament\Traits\ConfigureSystemAction;
@@ -79,7 +78,7 @@ class UsersTable
 
             TextColumn::make('company.name')
                 ->label('Company')
-                ->visible(auth()->user()->role === UserRole::SuperAdmin)
+                ->visible(auth()->user()->isSuperAdmin())
                 ->hiddenOn(UsersRelationManager::class),
 
             TextColumn::make('role')
@@ -99,7 +98,7 @@ class UsersTable
         return [
             SelectFilter::make('role')
                 ->options(
-                    auth()->user()->role === UserRole::SuperAdmin
+                    auth()->user()->isSuperAdmin()
                         ? RoleHelper::all()
                         : RoleHelper::forCompanyAdmin()
                 ),
@@ -107,7 +106,7 @@ class UsersTable
             SelectFilter::make('company_id')
                 ->label('Company')
                 ->relationship('company', 'name')
-                ->visible(fn () => auth()->user()->role === UserRole::SuperAdmin),
+                ->visible(fn () => auth()->user()->isSuperAdmin()),
 
             TrashedFilter::make(),
         ];

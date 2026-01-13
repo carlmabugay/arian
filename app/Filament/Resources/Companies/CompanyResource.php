@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Companies;
 
-use App\Enums\UserRole;
 use App\Filament\Resources\Companies\Pages\EditCompany;
 use App\Filament\Resources\Companies\Pages\ListCompanies;
 use App\Filament\Resources\Companies\RelationManagers\AssetsRelationManager;
@@ -81,7 +80,7 @@ class CompanyResource extends Resource
 
         $user = auth()->user();
 
-        if ($user->role === UserRole::CompanyAdmin) {
+        if ($user->isCompanyAdmin()) {
             $query->where('id', $user->company_id);
         }
 

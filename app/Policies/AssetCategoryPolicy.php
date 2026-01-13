@@ -36,28 +36,26 @@ class AssetCategoryPolicy
 
     public function delete(User $user, AssetCategory $category): bool
     {
-        return $user->role === UserRole::SuperAdmin
-            && ! $category->hasAssets();
+        return $user->isSuperAdmin() && ! $category->hasAssets();
     }
 
     public function restore(User $user, AssetCategory $category): bool
     {
-        return $user->role === UserRole::SuperAdmin;
+        return $user->isSuperAdmin();
     }
 
     public function restoreAny(User $user): bool
     {
-        return $user->role === UserRole::SuperAdmin;
+        return $user->isSuperAdmin();
     }
 
     public function forceDelete(User $user, AssetCategory $category): bool
     {
-        return $user->role === UserRole::SuperAdmin
-            && ! $category->hasAssets();
+        return $user->isSuperAdmin() && ! $category->hasAssets();
     }
 
     public function forceDeleteAny(User $user): bool
     {
-        return $user->role === UserRole::SuperAdmin;
+        return $user->isSuperAdmin();
     }
 }

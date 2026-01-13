@@ -4,7 +4,6 @@ namespace App\Filament\Resources\Assets\Schemas;
 
 use App\Enums\AssetCondition;
 use App\Enums\AssetStatus;
-use App\Enums\UserRole;
 use App\Filament\Resources\Assets\AssetResource;
 use App\Models\AssetCategory;
 use App\Models\Company;
@@ -54,7 +53,7 @@ class AssetForm
                 ->searchable()
                 ->options(Company::query()->pluck('name', 'id'))
                 ->required()
-                ->visible(fn () => auth()->user()->role === UserRole::SuperAdmin),
+                ->visible(fn () => auth()->user()->isSuperAdmin()),
 
             TextInput::make('name')
                 ->label('Name: ')

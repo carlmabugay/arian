@@ -37,7 +37,7 @@ class UserForm
                 ->label('Role: ')
                 ->native(false)
                 ->options(
-                    auth()->user()->role === UserRole::SuperAdmin
+                    auth()->user()->isSuperAdmin()
                         ? RoleHelper::all()
                         : RoleHelper::forCompanyAdmin()
                 )
@@ -46,14 +46,14 @@ class UserForm
 
             Hidden::make('company_id')
                 ->default(fn () => auth()->user()->company_id)
-                ->visible(fn () => auth()->user()->role !== UserRole::SuperAdmin),
+                ->visible(fn () => ! auth()->user()->isSuperAdmin()),
 
             Select::make('company_id')
                 ->label('Company: ')
                 ->relationship('company', 'name')
                 ->searchable()
                 ->options(Company::query()->pluck('name', 'id'))
-                ->visible(fn () => auth()->user()->role === UserRole::SuperAdmin)
+                ->visible(fn () => auth()->user()->isSuperAdmin())
                 ->required(),
 
             TextInput::make('password')

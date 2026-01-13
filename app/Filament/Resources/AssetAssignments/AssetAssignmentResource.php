@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\AssetAssignments;
 
-use App\Enums\UserRole;
 use App\Filament\Resources\AssetAssignments\Pages\ListAssetAssignments;
 use App\Filament\Resources\AssetAssignments\Schemas\AssetAssignmentForm;
 use App\Filament\Resources\AssetAssignments\Tables\AssetAssignmentsTable;
@@ -64,7 +63,7 @@ class AssetAssignmentResource extends Resource
     {
         $query = parent::getEloquentQuery();
 
-        if (auth()->user()->role === UserRole::CompanyAdmin) {
+        if (auth()->user()->isCompanyAdmin()) {
             $query->whereHas('asset', fn ($q) => $q->where('company_id', auth()->user()->company_id));
         }
 
