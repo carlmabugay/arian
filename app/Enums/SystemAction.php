@@ -13,6 +13,11 @@ enum SystemAction: string implements HasLabel
     case Restore = 'restore';
     case ForceDelete = 'force_delete';
 
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
+
     public function getLabel(): string|Htmlable|null
     {
         return match ($this) {
