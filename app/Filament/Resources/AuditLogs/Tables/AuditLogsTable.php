@@ -3,6 +3,9 @@
 namespace App\Filament\Resources\AuditLogs\Tables;
 
 use App\Enums\SystemAction;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\ViewAction;
+use Filament\Support\Enums\Width;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
@@ -32,6 +35,14 @@ class AuditLogsTable
                         'asset_assigned' => 'Asset Assigned',
                         'asset_returned' => 'Asset Returned',
                     ]),
+            ])
+            ->recordActions([
+                ActionGroup::make([
+                    ViewAction::make()
+                        ->label('View full log details')
+                        ->modalHeading('System Log Details')
+                        ->modalWidth(Width::FourExtraLarge),
+                ]),
             ])
             ->defaultSort('created_at', 'desc')
             ->deferFilters(false)

@@ -7,6 +7,8 @@ use App\Loggers\AuditLogger;
 
 trait Auditable
 {
+    protected array $auditOld = [];
+
     public static function bootAuditable(): void
     {
         static::created(fn ($model) => AuditLogger::log(SystemAction::Create, $model, null, $model->getAttributes())
@@ -19,8 +21,8 @@ trait Auditable
         static::updated(fn ($model) => AuditLogger::log(
             SystemAction::Update,
             $model,
-            $model->auditOld ?? null,
-            $model->getChanges()
+            old: $model->auditOld,
+            new: $model->getChanges()
         )
         );
 

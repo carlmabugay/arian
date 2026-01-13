@@ -28,6 +28,8 @@ class UserResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    protected static ?int $navigationSort = 3;
+
     public static function canViewAny(): bool
     {
         return auth()->user()->can('viewAny', self::getModel());

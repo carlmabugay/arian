@@ -37,4 +37,20 @@ class AuditLog extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getChanges(): array
+    {
+        $old = $this->old_values ?? [];
+        $new = $this->new_values ?? [];
+
+        return collect($new)
+            ->filter(fn ($value, $key) => ($old[$key] ?? null) != $value)
+            ->mapWithKeys(fn ($value, $key) => [
+                $key => [
+                    'old' => $old[$key] ?? null,
+                    'new' => $value,
+                ],
+            ])
+            ->toArray();
+    }
 }

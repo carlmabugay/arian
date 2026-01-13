@@ -25,11 +25,11 @@ class AssetCategoryResource extends Resource
 
     protected static ?string $navigationLabel = 'Categories';
 
-    protected static ?int $navigationSort = 1;
-
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    protected static ?int $navigationSort = 4;
 
     public static function canViewAny(): bool
     {

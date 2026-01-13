@@ -24,9 +24,9 @@ class AssetAssignmentResource extends Resource
 
     protected static ?string $navigationLabel = 'Assignments';
 
-    protected static ?int $navigationSort = 3;
-
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;
+
+    protected static ?int $navigationSort = 6;
 
     public static function form(Schema $schema): Schema
     {

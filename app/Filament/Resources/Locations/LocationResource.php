@@ -28,6 +28,8 @@ class LocationResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    protected static ?int $navigationSort = 2;
+
     public static function canViewAny(): bool
     {
         return auth()->user()->can('viewAny', self::$model);

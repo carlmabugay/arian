@@ -27,11 +27,11 @@ class AssetResource extends Resource
 
     protected static ?string $navigationLabel = 'Assets';
 
-    protected static ?int $navigationSort = 2;
-
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    protected static ?int $navigationSort = 5;
 
     public static function canViewAny(): bool
     {

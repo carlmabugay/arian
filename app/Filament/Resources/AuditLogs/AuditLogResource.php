@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\AuditLogs;
 
+use App\Enums\UserRole;
 use App\Filament\Resources\AuditLogs\Pages\ListAuditLogs;
 use App\Filament\Resources\AuditLogs\Schemas\AuditLogForm;
 use App\Filament\Resources\AuditLogs\Schemas\AuditLogInfolist;
@@ -12,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class AuditLogResource extends Resource
@@ -21,6 +23,18 @@ class AuditLogResource extends Resource
     protected static ?string $navigationLabel = 'System Logs';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedQueueList;
+
+    protected static ?int $navigationSort = 7;
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('viewAny', self::getModel());
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()->can('viewAny', self::getModel());
+    }
 
     public static function canCreate(): bool
     {
@@ -64,5 +78,18 @@ class AuditLogResource extends Resource
         return [
             'index' => ListAuditLogs::route('/'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        $user = auth()->user();
+
+        if ($user->role === UserRole::CompanyAdmin) {
+            $query->where('company_id', $user->company_id);
+        }
+
+        return $query;
     }
 }
