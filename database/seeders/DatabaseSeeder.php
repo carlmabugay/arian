@@ -24,10 +24,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Company
-        $this->command->warn(PHP_EOL.'Creating company...');
-        $company = $this->withProgressBar(1, fn () => Company::factory()->create());
-        $this->command->info('Company created.');
 
         // Super Admin
         $this->command->warn(PHP_EOL.'Creating admin user...');
@@ -40,6 +36,11 @@ class DatabaseSeeder extends Seeder
             'is_active' => true,
         ]));
         $this->command->info('Admin user created.');
+
+        // Company
+        $this->command->warn(PHP_EOL.'Creating company...');
+        $company = $this->withProgressBar(1, fn () => Company::factory()->create());
+        $this->command->info('Company created.');
 
         // Users
         $this->command->warn(PHP_EOL.'Creating users...');

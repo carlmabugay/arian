@@ -14,12 +14,15 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use UnitEnum;
 
 class AuditLogResource extends Resource
 {
     protected static ?string $model = AuditLog::class;
 
-    protected static ?string $navigationLabel = 'System Logs';
+    protected static string|UnitEnum|null $navigationGroup = 'System';
+
+    protected static ?string $navigationLabel = 'Logs';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedQueueList;
 
