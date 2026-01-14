@@ -15,30 +15,36 @@ class AuditLogInfolist
         return $schema
             ->schema([
                 Section::make('Summary')
+                    ->columns(3)
                     ->schema([
-                        TextEntry::make('event')
-                            ->label('Action')
+                        TextEntry::make('action')
+                            ->label('Action: ')
                             ->badge(),
-                        TextEntry::make('actor.name')
-                            ->label('Actor')
+
+                        TextEntry::make('user.name')
+                            ->label('Actor: ')
                             ->placeholder('System'),
 
                         TextEntry::make('auditable_type')
-                            ->label('Model')
+                            ->label('Model: ')
                             ->formatStateUsing(fn ($state) => class_basename($state)),
 
                         TextEntry::make('created_at')
-                            ->label('Date')
+                            ->label('Date: ')
                             ->dateTime(),
 
                         TextEntry::make('ip_address')
-                            ->label('IP Address'),
-                    ]),
+                            ->label('IP Address: '),
 
-                Section::make('Changes')
+                        TextEntry::make('user_agent')
+                            ->label('User Agent: '),
+
+                    ])->columnSpanFull(),
+
+                Section::make('Log')
                     ->schema([
                         RepeatableEntry::make('changes')
-                            ->label('')
+                            ->label(null)
                             ->state(fn ($record) => collect($record->getChanges())->map(
                                 fn ($change, $field) => [
                                     'field' => Str::headline($field),
@@ -51,21 +57,10 @@ class AuditLogInfolist
                                 TextEntry::make('old')->label('Old: ')->color('gray'),
                                 TextEntry::make('new')->label('New: ')->color('success'),
                             ])
+                            ->placeholder('Nothing found')
                             ->columnSpanFull(),
                     ])
                     ->collapsible()
-                    ->collapsed()
-                    ->columnSpanFull(),
-
-                Section::make('Metadata')
-
-                    ->schema([
-                        TextEntry::make('user_agent'),
-                        TextEntry::make('method'),
-                        TextEntry::make('url'),
-                    ])
-                    ->collapsible()
-                    ->collapsed()
                     ->columnSpanFull(),
             ]);
     }

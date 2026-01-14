@@ -10,7 +10,7 @@ class AssetPolicy
 {
     public function viewAny(User $user): bool
     {
-        return in_array($user->role, UserRole::values());
+        return true;
     }
 
     public function view(User $user, Asset $asset): bool
