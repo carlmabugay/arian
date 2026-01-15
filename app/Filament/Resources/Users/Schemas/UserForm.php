@@ -5,11 +5,13 @@ namespace App\Filament\Resources\Users\Schemas;
 use App\Enums\UserRole;
 use App\Helpers\RoleHelper;
 use App\Models\Company;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 
 class UserForm
 {
@@ -59,6 +61,14 @@ class UserForm
             TextInput::make('password')
                 ->label('Password: ')
                 ->password('create')
+                ->revealable()
+                ->belowContent(
+                    Action::make('generate')
+                        ->action(function (callable $set) {
+                            $password = Str::password(12);
+                            $set('password', $password);
+                        })
+                )
                 ->required(fn (string $context): bool => $context === 'create')
                 ->dehydrateStateUsing(fn ($state) => filled($state) ? bcrypt($state) : null)
                 ->dehydrated(fn ($state) => filled($state)),

@@ -18,12 +18,6 @@ class AssetCategoryForm
     {
         return [
 
-            Select::make('parent_id')
-                ->label('Parent Category: ')
-                ->searchable()
-                ->relationship('parent', 'name')
-                ->options(AssetCategory::query()->pluck('name', 'id')),
-
             TextInput::make('name')
                 ->label('Name: ')
                 ->required(),
@@ -31,6 +25,13 @@ class AssetCategoryForm
             TextInput::make('code')
                 ->label('Code: ')
                 ->required(),
+
+            Select::make('parent_id')
+                ->label('Parent: ')
+                ->searchable()
+                ->relationship('parent', 'name')
+                ->options(AssetCategory::query()->pluck('name', 'id'))
+                ->placeholder('Select parent category'),
 
         ];
     }

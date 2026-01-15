@@ -9,6 +9,7 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Builder;
 
 class AssetAssignmentForm
@@ -43,7 +44,7 @@ class AssetAssignmentForm
                             ? $query
                             : $query->where('company_id', auth()->user()->company_id)
                     )
-                    ->label('Assigned To: ')
+                    ->label('Assigned to: ')
                     ->searchable()
                     ->options(
                         auth()->user()->isSuperAdmin() ?
@@ -54,14 +55,16 @@ class AssetAssignmentForm
                     ->columnSpanFull(),
 
                 DateTimePicker::make('assigned_at')
-                    ->label('Assigned On: ')
+                    ->label('Assigned on: ')
+                    ->suffixIcon(Heroicon::OutlinedCalendar)
                     ->native(false)
                     ->default(now())
                     ->required()
                     ->columnSpanFull(),
 
                 DateTimePicker::make('returned_at')
-                    ->label('Return On: ')
+                    ->label('Returned on: ')
+                    ->suffixIcon(Heroicon::OutlinedCalendar)
                     ->native(false)
                     ->visibleOn('edit')
                     ->columnSpanFull(),

@@ -17,6 +17,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\Size;
+use Filament\Support\Icons\Heroicon;
 
 class AssetForm
 {
@@ -101,7 +102,8 @@ class AssetForm
 
             DatePicker::make('purchased_at')
                 ->label('Purchased Date: ')
-                ->native(false),
+                ->native(false)
+                ->suffixIcon(Heroicon::OutlinedCalendar),
 
             TextInput::make('purchase_price')
                 ->label('Purchase Price: ')
