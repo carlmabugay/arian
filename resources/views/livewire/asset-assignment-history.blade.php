@@ -4,8 +4,8 @@
         <tr>
             <th class="fi-ta-header-cell">User</th>
             <th class="fi-ta-header-cell">Assigned By</th>
-            <th class="fi-ta-header-cell">Assigned At</th>
-            <th class="fi-ta-header-cell">Returned At</th>
+            <th class="fi-ta-header-cell">Assigned on</th>
+            <th class="fi-ta-header-cell">Returned on</th>
         </tr>
         </thead>
         <tbody>

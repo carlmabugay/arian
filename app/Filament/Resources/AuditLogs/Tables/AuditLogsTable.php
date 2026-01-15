@@ -19,7 +19,7 @@ class AuditLogsTable
             ->heading('System Logs')
             ->description('Manage your system activity logs here.')
             ->columns([
-                TextColumn::make('created_at')->dateTime()->sortable(),
+                TextColumn::make('created_at')->label('Done on')->dateTime()->sortable(),
                 TextColumn::make('user.name')->label('User')->placeholder('System'),
                 TextColumn::make('action')->badge(),
                 TextColumn::make('event')->badge(),

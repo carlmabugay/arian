@@ -80,14 +80,16 @@ class AssetAssignmentsTable
                 ->searchable(),
 
             TextColumn::make('user.name')
-                ->label('Assigned To')
+                ->label('Assigned to')
                 ->searchable(),
 
             TextColumn::make('assigned_at')
+                ->label('Assigned on')
                 ->date()
                 ->sortable(),
 
             TextColumn::make('returned_at')
+                ->label('Returned on')
                 ->date()
                 ->sortable()
                 ->placeholder('—'),

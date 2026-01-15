@@ -87,7 +87,7 @@ class UsersTable
             ToggleColumn::make('is_active'),
 
             TextColumn::make('created_at')
-                ->label('Created at')
+                ->label('Created on')
                 ->date()
                 ->sortable(),
         ];

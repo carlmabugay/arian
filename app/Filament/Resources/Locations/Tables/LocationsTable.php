@@ -79,7 +79,7 @@ class LocationsTable
                 ->counts('assets'),
 
             TextColumn::make('created_at')
-                ->label('Creation Date')
+                ->label('Created on')
                 ->date()
                 ->sortable(),
         ];
