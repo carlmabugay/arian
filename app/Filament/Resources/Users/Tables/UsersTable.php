@@ -37,6 +37,7 @@ class UsersTable
             ->heading('Users')
             ->description('Manage users here.')
             ->headerActions(self::headerActions())
+            ->emptyStateActions(self::headerActions())
             ->columns(self::columns())
             ->defaultSort('created_at', 'desc')
             ->searchPlaceholder('Search...')

@@ -39,6 +39,7 @@ class AssetsTable
             ->heading('Assets')
             ->description('Manage your assets here.')
             ->headerActions(self::headerActions())
+            ->emptyStateActions(self::headerActions())
             ->columns(self::columns())
             ->defaultSort('created_at', 'desc')
             ->filters(self::filters())

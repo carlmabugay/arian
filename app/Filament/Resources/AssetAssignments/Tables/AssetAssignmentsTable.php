@@ -36,6 +36,7 @@ class AssetAssignmentsTable
             ->heading('Asset Assignments')
             ->description('Manage asset assignments here.')
             ->headerActions(self::headerActions())
+            ->emptyStateActions(self::headerActions())
             ->columns(self::columns())
             ->defaultSort('assigned_at', 'desc')
             ->filters(self::filters())

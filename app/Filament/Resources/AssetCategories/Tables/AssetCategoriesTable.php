@@ -35,6 +35,7 @@ class AssetCategoriesTable
             ->heading('Categories')
             ->description('Manage your asset categories here.')
             ->headerActions(self::headerActions())
+            ->emptyStateActions(self::headerActions())
             ->columns(self::columns())
             ->defaultSort('created_at', 'desc')
             ->searchPlaceholder('Search...')

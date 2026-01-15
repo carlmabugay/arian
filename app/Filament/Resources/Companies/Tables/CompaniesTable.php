@@ -34,6 +34,7 @@ class CompaniesTable
         return $table
             ->heading('Companies')
             ->description('Manage your companies here.')
+            ->emptyStateActions(self::headerActions())
             ->headerActions(self::headerActions())
             ->columns(self::columns())
             ->defaultSort('created_at', 'desc')

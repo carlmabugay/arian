@@ -35,6 +35,7 @@ class LocationsTable
             ->heading('Locations')
             ->description('Manage your company locations here.')
             ->headerActions(self::headerActions())
+            ->emptyStateActions(self::headerActions())
             ->columns(self::columns())
             ->defaultSort('created_at', 'desc')
             ->searchPlaceholder('Search location by name and company name...')
