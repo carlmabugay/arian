@@ -46,6 +46,10 @@ class LocationObserver
      */
     public function deleted(Location $location): void
     {
+        if (! $location->trashed()) {
+            return;
+        }
+
         $recipients = $this->getRecipients($location);
 
         foreach ($recipients as $user) {

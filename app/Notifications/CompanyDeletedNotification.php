@@ -34,7 +34,7 @@ class CompanyDeletedNotification extends Notification
     {
         return FilamentNotification::make()
             ->title('Company Deleted')
-            ->body("Company {$this->company->name} has been deleted.")
+            ->body("Company {$this->company->name} has been permanently deleted.")
             ->actions([
                 Action::make('view')
                     ->button()

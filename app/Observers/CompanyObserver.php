@@ -46,6 +46,10 @@ class CompanyObserver
      */
     public function deleted(Company $company): void
     {
+        if (! $company->trashed()) {
+            return;
+        }
+
         $recipients = $this->getRecipients($company);
 
         foreach ($recipients as $user) {
