@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\Models\AssetAssignment;
-use Filament\Notifications\Notification;
+use App\Notifications\AssetAssignedNotification;
 
 class AssetAssignmentObserver
 {
@@ -12,13 +12,7 @@ class AssetAssignmentObserver
      */
     public function created(AssetAssignment $assetAssignment): void
     {
-        $user = $assetAssignment->user;
-        $assetName = $assetAssignment->asset->name;
-
-        Notification::make()
-            ->title('Asset assigned')
-            ->body("Asset {$assetName} has been assigned to you.")
-            ->sendToDatabase($user);
+        $assetAssignment->user->notify(new AssetAssignedNotification($assetAssignment));
     }
 
     /**

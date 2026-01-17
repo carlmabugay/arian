@@ -64,6 +64,15 @@ class AssetAssignmentsTable
 
                     return $data;
                 })
+                ->after(function ($record) {
+                    $user = $record->user;
+                    $assetName = $record->asset->name;
+
+                    Notification::make()
+                        ->title('Asset assigned')
+                        ->body("Asset {$assetName} has been assigned to you.")
+                        ->sendToDatabase($user);
+                })
                 ->successNotificationTitle(
                     SystemMessageHelper::successTitle(
                         SystemAction::Create,
