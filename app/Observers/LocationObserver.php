@@ -9,7 +9,7 @@ use App\Notifications\LocationDeletedNotification;
 use App\Notifications\LocationRestoredNotification;
 use App\Notifications\LocationTrashedNotification;
 use App\Notifications\LocationUpdatedNotification;
-use Illuminate\Support\Collection;
+use App\Support\Notifications\OrganizationRecipients;
 
 class LocationObserver
 {
@@ -18,7 +18,7 @@ class LocationObserver
      */
     public function created(Location $location): void
     {
-        $recipients = $this->getRecipients($location);
+        $recipients = OrganizationRecipients::resolve($location->company);
 
         foreach ($recipients as $user) {
             $user->notify(new LocationCreatedNotification($location));
@@ -34,7 +34,7 @@ class LocationObserver
             return;
         }
 
-        $recipients = $this->getRecipients($location);
+        $recipients = OrganizationRecipients::resolve($location->company);
 
         foreach ($recipients as $user) {
             $user->notify(new LocationUpdatedNotification($location));
@@ -50,7 +50,7 @@ class LocationObserver
             return;
         }
 
-        $recipients = $this->getRecipients($location);
+        $recipients = OrganizationRecipients::resolve($location->company);
 
         foreach ($recipients as $user) {
             $user->notify(new LocationTrashedNotification($location));
@@ -62,7 +62,7 @@ class LocationObserver
      */
     public function restored(Location $location): void
     {
-        $recipients = $this->getRecipients($location);
+        $recipients = OrganizationRecipients::resolve($location->company);
 
         foreach ($recipients as $user) {
             $user->notify(new LocationRestoredNotification($location));
@@ -79,17 +79,5 @@ class LocationObserver
         foreach ($superAdmins as $user) {
             $user->notify(new LocationDeletedNotification($location));
         }
-    }
-
-    protected function getRecipients(Location $location): Collection
-    {
-        $recipients = collect(User::superAdmin()->get());
-
-        $companyAdmin = $location->company->users()->companyAdmin()->first();
-        if ($companyAdmin) {
-            $recipients->push($companyAdmin);
-        }
-
-        return $recipients;
     }
 }

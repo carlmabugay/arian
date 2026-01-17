@@ -9,7 +9,7 @@ use App\Notifications\CompanyDeletedNotification;
 use App\Notifications\CompanyRestoredNotification;
 use App\Notifications\CompanyTrashedNotification;
 use App\Notifications\CompanyUpdatedNotification;
-use Illuminate\Support\Collection;
+use App\Support\Notifications\OrganizationRecipients;
 
 class CompanyObserver
 {
@@ -34,7 +34,7 @@ class CompanyObserver
             return;
         }
 
-        $recipients = $this->getRecipients($company);
+        $recipients = OrganizationRecipients::resolve($company);
 
         foreach ($recipients as $user) {
             $user->notify(new CompanyUpdatedNotification($company));
@@ -50,7 +50,7 @@ class CompanyObserver
             return;
         }
 
-        $recipients = $this->getRecipients($company);
+        $recipients = OrganizationRecipients::resolve($company);
 
         foreach ($recipients as $user) {
             $user->notify(new CompanyTrashedNotification($company));
@@ -62,7 +62,7 @@ class CompanyObserver
      */
     public function restored(Company $company): void
     {
-        $recipients = $this->getRecipients($company);
+        $recipients = OrganizationRecipients::resolve($company);
 
         foreach ($recipients as $user) {
             $user->notify(new CompanyRestoredNotification($company));
@@ -79,17 +79,5 @@ class CompanyObserver
         foreach ($superAdmins as $user) {
             $user->notify(new CompanyDeletedNotification($company));
         }
-    }
-
-    protected function getRecipients(Company $company): Collection
-    {
-        $recipients = collect(User::superAdmin()->get());
-
-        $companyAdmin = $company->users()->companyAdmin()->first();
-        if ($companyAdmin) {
-            $recipients->push($companyAdmin);
-        }
-
-        return $recipients;
     }
 }
