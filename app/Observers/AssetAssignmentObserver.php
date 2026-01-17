@@ -4,6 +4,8 @@ namespace App\Observers;
 
 use App\Models\AssetAssignment;
 use App\Notifications\AssetAssignedNotification;
+use App\Notifications\AssetReassignedNotification;
+use App\Notifications\AssetReturnedNotification;
 
 class AssetAssignmentObserver
 {
@@ -20,7 +22,22 @@ class AssetAssignmentObserver
      */
     public function updated(AssetAssignment $assetAssignment): void
     {
-        //
+
+        if ($assetAssignment->wasChanged('user_id')) {
+            $this->handleUserChange($assetAssignment);
+        }
+
+        if ($assetAssignment->wasChanged('asset_id')) {
+            $this->created($assetAssignment);
+        }
+
+        if (
+            $assetAssignment->wasChanged('returned_at') &&
+            $assetAssignment->returned_at !== null
+        ) {
+            $this->handleReturn($assetAssignment);
+        }
+
     }
 
     /**
@@ -45,5 +62,31 @@ class AssetAssignmentObserver
     public function forceDeleted(AssetAssignment $assetAssignment): void
     {
         //
+    }
+
+    private function handleUserChange(AssetAssignment $assignment): void
+    {
+        $oldUserId = $assignment->getOriginal('user_id');
+        $newUser = $assignment->user;
+
+        if ($oldUserId) {
+            $oldUser = $assignment->user()->getModel()::find($oldUserId);
+
+            if ($oldUser) {
+                $oldUser->notify(new AssetReassignedNotification($assignment));
+            }
+        }
+
+        $newUser->notify(new AssetAssignedNotification($assignment));
+    }
+
+    private function handleReturn(AssetAssignment $assignment): void
+    {
+        $user = $assignment->user;
+
+        if (! $user) {
+            return;
+        }
+        $user->notify(new AssetReturnedNotification($assignment));
     }
 }
