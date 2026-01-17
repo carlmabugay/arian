@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\UserRole;
 use App\Filament\Traits\Auditable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -70,5 +71,15 @@ class User extends Authenticatable
     public function isCompanyAdmin(): bool
     {
         return $this->role === UserRole::CompanyAdmin;
+    }
+
+    public function scopeSuperAdmin($query): Builder
+    {
+        return $query->where('role', UserRole::SuperAdmin);
+    }
+
+    public function scopeCompanyAdmin($query): Builder
+    {
+        return $query->where('role', UserRole::CompanyAdmin);
     }
 }
