@@ -12,6 +12,13 @@ class AssignmentActivityWidget extends TableWidget
 {
     protected int|string|array $columnSpan = 'full';
 
+    protected static ?int $sort = 3;
+
+    public static function canView(): bool
+    {
+        return ! auth()->user()->isStaff();
+    }
+
     protected function getTableQuery(): Builder|Relation|null
     {
         return AssetAssignment::query()

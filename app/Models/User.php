@@ -73,6 +73,11 @@ class User extends Authenticatable
         return $this->role === UserRole::CompanyAdmin;
     }
 
+    public function isStaff(): bool
+    {
+        return $this->role === UserRole::Staff;
+    }
+
     public function scopeSuperAdmin($query): Builder
     {
         return $query->where('role', UserRole::SuperAdmin);

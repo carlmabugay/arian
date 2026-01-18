@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Responses\LoginResponse;
 use App\Models\Asset;
 use App\Models\AssetAssignment;
 use App\Models\Company;
@@ -13,6 +14,7 @@ use App\Observers\CompanyObserver;
 use App\Observers\LocationObserver;
 use App\Observers\UserObserver;
 use App\Policies\CompanyPolicy;
+use Filament\Auth\Http\Responses\Contracts\LoginResponse as LoginResponseContract;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
     }
 
     /**

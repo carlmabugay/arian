@@ -17,6 +17,11 @@ class Dashboard extends BaseDashboard
 {
     protected string $view = 'filament.pages.dashboard';
 
+    public static function canAccess(): bool
+    {
+        return ! auth()->user()->isStaff();
+    }
+
     public function getHeading(): string|Htmlable|null
     {
         $name = auth()->user()->name;
