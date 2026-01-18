@@ -8,8 +8,12 @@ use Illuminate\Support\Collection;
 
 class OrganizationRecipients
 {
-    public static function resolve(Company $company, ?User $actor = null): Collection
+    public static function resolve(?Company $company, ?User $actor = null): Collection
     {
+        if (is_null($company)) {
+            return collect();
+        }
+
         $recipients = User::superAdmin()
             ->get()
             ->merge(

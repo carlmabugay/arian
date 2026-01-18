@@ -10,14 +10,9 @@ use App\Filament\Widgets\SuperAdmin\SystemStatsWidget;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Illuminate\Contracts\Support\Htmlable;
 
-class SuperAdminDashboard extends BaseDashboard
+class Dashboard extends BaseDashboard
 {
-    protected string $view = 'filament.pages.super-admin-dashboard';
-
-    public static function canAccess(): bool
-    {
-        return auth()->user()->isSuperAdmin();
-    }
+    protected string $view = 'filament.pages.dashboard';
 
     public function getHeading(): string|Htmlable|null
     {

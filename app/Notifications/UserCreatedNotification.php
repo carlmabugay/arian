@@ -44,7 +44,7 @@ class UserCreatedNotification extends Notification
     protected function bodyFor(object $recipient): string
     {
         if ($recipient->is($this->createdUser)) {
-            return "Your account has been created under {$this->createdUser->company->name}.";
+            return "Your account has been created under {$this->createdUser?->company?->name}.";
         }
 
         return "{$this->createdUser->name} was added to {$this->createdUser->company->name}.";
