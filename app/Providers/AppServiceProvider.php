@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Asset;
 use App\Models\AssetAssignment;
 use App\Models\Company;
 use App\Models\Location;
 use App\Models\User;
 use App\Observers\AssetAssignmentObserver;
+use App\Observers\AssetObserver;
 use App\Observers\CompanyObserver;
 use App\Observers\LocationObserver;
 use App\Observers\UserObserver;
@@ -34,5 +36,6 @@ class AppServiceProvider extends ServiceProvider
         Company::observe(CompanyObserver::class);
         Location::observe(LocationObserver::class);
         User::observe(UserObserver::class);
+        Asset::observe(AssetObserver::class);
     }
 }
