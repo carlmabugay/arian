@@ -2,6 +2,9 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Widgets\CompanyAdmin\AssetStatsWidget;
+use App\Filament\Widgets\CompanyAdmin\AssignmentActivityWidget as CompanyAssignmentActivityWidget;
+use App\Filament\Widgets\CompanyAdmin\CompanyOverviewWidget;
 use App\Filament\Widgets\SuperAdmin\AssetStatusWidget;
 use App\Filament\Widgets\SuperAdmin\AssignmentActivityWidget;
 use App\Filament\Widgets\SuperAdmin\AuditLogWidget;
@@ -29,6 +32,10 @@ class Dashboard extends BaseDashboard
             AssetStatusWidget::class,
             AssignmentActivityWidget::class,
             AuditLogWidget::class,
+
+            CompanyOverviewWidget::class,
+            AssetStatsWidget::class,
+            CompanyAssignmentActivityWidget::class,
         ];
     }
 }
