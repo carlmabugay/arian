@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Filament\Resources\Assets\AssetResource;
+use App\Models\Asset;
 use App\Models\AssetAssignment;
 use App\Models\User;
 use Filament\Actions\Action;
@@ -18,7 +19,10 @@ class AssetAssignedNotification extends Notification
      * Create a new notification instance.
      */
     public function __construct(
-        public AssetAssignment $assetAssignment,
+        public Asset $asset,
+        public AssetAssignment $assignment,
+        public ?User $actor,
+        public string $recipientType = 'assignee'
     ) {}
 
     /**
@@ -33,9 +37,19 @@ class AssetAssignedNotification extends Notification
 
     public function toDatabase(User $notifiable): array
     {
+        $actorName = $this->actor?->name ?? 'System';
+
+        $title = $this->recipientType === 'assignee'
+            ? 'Asset Assigned to You'
+            : 'Asset Assigned';
+
+        $body = $this->recipientType === 'assignee'
+            ? "{$this->asset->name} has been assigned to you by {$actorName}."
+            : "{$actorName} assigned {$this->asset->name} to {$this->assignment->user->name}.";
+
         return FilamentNotification::make()
-            ->title('New asset assignment!')
-            ->body("Asset {$this->assetAssignment->asset->name} has been assigned to you.")
+            ->title($title)
+            ->body($body)
             ->actions([
                 Action::make('view')
                     ->button()

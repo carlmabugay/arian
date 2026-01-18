@@ -64,8 +64,8 @@ class AssetUpdatedNotification extends Notification
             ->map(fn ($change, $field) => sprintf(
                 '%s: %s → %s',
                 Str::headline($field),
-                $change['old'] ?? '—',
-                $change['new'] ?? '—'
+                $change['old']->value ?? '—',
+                $change['new']->value ?? '—'
             ))
             ->implode("\n");
     }
