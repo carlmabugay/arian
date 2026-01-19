@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\Login;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -25,7 +26,6 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
                 'primary' => [
@@ -43,11 +43,11 @@ class AdminPanelProvider extends PanelProvider
                 ],
                 'gray' => Color::Slate,
             ])
-            ->login()
+            ->login(Login::class)
             ->font('Plus Jakarta Sans')
             ->brandName('Arian')
             ->topNavigation()
-            ->maxContentWidth(Width::Full)
+            ->maxContentWidth(Width::SevenExtraLarge)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([])

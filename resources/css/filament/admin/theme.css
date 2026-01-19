@@ -5,13 +5,30 @@
 
 
 body {
-    @apply text-xs bg-neutral-100 dark:bg-gray-900;
+    @apply text-xs bg-slate-100 dark:bg-gray-900;
 }
 
-
+/* Start: Login Styles */
 .fi-simple-main {
     @apply rounded-sm;
+
+    .fi-simple-header {
+       @apply flex-col items-start;
+
+        .fi-simple-header-heading {
+            @apply text-xl font-semibold leading-tight text-gray-800;
+        }
+
+        .fi-simple-header-subheading {
+            @apply text-xs;
+        }
+    }
+
+    .fi-fo-field-label-content {
+        @apply text-sm text-gray-700;
+    }
 }
+/* End: Login Styles */
 
 
 .fi-input-wrp, .fi-checkbox-input {
@@ -22,12 +39,16 @@ body {
     @apply rounded-sm shadow-none font-semibold transition duration-200;
 }
 
+.fi-logo {
+    @apply text-primary-500;
+}
+
 .fi-topbar {
     @apply bg-gray-900;
 
 
     .fi-topbar-item-label {
-        @apply text-white;
+        @apply text-white text-xs font-semibold;
     }
 
 
@@ -42,7 +63,6 @@ body {
 
     .fi-active {
 
-
         .fi-topbar-item-btn {
             @apply bg-slate-800 rounded-sm ;
 
@@ -55,7 +75,7 @@ body {
 
 
 .fi-dropdown-panel {
-    @apply rounded-md;
+    @apply rounded-md bg-slate-900 border border-slate-700 dark:border-0;
 }
 
 .fi-header-heading {
@@ -68,4 +88,20 @@ body {
 
 .fi-ta-ctn, .fi-sc-section, .fi-section-has-header {
     @apply rounded-md;
+}
+
+.fi-ta-header {
+    @apply bg-slate-900 rounded-t-md;
+}
+
+.fi-ta-header-heading {
+    @apply text-primary-500 dark:text-white;
+}
+
+.fi-ta-header-description {
+    @apply text-white;
+}
+
+.fi-size-sm, .fi-ta-header-cell {
+    @apply text-xs;
 }
