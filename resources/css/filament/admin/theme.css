@@ -5,5 +5,67 @@
 
 
 body {
-    @apply text-sm;
+    @apply text-xs bg-neutral-100 dark:bg-gray-900;
+}
+
+
+.fi-simple-main {
+    @apply rounded-sm;
+}
+
+
+.fi-input-wrp, .fi-checkbox-input {
+    @apply rounded-sm shadow-none ring-1 transition duration-200;
+}
+
+.fi-btn {
+    @apply rounded-sm shadow-none font-semibold transition duration-200;
+}
+
+.fi-topbar {
+    @apply bg-gray-900;
+
+
+    .fi-topbar-item-label {
+        @apply text-white;
+    }
+
+
+    .fi-topbar-item-btn:hover {
+        @apply bg-slate-800 rounded-sm text-primary-500 transition duration-200;
+
+        .fi-topbar-item-label {
+            @apply text-primary-500;
+        }
+    }
+
+
+    .fi-active {
+
+
+        .fi-topbar-item-btn {
+            @apply bg-slate-800 rounded-sm ;
+
+            .fi-topbar-item-label {
+                @apply text-primary-500;
+            }
+        }
+    }
+}
+
+
+.fi-dropdown-panel {
+    @apply rounded-md;
+}
+
+.fi-header-heading {
+    @apply text-xl;
+}
+
+.fi-wi-stats-overview-stat {
+    @apply rounded-sm;
+}
+
+.fi-ta-ctn, .fi-sc-section, .fi-section-has-header {
+    @apply rounded-md;
 }
