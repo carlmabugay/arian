@@ -10,7 +10,7 @@ body {
 
 /* Start: Login Styles */
 .fi-simple-main {
-    @apply rounded-sm;
+    @apply rounded-sm shadow;
 
     .fi-simple-header {
        @apply flex-col items-start;
@@ -29,6 +29,36 @@ body {
     }
 }
 /* End: Login Styles */
+
+
+
+/* Start: Table */
+.fi-ta-header-description {
+    @apply text-xs;
+}
+
+.fi-ta-header-cell {
+    @apply text-gray-700;
+}
+
+.fi-size-sm, .fi-select-input-placeholder, .fi-pagination-overview, .fi-input-wrp-label, .fi-pagination-item-label {
+    @apply text-xs;
+}
+
+
+/* Start: Filters */
+.fi-ta-filters-heading, .fi-fo-field-label-content {
+    @apply text-sm text-gray-700;
+}
+/* End: Filters */
+/* End: Table */
+
+
+/* Start: Inputs */
+.fi-select-input {
+    @apply text-xs text-gray-700;
+}
+/* End: Inputs */
 
 
 .fi-input-wrp, .fi-checkbox-input {
@@ -100,8 +130,4 @@ body {
 
 .fi-ta-header-description {
     @apply text-white;
-}
-
-.fi-size-sm, .fi-ta-header-cell {
-    @apply text-xs;
 }
