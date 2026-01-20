@@ -30,14 +30,12 @@ body {
 }
 /* End: Login Styles */
 
-
-
 /* Start: Table */
 .fi-ta-header-description {
     @apply text-xs;
 }
 
-.fi-ta-header-cell {
+.fi-size-sm, .fi-ta-header-cell {
     @apply text-gray-700;
 }
 
@@ -61,6 +59,35 @@ body {
 /* End: Inputs */
 
 
+/* Start: Modal */
+.fi-modal-header  {
+    @apply bg-gray-800
+}
+
+.fi-modal-heading {
+    @apply text-primary-500 font-semibold;
+}
+
+/* End: Modal */
+
+
+/* Start: Breadcrumbs */
+.fi-breadcrumbs {
+    @apply mb-0;
+}
+/* End: Breadcrumbs */
+
+/* Start: Sections */
+.fi-section-header {
+    @apply bg-slate-800 rounded-t-md ;
+}
+
+.fi-section-header-heading {
+    @apply text-primary-500 font-semibold leading-tight;
+}
+/* End: Sections */
+
+
 .fi-input-wrp, .fi-checkbox-input {
     @apply rounded-sm shadow-none ring-1 transition duration-200;
 }
@@ -74,7 +101,7 @@ body {
 }
 
 .fi-topbar {
-    @apply bg-gray-900;
+    @apply bg-gray-800;
 
 
     .fi-topbar-item-label {
@@ -105,7 +132,7 @@ body {
 
 
 .fi-dropdown-panel {
-    @apply rounded-md bg-slate-900 border border-slate-700 dark:border-0;
+    @apply rounded-md bg-slate-800 border border-slate-700 dark:border-0;
 }
 
 .fi-header-heading {
@@ -121,7 +148,7 @@ body {
 }
 
 .fi-ta-header {
-    @apply bg-slate-900 rounded-t-md;
+    @apply bg-slate-800 rounded-t-md;
 }
 
 .fi-ta-header-heading {
