@@ -10,12 +10,18 @@ use App\Filament\Widgets\SuperAdmin\AssignmentActivityWidget;
 use App\Filament\Widgets\SuperAdmin\AuditLogWidget;
 use App\Filament\Widgets\SuperAdmin\CompanyHealthWidget;
 use App\Filament\Widgets\SuperAdmin\SystemStatsWidget;
+use BackedEnum;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Illuminate\Contracts\Support\Htmlable;
 
 class Dashboard extends BaseDashboard
 {
     protected string $view = 'filament.pages.dashboard';
+
+    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
+    {
+        return null;
+    }
 
     public static function canAccess(): bool
     {

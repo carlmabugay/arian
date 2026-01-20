@@ -30,6 +30,12 @@ body {
 }
 /* End: Login Styles */
 
+/* Start: Page */
+.fi-page-header-main-ctn {
+    @apply gap-6;
+}
+/* End: Page */
+
 /* Start: Table */
 .fi-ta-header-description {
     @apply text-xs;
@@ -75,6 +81,10 @@ body {
 .fi-breadcrumbs {
     @apply mb-0;
 }
+
+.fi-breadcrumbs-item-label{
+    @apply text-xs;
+}
 /* End: Breadcrumbs */
 
 /* Start: Sections */
@@ -100,8 +110,13 @@ body {
     @apply text-primary-500;
 }
 
-.fi-topbar {
+/* Start: Top Bar */
+.fi-topbar-bg {
     @apply bg-gray-800;
+}
+
+.fi-topbar {
+   @apply bg-transparent max-w-7xl mx-auto;
 
 
     .fi-topbar-item-label {
@@ -129,6 +144,7 @@ body {
         }
     }
 }
+/* End: Top Bar */
 
 
 .fi-dropdown-panel {
