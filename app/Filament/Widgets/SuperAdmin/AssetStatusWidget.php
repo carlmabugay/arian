@@ -12,7 +12,7 @@ class AssetStatusWidget extends ChartWidget
 
     protected ?string $heading = 'Asset Status Breakdown';
 
-    protected string $color = 'success';
+    protected string $color = 'primary';
 
     public static function canView(): bool
     {

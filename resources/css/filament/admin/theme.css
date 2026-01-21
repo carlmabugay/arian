@@ -42,17 +42,17 @@ body {
 }
 
 .fi-size-sm, .fi-ta-header-cell {
-    @apply text-gray-700;
+    @apply text-gray-700 dark:text-white;
 }
 
-.fi-size-sm, .fi-select-input-placeholder, .fi-pagination-overview, .fi-input-wrp-label, .fi-pagination-item-label {
+.fi-size-sm, .fi-select-input-placeholder, .fi-pagination-overview, .fi-input-wrp-label, .fi-pagination-item-label, .fi-pagination-previous-btn, .fi-pagination-next-btn {
     @apply text-xs;
 }
 
 
 /* Start: Filters */
 .fi-ta-filters-heading, .fi-fo-field-label-content {
-    @apply text-sm text-gray-700;
+    @apply text-sm text-gray-700 dark:text-white;
 }
 /* End: Filters */
 /* End: Table */
@@ -60,18 +60,18 @@ body {
 
 /* Start: Inputs */
 .fi-input, .fi-select-input {
-    @apply text-xs text-gray-700;
+    @apply text-xs text-gray-700 dark:text-white;
 }
 /* End: Inputs */
 
 
 /* Start: Modal */
 .fi-modal-header  {
-    @apply bg-gray-800
+    @apply bg-gray-800 py-4 px-6 rounded-t-md flex items-center;
 }
 
 .fi-modal-heading {
-    @apply text-primary-500 font-semibold;
+    @apply text-primary-500 font-semibold dark:text-white;
 }
 
 /* End: Modal */
@@ -83,7 +83,7 @@ body {
 }
 
 .fi-breadcrumbs-item-label{
-    @apply text-xs;
+    @apply text-xs dark:text-white;
 }
 /* End: Breadcrumbs */
 
@@ -93,7 +93,7 @@ body {
 }
 
 .fi-section-header-heading {
-    @apply text-primary-500 font-semibold leading-tight;
+    @apply text-primary-500 font-semibold leading-tight dark:text-white;
 }
 /* End: Sections */
 
@@ -167,13 +167,19 @@ body {
 /* End: Top Bar */
 
 
+/* Start: Stats Widget */
+.fi-wi-stats-overview-stat {
+    @apply rounded-sm p-4;
 
-.fi-header-heading {
-    @apply text-xl;
+    .fi-wi-stats-overview-stat-value {
+        @apply text-xl text-gray-700 dark:text-white;
+    }
 }
 
-.fi-wi-stats-overview-stat {
-    @apply rounded-sm;
+/* End: Stats Widget */
+
+.fi-header-heading {
+    @apply text-xl text-gray-700 dark:text-white;
 }
 
 .fi-ta-ctn, .fi-sc-section, .fi-section-has-header {

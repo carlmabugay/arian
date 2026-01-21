@@ -12,6 +12,8 @@ class AssignmentActivityWidget extends TableWidget
 {
     protected int|string|array $columnSpan = 'full';
 
+    protected static ?string $heading = 'Recent Assignments';
+
     protected static ?int $sort = 3;
 
     public static function canView(): bool
@@ -21,9 +23,18 @@ class AssignmentActivityWidget extends TableWidget
 
     protected function getTableQuery(): Builder|Relation|null
     {
-        return AssetAssignment::query()
-            ->whereHas('asset', fn ($query) => $query->where('company_id', auth()->user()->company_id))
-            ->latest();
+        $user = auth()->user();
+
+        $query = AssetAssignment::query()->latest();
+
+        if ($user->isSuperAdmin()) {
+            return $query;
+        }
+
+        return $query->whereHas(
+            'asset',
+            fn (Builder $q) => $q->where('company_id', $user->company_id)
+        );
     }
 
     protected function getTableColumns(): array
