@@ -16,16 +16,16 @@ body {
        @apply flex-col items-start;
 
         .fi-simple-header-heading {
-            @apply text-xl font-semibold leading-tight text-gray-800;
+            @apply text-xl font-semibold leading-tight text-gray-800 dark:text-primary-500;
         }
 
         .fi-simple-header-subheading {
-            @apply text-xs;
+            @apply text-xs dark:text-white;
         }
     }
 
     .fi-fo-field-label-content {
-        @apply text-sm text-gray-700;
+        @apply text-sm text-gray-700 dark:text-white;
     }
 }
 /* End: Login Styles */

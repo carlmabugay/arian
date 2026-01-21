@@ -20,7 +20,7 @@
         </x-filament::button>
     </form>
 
-    <div class="mt-6 text-center text-xs text-gray-500">
+    <div class="mt-6 text-center text-xs text-gray-500 dark:text-white">
         © {{ now()->year }} Arian
     </div>
 </x-filament-panels::page.simple>
