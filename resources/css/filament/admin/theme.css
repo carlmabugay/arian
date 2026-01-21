@@ -59,7 +59,7 @@ body {
 
 
 /* Start: Inputs */
-.fi-select-input {
+.fi-input, .fi-select-input {
     @apply text-xs text-gray-700;
 }
 /* End: Inputs */
@@ -113,43 +113,60 @@ body {
 /* Start: Top Bar */
 .fi-topbar-bg {
     @apply bg-gray-800;
-}
 
-.fi-topbar {
-   @apply bg-transparent max-w-7xl mx-auto;
+    .fi-topbar {
+        @apply bg-transparent max-w-7xl mx-auto ring-0;
 
-
-    .fi-topbar-item-label {
-        @apply text-white text-xs font-semibold;
-    }
-
-
-    .fi-topbar-item-btn:hover {
-        @apply bg-slate-800 rounded-sm text-primary-500 transition duration-200;
 
         .fi-topbar-item-label {
-            @apply text-primary-500;
+            @apply text-white text-xs font-semibold;
         }
-    }
 
-
-    .fi-active {
 
         .fi-topbar-item-btn {
-            @apply bg-slate-800 rounded-sm ;
+            @apply rounded-sm  transition duration-200 hover:bg-slate-700;
 
             .fi-topbar-item-label {
-                @apply text-primary-500;
+                @apply text-white;
+            }
+        }
+
+
+        .fi-active {
+
+            .fi-topbar-item-btn {
+                @apply bg-slate-800 rounded-sm ;
+
+                .fi-topbar-item-label {
+                    @apply text-primary-500;
+                }
+            }
+        }
+
+        .fi-dropdown-list {
+            @apply bg-gray-800 rounded-sm;
+
+            .fi-dropdown-list-item {
+                @apply  text-primary-500 transition duration-200 hover:bg-slate-700 hover:rounded-sm;
+
+                .fi-dropdown-list-item-label {
+                    @apply text-white text-xs font-semibold;
+                }
+            }
+
+            .fi-color {
+                .fi-dropdown-list-item-label {
+                    @apply text-primary-500;
+                }
             }
         }
     }
 }
+
+
 /* End: Top Bar */
 
 
-.fi-dropdown-panel {
-    @apply rounded-md bg-slate-800 border border-slate-700 dark:border-0;
-}
 
 .fi-header-heading {
     @apply text-xl;
