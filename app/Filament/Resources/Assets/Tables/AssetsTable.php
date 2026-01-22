@@ -19,6 +19,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Livewire;
+use Filament\Support\Enums\IconSize;
 use Filament\Support\Enums\Size;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
@@ -152,6 +153,8 @@ class AssetsTable
 
             ViewAction::make()
                 ->label('View Assignment History')
+                ->icon(Heroicon::OutlinedEye)
+                ->iconSize(IconSize::Small)
                 ->modal()
                 ->modalHeading(fn (Asset $record) => "Assignment History — {$record->name}")
                 ->modalWidth(Width::FourExtraLarge)
@@ -160,7 +163,12 @@ class AssetsTable
                         'asset' => $record,
                     ]),
                 ]),
-            EditAction::make()->authorize('update', Asset::class),
+            EditAction::make()
+                ->label('Edit details')
+                ->icon(Heroicon::OutlinedPencilSquare)
+                ->iconSize(IconSize::Small)
+                ->color('gray')
+                ->authorize('update', Asset::class),
         ]);
     }
 

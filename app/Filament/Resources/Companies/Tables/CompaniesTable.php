@@ -14,6 +14,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\EditAction;
 use Filament\Notifications\Notification;
+use Filament\Support\Enums\IconSize;
 use Filament\Support\Enums\Size;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
@@ -107,6 +108,10 @@ class CompaniesTable
     {
         return ActionGroup::make([
             EditAction::make()
+                ->label('Edit details')
+                ->icon(Heroicon::OutlinedPencilSquare)
+                ->iconSize(IconSize::Small)
+                ->color('gray')
                 ->authorize('update', Company::class),
         ]);
     }

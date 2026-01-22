@@ -37,7 +37,7 @@ body {
 /* End: Page */
 
 /* Start: Table */
-.fi-ta-header-description {
+.fi-ta-header-description, .fi-dropdown-list-item {
     @apply text-xs;
 }
 
@@ -196,4 +196,8 @@ body {
 
 .fi-ta-header-description {
     @apply text-white;
+}
+
+.fi-dropdown-panel, .fi-dropdown-list-item-label {
+    @apply rounded-xs;
 }

@@ -16,6 +16,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Livewire;
+use Filament\Support\Enums\IconSize;
 use Filament\Support\Enums\Size;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
@@ -136,6 +137,8 @@ class AssetAssignmentsTable
 
             ViewAction::make()
                 ->label('View Assignment History')
+                ->icon(Heroicon::OutlinedEye)
+                ->iconSize(IconSize::Small)
                 ->modal()
                 ->modalHeading(fn (AssetAssignment $record) => "Assignment History — {$record->asset->name}")
                 ->modalWidth(Width::FourExtraLarge)
@@ -146,6 +149,10 @@ class AssetAssignmentsTable
                 ]),
 
             EditAction::make()
+                ->label('Edit details')
+                ->icon(Heroicon::OutlinedPencilSquare)
+                ->iconSize(IconSize::Small)
+                ->color('gray')
                 ->slideOver()
                 ->modalWidth(Width::Medium)
                 ->authorize('update', AssetAssignment::class)

@@ -5,7 +5,9 @@ namespace App\Filament\Resources\AuditLogs\Tables;
 use App\Enums\SystemAction;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\ViewAction;
+use Filament\Support\Enums\IconSize;
 use Filament\Support\Enums\Width;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
@@ -40,6 +42,9 @@ class AuditLogsTable
                 ActionGroup::make([
                     ViewAction::make()
                         ->label('View full log details')
+                        ->icon(Heroicon::OutlinedEye)
+                        ->iconSize(IconSize::Small)
+                        ->color('gray')
                         ->modalHeading('System Log Details')
                         ->modalWidth(Width::FourExtraLarge),
                 ]),
