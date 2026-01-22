@@ -89,7 +89,7 @@ body {
 
 /* Start: Sections */
 .fi-section-header {
-    @apply bg-slate-800 rounded-t-md ;
+    @apply bg-slate-800 rounded-t-sm ;
 }
 
 .fi-section-header-heading {
@@ -144,7 +144,7 @@ body {
         }
 
         .fi-dropdown-list {
-            @apply bg-gray-800 rounded-sm;
+            @apply bg-gray-800 border-gray-700;
 
             .fi-dropdown-list-item {
                 @apply  text-primary-500 transition duration-200 hover:bg-slate-700 hover:rounded-sm;
@@ -158,6 +158,26 @@ body {
                 .fi-dropdown-list-item-label {
                     @apply text-primary-500;
                 }
+            }
+
+            button {
+                @apply hover:bg-gray-700;
+
+                &.fi-active {
+                    @apply bg-slate-700;
+                }
+            }
+        }
+
+        .fi-dropdown-panel {
+            @apply bg-slate-800
+        }
+
+        .fi-dropdown-header {
+            @apply bg-slate-800 items-center border-gray-700;
+
+            span {
+                @apply text-xs text-white ;
             }
         }
     }
@@ -183,11 +203,11 @@ body {
 }
 
 .fi-ta-ctn, .fi-sc-section, .fi-section-has-header {
-    @apply rounded-md;
+    @apply rounded-sm;
 }
 
 .fi-ta-header {
-    @apply bg-slate-800 rounded-t-md;
+    @apply bg-slate-800 rounded-t-sm;
 }
 
 .fi-ta-header-heading {
@@ -199,5 +219,5 @@ body {
 }
 
 .fi-dropdown-panel, .fi-dropdown-list-item-label {
-    @apply rounded-xs;
+    @apply rounded-sm;
 }
