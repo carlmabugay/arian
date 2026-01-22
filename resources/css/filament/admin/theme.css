@@ -5,7 +5,7 @@
 
 
 body {
-    @apply text-xs bg-slate-100 dark:bg-gray-900;
+    @apply text-xs bg-gray-100 dark:bg-gray-900;
 }
 
 /* Start: Login Styles */
@@ -89,7 +89,7 @@ body {
 
 /* Start: Sections */
 .fi-section-header {
-    @apply bg-slate-800 rounded-t-sm ;
+    @apply bg-gray-800 rounded-t-sm ;
 }
 
 .fi-section-header-heading {
@@ -124,7 +124,7 @@ body {
 
 
         .fi-topbar-item-btn {
-            @apply rounded-sm  transition duration-200 hover:bg-slate-700;
+            @apply rounded-sm  transition duration-200 hover:bg-gray-700;
 
             .fi-topbar-item-label {
                 @apply text-white;
@@ -135,7 +135,7 @@ body {
         .fi-active {
 
             .fi-topbar-item-btn {
-                @apply bg-slate-800 rounded-sm ;
+                @apply bg-gray-800 rounded-sm ;
 
                 .fi-topbar-item-label {
                     @apply text-primary-500;
@@ -147,7 +147,7 @@ body {
             @apply bg-gray-800 border-gray-700;
 
             .fi-dropdown-list-item {
-                @apply  text-primary-500 transition duration-200 hover:bg-slate-700 hover:rounded-sm;
+                @apply  text-primary-500 transition duration-200 hover:bg-gray-700 hover:rounded-sm;
 
                 .fi-dropdown-list-item-label {
                     @apply text-white text-xs font-semibold;
@@ -164,17 +164,17 @@ body {
                 @apply hover:bg-gray-700;
 
                 &.fi-active {
-                    @apply bg-slate-700;
+                    @apply bg-gray-700;
                 }
             }
         }
 
         .fi-dropdown-panel {
-            @apply bg-slate-800
+            @apply bg-gray-800
         }
 
         .fi-dropdown-header {
-            @apply bg-slate-800 items-center border-gray-700;
+            @apply bg-gray-800 items-center border-gray-700;
 
             span {
                 @apply text-xs text-white ;
@@ -198,6 +198,8 @@ body {
 
 /* End: Stats Widget */
 
+
+/* Start: Miscellaneous */
 .fi-header-heading {
     @apply text-xl text-gray-700 dark:text-white;
 }
@@ -207,7 +209,7 @@ body {
 }
 
 .fi-ta-header {
-    @apply bg-slate-800 rounded-t-sm;
+    @apply bg-gray-800 rounded-t-sm;
 }
 
 .fi-ta-header-heading {
@@ -221,3 +223,4 @@ body {
 .fi-dropdown-panel, .fi-dropdown-list-item-label {
     @apply rounded-sm;
 }
+/* End: Miscellaneous */
