@@ -203,8 +203,12 @@ body {
             @apply hover:bg-gray-700;
 
             .fi-sidebar-item-label {
-                @apply text-white;
+                @apply text-white text-xs font-semibold;
             }
+        }
+
+        .fi-sidebar-group-label {
+            @apply text-white text-xs font-semibold;
         }
     }
 }
