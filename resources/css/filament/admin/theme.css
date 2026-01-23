@@ -182,9 +182,33 @@ body {
         }
     }
 }
-
-
 /* End: Top Bar */
+
+/* Start: Sidebar */
+.fi-main-sidebar {
+    @apply bg-gray-800;
+
+    .fi-sidebar-group {
+        .fi-active {
+            .fi-sidebar-item-btn {
+                @apply bg-gray-700 rounded-sm  transition duration-200 hover:bg-gray-700 hover:rounded-sm;
+
+                .fi-sidebar-item-label {
+                    @apply text-primary-500;
+                }
+            }
+        }
+
+        .fi-sidebar-item-btn {
+            @apply hover:bg-gray-700;
+
+            .fi-sidebar-item-label {
+                @apply text-white;
+            }
+        }
+    }
+}
+/* End: Sidebar */
 
 
 /* Start: Stats Widget */

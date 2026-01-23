@@ -27,7 +27,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'company_id' => Company::inRandomOrder()->first()->id,
+            'company_id' => Company::inRandomOrder()->first()->id ?? null,
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
