@@ -3,12 +3,12 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\Auth\Login;
+use App\Livewire\Sidebar;
 use App\Livewire\Topbar;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use App\Livewire\Sidebar;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
