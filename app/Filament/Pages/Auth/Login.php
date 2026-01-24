@@ -9,6 +9,14 @@ class Login extends BaseLogin
 {
     protected string $view = 'filament.pages.auth.login';
 
+    public function mount(): void
+    {
+        $this->form->fill([
+            'email' => 'admin@carlmabugay.com',
+            'password' => 'password',
+        ]);
+    }
+
     public function getHeading(): string|Htmlable|null
     {
         return 'Welcome to Arian';
