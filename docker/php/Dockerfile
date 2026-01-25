@@ -62,10 +62,9 @@ RUN composer install \
     --no-scripts
 
 # -------------------------------------------------
-# 8. Node dependencies
+# 8. Copy Node files
 # -------------------------------------------------
 COPY package.json package-lock.json ./
-RUN npm install
 
 # -------------------------------------------------
 # 9. Copy app source
@@ -73,14 +72,20 @@ RUN npm install
 COPY . .
 
 # -------------------------------------------------
-# 10. Permissions
+# Node dependencies + Vite build
+RUN npm install
+RUN npm run build
+# -------------------------------------------------
+
+# -------------------------------------------------
+# 11. Permissions
 # -------------------------------------------------
 RUN chown -R www-data:www-data \
     storage \
     bootstrap/cache
 
 # -------------------------------------------------
-# 11. Run PHP-FPM
+# 12. Run PHP-FPM
 # -------------------------------------------------
 EXPOSE 9000
 CMD ["php-fpm"]
