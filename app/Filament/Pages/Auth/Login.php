@@ -12,7 +12,7 @@ class Login extends BaseLogin
     public function mount(): void
     {
         $this->form->fill([
-            'email' => 'admin@carlmabugay.com',
+            'email' => 'admin@carlmabugay.dev',
             'password' => 'password',
         ]);
     }

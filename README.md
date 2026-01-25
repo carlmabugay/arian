@@ -6,7 +6,7 @@ It is designed as a **real-world internal tool**, focusing on clarity, auditabil
 
 ---
 
-## ✨ Features
+## Features
 
 ### Asset Management
 - Create and manage assets (equipment, devices, tools, etc.)
@@ -33,19 +33,19 @@ It is designed as a **real-world internal tool**, focusing on clarity, auditabil
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 
 - **Laravel**
 - **Filament** (Admin Panel)
 - **Livewire** (Interactive UI)
-- **MySQL / PostgreSQL**
+- **MySQL**
 - **Tailwind CSS**
 
 This project intentionally avoids over-engineering and focuses on **production-ready patterns** commonly used in B2B systems.
 
 ---
 
-## 🎯 Purpose
+## Purpose
 
 This project serves as:
 - A **portfolio demo** showcasing real-world system design
@@ -57,25 +57,36 @@ This project serves as:
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Requirements
-- PHP 8.2+
-- Composer
-- MySQL or PostgreSQL
-- Node.js & NPM
+- Docker
+- Git
 
 ### Installation
 
 ```bash
+# Clone the repository
 git clone https://github.com/your-username/arian.git
 cd arian
 
-composer install
-npm install && npm run build
-
+# Copy example environment file.
 cp .env.example .env
-php artisan key:generate
 
-php artisan migrate --seed
-php artisan serve
+
+# Build and start containers (app, nginx, mysql)
+docker compose -f docker-compose.dev.yml up -d
+
+# Generate Key
+docker compose -f docker-compose.dev.yml exec app php artisan key:generate
+
+# Run Laravel migrations
+docker compose -f docker-compose.dev.yml exec app php artisan migrate --seed
+
+# Install Node pacakges & build assets (for hot reload):
+npm install
+npm run dev
+
+
+# Access the App
+http://localhost:8000

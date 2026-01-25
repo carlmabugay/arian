@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             'company_id' => null,
             'role' => UserRole::SuperAdmin->value,
             'name' => 'Admin User',
-            'email' => 'admin@carlmabugay.com',
+            'email' => 'admin@carlmabugay.dev',
             'password' => Hash::make('password'),
             'is_active' => true,
         ]));
