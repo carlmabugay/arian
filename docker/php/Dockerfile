@@ -32,7 +32,10 @@ RUN npm install
 # 9. Copy full app
 COPY . .
 
-# 10. Build assets into shared volume
+# 10. Ensure node binaries are executable
+RUN chmod +x node_modules/.bin/*
+
+# 11. Build assets into shared volume
 RUN npm run build
 
 # 11. Permissions
