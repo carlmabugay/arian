@@ -32,15 +32,20 @@ RUN npm install
 # 9. Copy full app
 COPY . .
 
-# 10. Ensure node binaries are executable
-RUN chmod +x node_modules/.bin/*
+# 10. Fix permissions for Vite & esbuild
+RUN chmod +x node_modules/.bin/* \
+    && chmod +x node_modules/@esbuild/linux-x64/bin/esbuild
 
-# 11. Build assets into shared volume
+# 11. Copy front-end assets
+COPY vite.config.js ./
+COPY resources/ ./resources
+
+# 12. Build assets into shared volume
 RUN npm run build
 
-# 11. Permissions
-RUN chown -R www-data:www-data storage bootstrap/cache public
+# 13. Permissions
+RUN chown -R www-data:www-data public/build
 
-# 12. Expose PHP-FPM port
+# 14. Expose PHP-FPM port
 EXPOSE 9000
 CMD ["php-fpm"]
