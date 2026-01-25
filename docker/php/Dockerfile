@@ -82,7 +82,8 @@ RUN npm run build
 # -------------------------------------------------
 RUN chown -R www-data:www-data \
     storage \
-    bootstrap/cache
+    bootstrap/cache \
+    public/build
 
 # -------------------------------------------------
 # 12. Run PHP-FPM
