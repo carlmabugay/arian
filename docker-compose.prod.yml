@@ -3,35 +3,37 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
-    container_name: arian-app-dev
+    container_name: arian-app-prod
     env_file:
       - .env
     volumes:
-      - ./public:/var/www/public
+      - ./public:/var/www/public:ro
     restart: unless-stopped
     ports:
       - "9000:9000"
 
   nginx:
     image: nginx:alpine
-    container_name: nginx-dev
+    container_name: nginx-prod
     ports:
-      - "8080:80"
+      - "80:80"
+      - "443:443"
     volumes:
-      - ./docker/nginx/default.dev.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./public:/var/www/public
+      - ./docker/nginx/default.prod.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./public:/var/www/public:ro
+      - ./docker/nginx/certs:/etc/nginx/certs:ro
     depends_on:
       - app
     restart: unless-stopped
 
   db:
     image: mysql:8.0
-    container_name: mysql-dev
+    container_name: mysql-prod
     env_file:
       - .env
     volumes:
-      - dbdata-dev:/var/lib/mysql
+      - dbdata-prod:/var/lib/mysql
     restart: unless-stopped
 
 volumes:
-  dbdata-dev:
+  dbdata-prod:
