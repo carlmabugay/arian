@@ -75,13 +75,14 @@ cp .env.example .env
 
 
 # Build and start containers (app, nginx, mysql)
-docker compose -f docker-compose.dev.yml up -d
+docker compose build
 
 # Generate Key
-docker compose -f docker-compose.dev.yml exec app php artisan key:generate
+docker compose exec app php artisan key:generate
+Note: copy the key on your .env file
 
 # Run Laravel migrations
-docker compose -f docker-compose.dev.yml exec app php artisan migrate --seed
+docker compose exec app php artisan migrate --seed
 
 # Install Node pacakges & build assets (for hot reload):
 npm install

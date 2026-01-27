@@ -1,0 +1,36 @@
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: arian-app
+        env_file:
+            - .env
+        volumes:
+            - .:/var/www:cached       # improves bind mount performance
+        depends_on:
+            - db
+
+    nginx:
+        image: nginx:alpine
+        container_name: nginx
+        ports:
+            - "8000:80"
+        volumes:
+            - .:/var/www:cached
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - app
+
+    db:
+        image: mysql:8.0
+        container_name: mysql
+        env_file:
+            - .env
+        volumes:
+            - db_data:/var/lib/mysql
+        ports:
+            - "3306:3306"
+
+volumes:
+    db_data:
