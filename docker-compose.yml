@@ -2,6 +2,8 @@ services:
     app:
         build:
             context: .
+            args:
+                WWWUSER: ${WWWUSER:-1000}
             dockerfile: Dockerfile
         container_name: arian-app
         env_file:
