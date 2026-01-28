@@ -117,11 +117,6 @@ body {
 }
 /* End: Sections */
 
-.fi-global-search {
-    .fi-input-wrp {
-        @apply bg-gray-700;
-    }
-}
 
 
 .fi-input-wrp, .fi-checkbox-input {
@@ -204,6 +199,50 @@ body {
 
             span {
                 @apply text-xs text-white ;
+            }
+        }
+    }
+
+    .fi-global-search {
+        .fi-input-wrp {
+            @apply bg-gray-700 ;
+
+            input {
+                @apply text-white;
+            }
+        }
+
+        .fi-global-search-results-ctn {
+            @apply bg-gray-800 rounded-sm text-xs;
+
+            .fi-global-search-no-results-message {
+                @apply text-white
+            }
+        }
+
+        .fi-global-search-results {
+
+            :where(& > :not(:last-child)) {
+                @apply border-gray-600;
+            }
+        }
+
+        .fi-global-search-result-group {
+
+            .fi-global-search-result-group-header {
+                @apply bg-gray-800 text-primary-500 border-gray-600 text-xs;
+            }
+
+            .fi-global-search-result-group-results {
+                @apply divide-gray-600;
+
+                .fi-global-search-result-link {
+                    @apply hover:text-gray-800 hover:bg-gray-600 duration-200 border-gray-600;
+
+                    .fi-global-search-result-heading {
+                        @apply text-white text-xs;
+                    }
+                }
             }
         }
     }
