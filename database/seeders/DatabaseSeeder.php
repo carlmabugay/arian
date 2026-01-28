@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
         $admin = $this->withProgressBar(1, fn () => User::factory()->create([
             'company_id' => null,
             'role' => UserRole::SuperAdmin->value,
-            'name' => 'Admin User',
+            'name' => 'Carl Mabugay',
             'email' => 'admin@carlmabugay.dev',
             'password' => Hash::make('password'),
             'is_active' => true,
