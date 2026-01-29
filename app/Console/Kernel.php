@@ -3,17 +3,24 @@
 namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
-class Kernel
+class Kernel extends ConsoleKernel
 {
-    protected function schedule(Schedule $schedule)
+    protected function schedule(Schedule $schedule): void
     {
-        // Run demo refresh every two hour
         if (app()->environment('production')) {
-
-            $schedule->command('app:refresh-demo-data')->everyTwoHours()->withoutOverlapping()->runInBackground();
-
+            $schedule
+                ->command('app:refresh-demo-data')
+                ->everyTwoHours()
+                ->withoutOverlapping()
+                ->runInBackground();
         }
+    }
 
+    protected function commands(): void
+    {
+        $this->load(__DIR__.'/Commands');
+        require base_path('routes/console.php');
     }
 }
