@@ -3,6 +3,7 @@
 namespace App\Filament\Pages\Auth;
 
 use Filament\Auth\Pages\Login as BaseLogin;
+use Filament\Facades\Filament;
 use Illuminate\Contracts\Support\Htmlable;
 
 class Login extends BaseLogin
@@ -11,6 +12,10 @@ class Login extends BaseLogin
 
     public function mount(): void
     {
+        if (Filament::auth()->check()) {
+            redirect()->intended(Filament::getUrl());
+        }
+
         $this->form->fill([
             'email' => 'admin@carlmabugay.dev',
             'password' => 'password',
