@@ -19,19 +19,19 @@ class AuditLogWidget extends StatsOverviewWidget
     {
         return [
             Stat::make(
-                'Creates (24h)',
+                'Created (24h)',
                 AuditLog::where('event', 'created')
                     ->where('created_at', '>=', now()->subDay())
                     ->count()
             ),
             Stat::make(
-                'Updates (24h)',
+                'Updated (24h)',
                 AuditLog::where('event', 'updated')
                     ->where('created_at', '>=', now()->subDay())
                     ->count()
             ),
             Stat::make(
-                'Deletes (24h)',
+                'Deleted (24h)',
                 AuditLog::whereIn('event', ['deleted', 'force_deleted'])
                     ->where('created_at', '>=', now()->subDay())
                     ->count()

@@ -42,7 +42,7 @@ class AssignmentActivityWidget extends TableWidget
         return [
             Tables\Columns\TextColumn::make('asset.name'),
             Tables\Columns\TextColumn::make('user.name'),
-            Tables\Columns\TextColumn::make('created_at')->since(),
+            Tables\Columns\TextColumn::make('created_at')->label('Created')->since(),
         ];
     }
 }
