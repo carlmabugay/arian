@@ -50,19 +50,11 @@ jobs:
 
   deploy:
     name: Deploy to Production
+    environment: production
     needs: ci
     runs-on: ubuntu-latest
 
     steps:
-      - name: Debug SSH secret presence
-        run: |
-          if [ -z "${{ secrets.SERVER_SSH_KEY }}" ]; then
-            echo "SERVER_SSH_KEY is EMPTY"
-            exit 1
-          else
-            echo "SERVER_SSH_KEY is PRESENT"
-          fi
-
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.9.0
         with:
