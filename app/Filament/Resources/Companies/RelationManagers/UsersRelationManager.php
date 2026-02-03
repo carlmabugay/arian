@@ -13,7 +13,7 @@ class UsersRelationManager extends RelationManager
 
     protected static ?string $relatedResource = UserResource::class;
 
-    protected function modifyQueryWithActiveTab(Builder $query): Builder
+    protected function modifyQueryWithActiveTab(Builder $query, bool $isResolvingRecord = false): Builder
     {
         $user = auth()->user();
 
