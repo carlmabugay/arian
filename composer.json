@@ -1,9 +1,15 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "arian/arian",
+    "name": "carlmabugay/arian",
     "type": "project",
     "description": "A modern Asset & Inventory Management System built with Laravel, Filament, and Livewire.",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "asset",
+        "inventory management system",
+        "laravel",
+        "filament",
+        "livewire"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
