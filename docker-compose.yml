@@ -15,7 +15,7 @@ services:
 
     nginx:
         image: nginx:alpine
-        container_name: nginx
+        container_name: arian-nginx
         ports:
             - "8000:80"
         volumes:
@@ -26,7 +26,7 @@ services:
 
     db:
         image: mysql:8.0
-        container_name: mysql
+        container_name: arian-mysql
         env_file:
             - .env
         volumes:
